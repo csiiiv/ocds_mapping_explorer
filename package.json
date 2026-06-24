@@ -1,0 +1,33 @@
+{
+  "name": "ocds-mapping-explorer",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Interactive browser and editor for OCDS 1.1 field-level mapping",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "regenerate-data": "python scripts/excel_to_json_mapping.py",
+    "build-data": "python scripts/build_project.py --all",
+    "build-philgeps-projects": "python scripts/build_project.py -i \"references/2025_mPhilGEPS_OCDS - Field Level Mapping Template for OCDS 1.1 (Template Version 0.91) (1) (1).xlsx\" --project mphilgeps --name \"mPhilGEPS\" --source-system \"mPhilGEPS\" --description \"Philippines mPhilGEPS field-level mapping (PS-DBM template v0.91)\" && python scripts/build_project.py -i \"references/2025_PhilGEPS 1.5_OCDS - Field Level Mapping Template for OCDS 1.1 (Template Version 0.91).xlsx\" --project philgeps-1.5 --name \"PhilGEPS 1.5\" --source-system \"PhilGEPS 1.5\" --description \"Philippines PhilGEPS 1.5 field-level mapping (PS-DBM template v0.91)\" && python scripts/apply_philgeps_metadata.py",
+    "clean-placeholders": "python scripts/clean_project_placeholders.py",
+    "strip-template": "python scripts/strip_template.py",
+    "import-workbook": "python scripts/import_ocp_workbook.py",
+    "export-project": "python scripts/export_project.py",
+    "export-xlsx": "python scripts/export_ocp_workbook.py",
+    "export-yaml": "python scripts/export_mapping_yaml.py"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.18.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  }
+}

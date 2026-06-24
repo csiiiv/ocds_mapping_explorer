@@ -1,0 +1,35 @@
+{
+  "pack_id": "philippines-wsf",
+  "name": "Philippines WSF integrated export",
+  "description": "Custom indicators for mPhilGEPS WSF (APP + PR + bid + award) integrated flat export",
+  "version": "1.0",
+  "engine": "custom",
+  "jurisdiction": "PH",
+  "indicators": [
+    {
+      "id": "PH-WSF-C01",
+      "name": "APP milestone slippage",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Planned APP milestone dates vs actual notice/award dates.",
+      "paths": [
+        { "path": "/planning/milestones[]/type", "required": true },
+        { "path": "/planning/milestones[]/dueDate", "required": true },
+        { "path": "/tender/tenderPeriod/startDate", "required": true },
+        { "path": "/tender/tenderPeriod/endDate", "required": true },
+        { "path": "/awards[]/date", "required": true }
+      ]
+    },
+    {
+      "id": "PH-WSF-C02",
+      "name": "ABC vs APP line budget gap",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Row-level ABC far below APP line estimated budget (apply at process level after grouping).",
+      "paths": [
+        { "path": "/tender/value/amount", "required": true },
+        { "path": "/planning/budget/amount/amount", "required": true }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,197 @@
+{
+  "pack_id": "philippines-ra9184",
+  "name": "Philippines (RA 9184)",
+  "description": "Custom procurement policy and transparency indicators for Philippines Government Procurement Reform Act context",
+  "version": "1.1",
+  "engine": "custom",
+  "jurisdiction": "PH",
+  "indicators": [
+    {
+      "id": "PH-C01",
+      "name": "Non-competitive method above threshold",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Direct/limited procurement above value threshold (RA 9184 policy check).",
+      "tracks": "Use of non-open procurement methods on high-value processes.",
+      "computation": {
+        "summary": "procurementMethod ∈ {direct, limited} AND tender/value/amount ≥ threshold",
+        "steps": [
+          "Read tender/procurementMethod and procurementMethodDetails.",
+          "Compare tender/value/amount to configured PHP threshold tiers.",
+          "Flag for manual RA 9184 mode eligibility review."
+        ]
+      },
+      "interpretation": "High-value non-competitive awards warrant legal review even when procedurally valid.",
+      "paths": [
+        { "path": "/tender/procurementMethod", "required": true },
+        { "path": "/tender/procurementMethodDetails", "required": false },
+        { "path": "/tender/value/amount", "required": true },
+        { "path": "/tender/value/currency", "required": true }
+      ],
+      "priority": 3
+    },
+    {
+      "id": "PH-C02",
+      "name": "Competitive procedure, no bidders disclosed",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Open/selective procedure with no bids block — transparency gap, not proven single bid.",
+      "tracks": "Competitive notice published without disclosed participants.",
+      "computation": {
+        "summary": "procurementMethod ∈ {open, selective} AND bids/details absent or empty",
+        "steps": [
+          "Filter to competitive procurement methods.",
+          "Check for absence of bids/details[] or empty tenderers.",
+          "Do not infer single bid — distinct from R018."
+        ]
+      },
+      "interpretation": "Missing bidder disclosure on a competitive procedure is a transparency failure.",
+      "limitations": "~54% of competitive releases lack bidder lists in flat CSV — treat as unknown vs confirmed non-disclosure.",
+      "paths": [
+        { "path": "/tender/procurementMethod", "required": true },
+        { "path": "/bids/details[]/tenderers[]/name", "required": true, "note": "Absence of bids is the signal" }
+      ],
+      "priority": 5
+    },
+    {
+      "id": "PH-C03",
+      "name": "Award value vs budget overrun",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Award amount significantly exceeds approved budget (ABC).",
+      "tracks": "Contract award value exceeding approved budget of the contract (ABC).",
+      "computation": {
+        "summary": "awards/value/amount / tender/value/amount > 1.05 (configurable)",
+        "steps": [
+          "Require both tender/value/amount (ABC) and awards/value/amount.",
+          "Compute ratio at process level after grouping line items.",
+          "Flag overruns above threshold (e.g. 5%)."
+        ]
+      },
+      "interpretation": "May indicate scope creep, change orders, or data errors.",
+      "paths": [
+        { "path": "/tender/value/amount", "required": true },
+        { "path": "/awards[]/value/amount", "required": true },
+        { "path": "/awards[]/status", "required": false }
+      ],
+      "priority": 6
+    },
+    {
+      "id": "PH-C04",
+      "name": "Award before bid closing",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Award date precedes tender submission deadline.",
+      "tracks": "Whether award was recorded before the bid closing datetime.",
+      "computation": {
+        "summary": "awards/date < tender/tenderPeriod/endDate",
+        "steps": [
+          "Parse awards/date and tender/tenderPeriod/endDate.",
+          "Flag when award precedes closing (timezone-normalized).",
+          "Exclude cancelled or incomplete releases."
+        ]
+      },
+      "interpretation": "Suggests procedural error, backdated records, or inadequate notice.",
+      "paths": [
+        { "path": "/tender/tenderPeriod/endDate", "required": true },
+        { "path": "/awards[]/date", "required": true },
+        { "path": "/awards[]/status", "required": false },
+        { "path": "/tender/status", "required": false, "note": "Exclude cancelled tenders" }
+      ],
+      "priority": 4
+    },
+    {
+      "id": "PH-C05",
+      "name": "Same-day award after closing",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Award published on the same calendar day as bid closing (minimal deliberation window).",
+      "tracks": "Compressed timeline between bid close and award notice.",
+      "computation": {
+        "summary": "date(awards/date) = date(tender/tenderPeriod/endDate) for competitive methods",
+        "steps": [
+          "Filter to open/selective procurement methods.",
+          "Compare calendar dates of award and closing.",
+          "Flag same-day awards for review."
+        ]
+      },
+      "interpretation": "Complements R003 (short submission period) — flags rushed post-close processing.",
+      "paths": [
+        { "path": "/tender/procurementMethod", "required": true },
+        { "path": "/tender/tenderPeriod/endDate", "required": true },
+        { "path": "/awards[]/date", "required": true }
+      ],
+      "priority": 4
+    },
+    {
+      "id": "PH-C06",
+      "name": "High-value tender missing UNSPSC",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Competitive or high-value tender without item classification (UNSPSC).",
+      "tracks": "Missing product/service classification on material procurements.",
+      "computation": {
+        "summary": "tender/value/amount ≥ threshold AND tender/items[]/classification/id absent",
+        "steps": [
+          "Check tender value against threshold.",
+          "Verify tender/items[]/classification/id and scheme.",
+          "Flag high-value releases without UNSPSC."
+        ]
+      },
+      "interpretation": "Reduces transparency and weakens category-based analysis (see also R048).",
+      "paths": [
+        { "path": "/tender/procurementMethod", "required": false },
+        { "path": "/tender/value/amount", "required": true },
+        { "path": "/tender/items[]/classification/id", "required": true },
+        { "path": "/tender/items[]/classification/scheme", "required": false, "note": "Expect UNSPSC" }
+      ],
+      "priority": 5
+    },
+    {
+      "id": "PH-C07",
+      "name": "Award value without disclosed supplier",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Contract amount published but awardee identity missing.",
+      "tracks": "Award value disclosed without supplier id or name.",
+      "computation": {
+        "summary": "awards/value/amount present AND awards/suppliers absent or empty",
+        "steps": [
+          "Require awards/value/amount.",
+          "Check awards/suppliers[] for id or name.",
+          "Flag value-only award records."
+        ]
+      },
+      "interpretation": "Opposite transparency gap to PH-C02 — value published but winner hidden.",
+      "paths": [
+        { "path": "/awards[]/value/amount", "required": true },
+        { "path": "/awards[]/suppliers[]/id", "required": true },
+        { "path": "/awards[]/suppliers[]/name", "required": false, "note": "Either id or name satisfies disclosure" }
+      ],
+      "priority": 5
+    },
+    {
+      "id": "PH-C08",
+      "name": "Competitive label with SVP or shopping details",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "procurementMethod is open/selective but procurementMethodDetails suggests SVP, shopping, or negotiated mode.",
+      "tracks": "Inconsistency between competitive method code and mode label text.",
+      "computation": {
+        "summary": "procurementMethod ∈ {open, selective} AND details match SVP/shopping/negotiated patterns",
+        "steps": [
+          "Read procurementMethod and procurementMethodDetails.",
+          "Match details against SVP, shopping, small-value, negotiated labels.",
+          "Flag mismatches for mapping review or circumvention screening."
+        ]
+      },
+      "interpretation": "May indicate misclassification, data entry error, or mode circumvention.",
+      "limitations": "Requires maintained label pattern list for Philippine mode strings.",
+      "paths": [
+        { "path": "/tender/procurementMethod", "required": true },
+        { "path": "/tender/procurementMethodDetails", "required": true }
+      ],
+      "priority": 7
+    }
+  ]
+}

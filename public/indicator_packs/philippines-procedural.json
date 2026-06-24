@@ -1,0 +1,179 @@
+{
+  "pack_id": "philippines-procedural",
+  "name": "Philippines (procedural integrity)",
+  "description": "Procedural integrity indicators using mPhilGEPS normalized tables (postponements, documents, contracts, bid validity)",
+  "version": "1.0",
+  "engine": "custom",
+  "jurisdiction": "PH",
+  "indicators": [
+    {
+      "id": "PH-C09",
+      "name": "Postponement with short rebid window",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "After tender postponement, new submission period shorter than mode-specific minimum.",
+      "tracks": "Bid window compression following a tender postponement or amendment.",
+      "computation": {
+        "summary": "amendments/date present AND days(endDate − startDate) < mode threshold",
+        "steps": [
+          "Detect tender/amendments from postponement or supplement records.",
+          "Recompute submission period after amendment date.",
+          "Compare to RA 9184 minimum notice by procurementMethodDetails."
+        ]
+      },
+      "interpretation": "Postponements used to shorten effective notice warrant procedural review.",
+      "limitations": "Not available on flat CSV export; requires normalized PhilGEPS tables.",
+      "paths": [
+        { "path": "/tender/amendments/date", "required": true },
+        { "path": "/tender/amendments/id", "required": false },
+        { "path": "/tender/tenderPeriod/startDate", "required": true },
+        { "path": "/tender/tenderPeriod/endDate", "required": true },
+        { "path": "/tender/procurementMethodDetails", "required": false, "note": "Per-mode thresholds" }
+      ],
+      "priority": 4
+    },
+    {
+      "id": "PH-C10",
+      "name": "Amendment without rationale",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Tender amended (supplement or postponement) but amendments/rationale is empty.",
+      "tracks": "Missing justification text for tender amendments.",
+      "computation": {
+        "summary": "tender/amendments/id present AND amendments/rationale absent or blank",
+        "steps": [
+          "Identify releases with tender/amendments records.",
+          "Check amendments/rationale for non-empty text.",
+          "Flag amendments without disclosed reason."
+        ]
+      },
+      "interpretation": "Audit trail gap — stakeholders cannot see why terms or dates changed.",
+      "paths": [
+        { "path": "/tender/amendments/id", "required": true },
+        { "path": "/tender/amendments/rationale", "required": true, "note": "Absence is the signal" },
+        { "path": "/tender/amendments/date", "required": false }
+      ],
+      "priority": 6
+    },
+    {
+      "id": "PH-C11",
+      "name": "Competitive notice without tender documents",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Open or selective procedure with no published tender documents.",
+      "tracks": "Competitive notice missing TOR/ITB or other tender documents.",
+      "computation": {
+        "summary": "procurementMethod ∈ {open, selective} AND tender/documents[] empty",
+        "steps": [
+          "Filter to competitive methods.",
+          "Check tender/documents for id, url, or datePublished.",
+          "Flag notices without downloadable documents."
+        ]
+      },
+      "interpretation": "Transparency failure — bidders cannot access full tender pack.",
+      "paths": [
+        { "path": "/tender/procurementMethod", "required": true },
+        { "path": "/tender/documents/id", "required": true, "note": "Or documents[] block absent" },
+        { "path": "/tender/documents/url", "required": false },
+        { "path": "/tender/documents/datePublished", "required": false }
+      ],
+      "priority": 5
+    },
+    {
+      "id": "PH-C12",
+      "name": "Non-open award without reason",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Non-competitive method with missing award justification (Reason of Award / awardCriteria).",
+      "tracks": "Negotiated or direct award without documented justification.",
+      "computation": {
+        "summary": "procurementMethod ∉ {open, selective} AND tender/awardCriteria blank",
+        "steps": [
+          "Identify non-open procurement methods.",
+          "Read tender/awardCriteria (mapped from Reason of Award in mPhilGEPS).",
+          "Flag missing or generic justification strings."
+        ]
+      },
+      "interpretation": "RA 9184 expects documented basis for non-competitive awards.",
+      "paths": [
+        { "path": "/tender/procurementMethod", "required": true },
+        { "path": "/tender/awardCriteria", "required": true, "note": "mPhilGEPS: Awards (Reason of Award)" },
+        { "path": "/awards[]/value/amount", "required": false }
+      ],
+      "priority": 4
+    },
+    {
+      "id": "PH-C13",
+      "name": "Award beyond bid validity",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Award date falls outside the published bid validity period.",
+      "tracks": "Whether award occurred after bids were no longer valid.",
+      "computation": {
+        "summary": "awards/date > tender_start + bid_validity_duration",
+        "steps": [
+          "Read tender period start and bid validity (enquiryPeriod/durationInDays or equivalent).",
+          "Compute validity end date.",
+          "Compare to awards/date."
+        ]
+      },
+      "interpretation": "Procedural invalidity — award may require rebidding under RA 9184.",
+      "paths": [
+        { "path": "/awards[]/date", "required": true },
+        { "path": "/tender/tenderPeriod/startDate", "required": true },
+        { "path": "/tender/enquiryPeriod/durationInDays", "required": true, "note": "Bid validity period mapping" },
+        { "path": "/tender/tenderPeriod/durationInDays", "required": false }
+      ],
+      "priority": 5
+    },
+    {
+      "id": "PH-C14",
+      "name": "Contract period mismatch across stages",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Material disagreement between tender, award, and contract period durations.",
+      "tracks": "Inconsistent contract duration published at tender, award, and contract stages.",
+      "computation": {
+        "summary": "|tender.contractPeriod − awards.contractPeriod| > tolerance OR contract period dates inconsistent",
+        "steps": [
+          "Read tender/contractPeriod/durationInDays and awards/contractPeriod/durationInDays.",
+          "Read contracts/period/startDate and endDate when present.",
+          "Flag material mismatches across stages."
+        ]
+      },
+      "interpretation": "May indicate scope change, amendment not reflected, or mapping error.",
+      "paths": [
+        { "path": "/tender/contractPeriod/durationInDays", "required": true },
+        { "path": "/awards[]/contractPeriod/durationInDays", "required": true },
+        { "path": "/contracts[]/period/startDate", "required": false },
+        { "path": "/contracts[]/period/endDate", "required": false },
+        { "path": "/contracts[]/period/durationInDays", "required": false }
+      ],
+      "priority": 7
+    },
+    {
+      "id": "PH-C15",
+      "name": "Long award-to-contract start delay",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Unusually long gap between award notice and contract period start.",
+      "tracks": "Delay between award publication and contract effectivity.",
+      "computation": {
+        "summary": "days(contracts/period/startDate − awards/date) > threshold",
+        "steps": [
+          "Require awards/date and contracts/period/startDate.",
+          "Compute calendar-day gap.",
+          "Flag delays above configured threshold (e.g. 90 days)."
+        ]
+      },
+      "interpretation": "Implementation slippage or contracts not yet executed.",
+      "limitations": "Contract dates ~36% fill on flat CSV; strongest on normalized DB.",
+      "paths": [
+        { "path": "/awards[]/date", "required": true },
+        { "path": "/contracts[]/period/startDate", "required": true },
+        { "path": "/awards[]/status", "required": false }
+      ],
+      "priority": 7
+    }
+  ]
+}

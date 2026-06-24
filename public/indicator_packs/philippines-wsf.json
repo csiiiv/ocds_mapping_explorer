@@ -1,0 +1,148 @@
+{
+  "pack_id": "philippines-wsf",
+  "name": "Philippines WSF integrated export",
+  "description": "Custom indicators for mPhilGEPS WSF (APP + PR + bid + award) integrated flat export",
+  "version": "1.1",
+  "engine": "custom",
+  "jurisdiction": "PH",
+  "indicators": [
+    {
+      "id": "PH-WSF-C01",
+      "name": "APP milestone slippage",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Planned APP milestone dates vs actual notice/award dates.",
+      "tracks": "Slippage between APP planned milestones and executed procurement dates.",
+      "computation": {
+        "summary": "planning/milestones/dueDate vs published_date, closing_date, award_date",
+        "steps": [
+          "Match milestone types (Advertisement, Submission, Notice of Award) to dueDate.",
+          "Compare to tender/tenderPeriod dates and awards/date.",
+          "Flag milestones where actual dates exceed planned by threshold."
+        ]
+      },
+      "interpretation": "Planning integrity signal independent of bidder disclosure.",
+      "paths": [
+        { "path": "/planning/milestones[]/type", "required": true },
+        { "path": "/planning/milestones[]/dueDate", "required": true },
+        { "path": "/tender/tenderPeriod/startDate", "required": true },
+        { "path": "/tender/tenderPeriod/endDate", "required": true },
+        { "path": "/awards[]/date", "required": true }
+      ],
+      "priority": 3
+    },
+    {
+      "id": "PH-WSF-C02",
+      "name": "ABC vs APP line budget gap",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Row-level ABC far below APP line estimated budget (apply at process level after grouping).",
+      "tracks": "Mismatch between approved budget (ABC) and APP line estimated budget.",
+      "computation": {
+        "summary": "tender/value/amount < 0.5 × planning/budget/amount/amount at process grain",
+        "steps": [
+          "Sum tender/value/amount across line items per process (bid_ref + PE).",
+          "Compare to planning/budget/amount/amount.",
+          "Flag when ABC is far below APP line budget."
+        ]
+      },
+      "interpretation": "Often line-item grain artifact; group before flagging.",
+      "limitations": "~17% false-positive rate at row grain on WSF sample.",
+      "paths": [
+        { "path": "/tender/value/amount", "required": true },
+        { "path": "/planning/budget/amount/amount", "required": true }
+      ],
+      "priority": 4
+    },
+    {
+      "id": "PH-WSF-C03",
+      "name": "APP milestone order invalid",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "APP milestone due dates in illogical order (e.g. award before bid opening).",
+      "tracks": "Whether APP schedule milestones follow expected procurement sequence.",
+      "computation": {
+        "summary": "dueDate(Notice of Award) < dueDate(Submission of Bids) or similar inversions",
+        "steps": [
+          "Order planning/milestones by type (Advertisement → Submission → Award).",
+          "Compare consecutive milestone dueDates.",
+          "Flag inverted or equal dates where sequence is required."
+        ]
+      },
+      "interpretation": "Data quality or planning integrity issue before slippage analysis.",
+      "paths": [
+        { "path": "/planning/milestones[]/type", "required": true },
+        { "path": "/planning/milestones[]/dueDate", "required": true }
+      ],
+      "priority": 6
+    },
+    {
+      "id": "PH-WSF-C04",
+      "name": "Material APP line without funding source",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "High APP budget line missing source of funds.",
+      "tracks": "Budget law compliance — funding source on material APP lines.",
+      "computation": {
+        "summary": "planning/budget/amount ≥ threshold AND source of funds absent",
+        "steps": [
+          "Read planning budget amount and source fields.",
+          "Apply value threshold for material lines.",
+          "Flag missing source_funds on high-value APP items."
+        ]
+      },
+      "interpretation": "Cannot verify appropriation linkage for large planned spends.",
+      "paths": [
+        { "path": "/planning/budget/amount/amount", "required": true },
+        { "path": "/planning/budget/projectID", "required": false },
+        { "path": "/planning/budget/description", "required": false, "note": "Source funds via planning budget block" }
+      ],
+      "priority": 7
+    },
+    {
+      "id": "PH-WSF-C05",
+      "name": "Material APP line without PAP code",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "High-value APP line missing project ID (PAP code).",
+      "tracks": "Linkage of procurement to approved program (PAP).",
+      "computation": {
+        "summary": "planning/budget/amount ≥ threshold AND planning/budget/projectID blank",
+        "steps": [
+          "Check planning/budget/amount against threshold.",
+          "Verify planning/budget/projectID (pap_code) is populated.",
+          "Flag material lines without program linkage."
+        ]
+      },
+      "interpretation": "Audit teams cannot trace spend to an approved program.",
+      "paths": [
+        { "path": "/planning/budget/amount/amount", "required": true },
+        { "path": "/planning/budget/projectID", "required": true, "note": "mPhilGEPS: app_line_items (pap_code)" }
+      ],
+      "priority": 7
+    },
+    {
+      "id": "PH-WSF-C06",
+      "name": "Award row without buyer UACS",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Integrated row with award value but missing stable buyer identifier (UACS).",
+      "tracks": "Agency linkage on WSF rows with contract amounts.",
+      "computation": {
+        "summary": "awards/value/amount present AND buyer/id absent",
+        "steps": [
+          "Require awards/value/amount on WSF row.",
+          "Check buyer/id (UACS) and buyer/name.",
+          "Flag rows that cannot be attributed to a procuring entity."
+        ]
+      },
+      "interpretation": "Compile or data-quality issue — WSF expects ~99.8% UACS fill.",
+      "paths": [
+        { "path": "/awards[]/value/amount", "required": true },
+        { "path": "/buyer/id", "required": true },
+        { "path": "/buyer/name", "required": false }
+      ],
+      "priority": 6
+    }
+  ]
+}

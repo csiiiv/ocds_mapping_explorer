@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.cloudflare/
+*.local
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+.DS_Store

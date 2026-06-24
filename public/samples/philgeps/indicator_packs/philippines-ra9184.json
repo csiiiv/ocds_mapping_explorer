@@ -1,0 +1,48 @@
+{
+  "pack_id": "philippines-ra9184",
+  "name": "Philippines (RA 9184)",
+  "description": "Custom procurement policy indicators for Philippines Government Procurement Reform Act context",
+  "version": "1.0",
+  "engine": "custom",
+  "jurisdiction": "PH",
+  "indicators": [
+    {
+      "id": "PH-C01",
+      "name": "Non-competitive method above threshold",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Direct/limited procurement above value threshold (RA 9184 policy check).",
+      "paths": [
+        { "path": "/tender/procurementMethod", "required": true },
+        { "path": "/tender/procurementMethodDetails", "required": false },
+        { "path": "/tender/value/amount", "required": true },
+        { "path": "/tender/value/currency", "required": true }
+      ],
+      "priority": 3
+    },
+    {
+      "id": "PH-C02",
+      "name": "Competitive procedure, no bidders disclosed",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Open/selective procedure with no bids block — transparency gap, not proven single bid.",
+      "paths": [
+        { "path": "/tender/procurementMethod", "required": true },
+        { "path": "/bids/details[]/tenderers[]/name", "required": true, "note": "Absence of bids is the signal" }
+      ],
+      "priority": 5
+    },
+    {
+      "id": "PH-C03",
+      "name": "Award value vs budget overrun",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Award amount significantly exceeds approved budget (ABC).",
+      "paths": [
+        { "path": "/tender/value/amount", "required": true },
+        { "path": "/awards[]/value/amount", "required": true },
+        { "path": "/awards[]/status", "required": false }
+      ]
+    }
+  ]
+}

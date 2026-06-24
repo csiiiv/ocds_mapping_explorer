@@ -1,0 +1,38 @@
+{
+  "publication_config": {
+    "version": "1",
+    "ocid_prefix": "ocds-philgeps",
+    "publisher": {
+      "name": "Philippine Government Electronic Procurement System",
+      "scheme": "",
+      "uid": "",
+      "uri": "https://www.philgeps.gov.ph/"
+    },
+    "license": "",
+    "publicationPolicy": "",
+    "extensions": [
+      "https://raw.githubusercontent.com/open-contracting-extensions/ocds_bid_extension/master/extension.json",
+      "https://raw.githubusercontent.com/open-contracting-extensions/ocds_lots_extension/master/extension.json"
+    ],
+    "defaults": {
+      "currency": "PHP",
+      "classification_scheme": "UNSPSC",
+      "language": "en",
+      "initiationType": "tender"
+    },
+    "generated": {
+      "ocid": {
+        "from": ["award_reference_no", "procuring_entity"]
+      },
+      "release_id": "record_id",
+      "release_date": {
+        "prefer": ["award_published_date", "published_date", "award_date"]
+      }
+    },
+    "planning_triggers": ["app_item_id", "app_total_estimated_budget"],
+    "buyer": {
+      "name": "",
+      "id": ""
+    }
+  }
+}

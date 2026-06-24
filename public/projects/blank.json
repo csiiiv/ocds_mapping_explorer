@@ -1,0 +1,300 @@
+{
+  "metadata": {
+    "project_id": "blank",
+    "name": "Blank project",
+    "description": "Empty source inventory — start a new OCDS mapping from scratch",
+    "source_system": "",
+    "ocds_version": "1.1.5",
+    "template_version": "Field Level Mapping Template - Version 0.9 - May 2022",
+    "source_file": "OCP Field Level Mapping Template for OCDS 1.1",
+    "created_at": "2026-06-23T13:07:57+00:00",
+    "updated_at": "2026-06-23T13:07:57+00:00",
+    "imports": []
+  },
+  "data_sources": {
+    "columns": [
+      "Short name",
+      "Data source",
+      "Vendor",
+      "URL / Documentation",
+      "Agency / unit responsible",
+      "Planning",
+      "Tender",
+      "Award",
+      "Contract",
+      "Implementation (Physical)",
+      "Implementation (Financial)",
+      "Revision history?",
+      "Documents available?",
+      "Existing APIs/data publication?"
+    ],
+    "rows": []
+  },
+  "data_elements": {
+    "columns": [
+      {
+        "key": "for_mapping",
+        "label": "For mapping",
+        "kind": "mono",
+        "group": "for_mapping",
+        "subgroup": "",
+        "optional": false
+      },
+      {
+        "key": "data_source",
+        "label": "Data source",
+        "kind": "text",
+        "group": "existing_data_elements",
+        "subgroup": "",
+        "optional": false
+      },
+      {
+        "key": "section_table",
+        "label": "Section / Table",
+        "kind": "mono",
+        "group": "existing_data_elements",
+        "subgroup": "",
+        "optional": false
+      },
+      {
+        "key": "data_element",
+        "label": "Data element",
+        "kind": "mono",
+        "group": "existing_data_elements",
+        "subgroup": "",
+        "optional": false
+      },
+      {
+        "key": "publish",
+        "label": "Publish?",
+        "kind": "text",
+        "group": "existing_data_elements",
+        "subgroup": "",
+        "optional": false
+      },
+      {
+        "key": "example",
+        "label": "Example (optional)",
+        "kind": "mono",
+        "group": "existing_data_elements",
+        "subgroup": "",
+        "optional": true
+      },
+      {
+        "key": "description",
+        "label": "Description (optional)",
+        "kind": "wrap",
+        "group": "existing_data_elements",
+        "subgroup": "",
+        "optional": true
+      },
+      {
+        "key": "data_type",
+        "label": "Data Type (optional)",
+        "kind": "text",
+        "group": "existing_data_elements",
+        "subgroup": "",
+        "optional": true
+      },
+      {
+        "key": "notes",
+        "label": "Notes on data quality, coverage etc. (optional)",
+        "kind": "wrap",
+        "group": "existing_data_elements",
+        "subgroup": "",
+        "optional": true
+      },
+      {
+        "key": "mapped",
+        "label": "Mapped",
+        "kind": "text",
+        "group": "mapping_statistics",
+        "subgroup": "summary",
+        "optional": false
+      },
+      {
+        "key": "mapping_details",
+        "label": "Mapping details",
+        "kind": "wrap",
+        "group": "mapping_statistics",
+        "subgroup": "summary",
+        "optional": false
+      },
+      {
+        "key": "count_1_general_all_stages",
+        "label": "Count · 1. General (all stages)",
+        "kind": "count",
+        "group": "mapping_statistics",
+        "subgroup": "count",
+        "optional": false
+      },
+      {
+        "key": "count_2_planning",
+        "label": "Count · 2. Planning",
+        "kind": "count",
+        "group": "mapping_statistics",
+        "subgroup": "count",
+        "optional": false
+      },
+      {
+        "key": "count_3_tender",
+        "label": "Count · 3. Tender",
+        "kind": "count",
+        "group": "mapping_statistics",
+        "subgroup": "count",
+        "optional": false
+      },
+      {
+        "key": "count_4_award",
+        "label": "Count · 4. Award",
+        "kind": "count",
+        "group": "mapping_statistics",
+        "subgroup": "count",
+        "optional": false
+      },
+      {
+        "key": "count_5_contract",
+        "label": "Count · 5. Contract",
+        "kind": "count",
+        "group": "mapping_statistics",
+        "subgroup": "count",
+        "optional": false
+      },
+      {
+        "key": "count_6_implementation",
+        "label": "Count · 6. Implementation",
+        "kind": "count",
+        "group": "mapping_statistics",
+        "subgroup": "count",
+        "optional": false
+      },
+      {
+        "key": "presence_1_general_all_stages",
+        "label": "Present · 1. General (all stages)",
+        "kind": "presence",
+        "group": "mapping_statistics",
+        "subgroup": "presence",
+        "optional": false
+      },
+      {
+        "key": "presence_2_planning",
+        "label": "Present · 2. Planning",
+        "kind": "presence",
+        "group": "mapping_statistics",
+        "subgroup": "presence",
+        "optional": false
+      },
+      {
+        "key": "presence_3_tender",
+        "label": "Present · 3. Tender",
+        "kind": "presence",
+        "group": "mapping_statistics",
+        "subgroup": "presence",
+        "optional": false
+      },
+      {
+        "key": "presence_4_award",
+        "label": "Present · 4. Award",
+        "kind": "presence",
+        "group": "mapping_statistics",
+        "subgroup": "presence",
+        "optional": false
+      },
+      {
+        "key": "presence_5_contract",
+        "label": "Present · 5. Contract",
+        "kind": "presence",
+        "group": "mapping_statistics",
+        "subgroup": "presence",
+        "optional": false
+      },
+      {
+        "key": "presence_6_implementation",
+        "label": "Present · 6. Implementation",
+        "kind": "presence",
+        "group": "mapping_statistics",
+        "subgroup": "presence",
+        "optional": false
+      }
+    ],
+    "column_groups": [
+      {
+        "id": "for_mapping",
+        "label": "For mapping",
+        "keys": [
+          "for_mapping"
+        ]
+      },
+      {
+        "id": "existing_data_elements",
+        "label": "Existing data elements",
+        "keys": [
+          "data_source",
+          "section_table",
+          "data_element",
+          "publish",
+          "example",
+          "description",
+          "data_type",
+          "notes"
+        ]
+      },
+      {
+        "id": "mapping_statistics",
+        "label": "Mapping statistics",
+        "keys": [
+          "mapped",
+          "mapping_details",
+          "count_1_general_all_stages",
+          "count_2_planning",
+          "count_3_tender",
+          "count_4_award",
+          "count_5_contract",
+          "count_6_implementation",
+          "presence_1_general_all_stages",
+          "presence_2_planning",
+          "presence_3_tender",
+          "presence_4_award",
+          "presence_5_contract",
+          "presence_6_implementation"
+        ]
+      }
+    ],
+    "rows": []
+  },
+  "mapping_edits": {},
+  "data_element_additions": [],
+  "publication_config": {
+    "version": "1",
+    "ocid_prefix": "",
+    "publisher": {
+      "name": "",
+      "scheme": "",
+      "uid": "",
+      "uri": ""
+    },
+    "license": "",
+    "publicationPolicy": "",
+    "extensions": [],
+    "defaults": {
+      "currency": "",
+      "classification_scheme": "",
+      "language": "en",
+      "initiationType": "tender"
+    },
+    "generated": {
+      "ocid": {
+        "from": []
+      },
+      "release_id": "",
+      "release_date": {
+        "prefer": []
+      }
+    },
+    "planning_triggers": [],
+    "buyer": {
+      "name": "",
+      "id": ""
+    }
+  }
+}

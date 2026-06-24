@@ -1,0 +1,302 @@
+{
+  "pack_id": "cardinal",
+  "name": "OCP Cardinal",
+  "description": "Built-in Cardinal red-flag indicators (OCDS path requirements)",
+  "version": "0.0.9",
+  "engine": "cardinal",
+  "indicators": [
+    {
+      "id": "R003",
+      "name": "Short submission period",
+      "engine": "cardinal",
+      "scope": "OCID",
+      "description": "Submission window (endDate − startDate) shorter than threshold. Flags inadequate notice to bidders.",
+      "tracks": "Whether bidders had adequate calendar time between notice and bid deadline.",
+      "computation": {
+        "summary": "days(tenderPeriod/endDate − tenderPeriod/startDate) < threshold(procurementMethod)",
+        "steps": [
+          "Parse tender/tenderPeriod/startDate and endDate.",
+          "Compute inclusive or calendar-day difference.",
+          "Compare to default threshold (often 15 days) or per procurementMethodDetails override.",
+          "Typically filtered to open, selective, or limited competitive methods."
+        ],
+        "thresholds_note": "Configure per method in cardinal_settings.ini — e.g. Public Bidding 15 days, Shopping 7 days."
+      },
+      "interpretation": "A hit suggests rushed procurement or compressed notice that may limit fair competition.",
+      "limitations": "Cancelled tenders should be excluded. Missing endDate prevents computation (~2% on PhilGEPS CSV).",
+      "paths": [
+        { "path": "/ocid", "required": true },
+        { "path": "/tender/tenderPeriod/startDate", "required": true },
+        { "path": "/tender/tenderPeriod/endDate", "required": true },
+        { "path": "/tender/procurementMethod", "required": false, "note": "Filter competitive methods" },
+        { "path": "/tender/procurementMethodDetails", "required": false, "note": "Per-mode thresholds" },
+        { "path": "/tender/status", "required": false, "note": "Exclude cancelled" }
+      ],
+      "priority": 1,
+      "docs_url": "https://cardinal.readthedocs.io/en/latest/cli/indicators/R/003.html"
+    },
+    {
+      "id": "R018",
+      "name": "Single bid received",
+      "engine": "cardinal",
+      "scope": "OCID",
+      "description": "Competitive procedure (open/selective) with only one tenderer. Distinct from missing bidder data.",
+      "tracks": "Competitive procedure with exactly one disclosed tenderer.",
+      "computation": {
+        "summary": "procurementMethod ∈ {open, selective} AND count(distinct tenderers) = 1",
+        "steps": [
+          "Filter to competitive procurement methods.",
+          "Count distinct bids/details/tenderers (by id or name).",
+          "Flag when exactly one tenderer is recorded.",
+          "Do not fire when bids block is absent — that is a separate transparency issue."
+        ]
+      },
+      "interpretation": "May indicate weak competition, restrictive specs, or collusion — warrants review, not proof of fraud.",
+      "limitations": "Requires bidder disclosure. Absent bids ≠ single bid (see PH-C02). PhilGEPS CSV ~46% bidder fill.",
+      "paths": [
+        { "path": "/tender/procurementMethod", "required": true },
+        { "path": "/bids/details[]/tenderers[]/id", "required": true },
+        { "path": "/bids/details[]/tenderers[]/name", "required": true },
+        { "path": "/tender/numberOfTenderers", "required": false, "note": "Derived from bids if absent" }
+      ],
+      "priority": 2,
+      "docs_url": "https://cardinal.readthedocs.io/en/latest/cli/indicators/R/018.html"
+    },
+    {
+      "id": "R024",
+      "name": "Price close to winning bid",
+      "engine": "cardinal",
+      "scope": "OCID",
+      "description": "Winning bid price suspiciously close to second-lowest valid bid (collusion signal).",
+      "tracks": "Suspicious proximity between winning and runner-up bid prices.",
+      "computation": {
+        "summary": "(second_lowest_valid − winner) / second_lowest_valid < relative_threshold",
+        "steps": [
+          "Collect valid bids with value/amount and tenderer id.",
+          "Identify winning supplier from awards/suppliers.",
+          "Find second-lowest valid bid from a different tenderer.",
+          "Flag when relative price gap is below configured threshold (collusion proxy)."
+        ],
+        "thresholds_note": "Default relative threshold is set in Cardinal config; requires ≥2 comparable valid bids."
+      },
+      "interpretation": "Classic bid-rigging signal — coordinated pricing just above the winner.",
+      "limitations": "Not feasible on PhilGEPS flat CSV (no bid amounts). Requires normalized bid tables.",
+      "paths": [
+        { "path": "/bids/details[]/status", "required": true },
+        { "path": "/bids/details[]/value/amount", "required": true, "note": "≥2 valid bid amounts" },
+        { "path": "/bids/details[]/value/currency", "required": true },
+        { "path": "/bids/details[]/tenderers[]/id", "required": true },
+        { "path": "/awards[]/status", "required": true },
+        { "path": "/awards[]/suppliers[]/id", "required": true }
+      ],
+      "docs_url": "https://cardinal.readthedocs.io/en/latest/cli/indicators/R/024.html"
+    },
+    {
+      "id": "R025",
+      "name": "Excessive unsuccessful bids",
+      "engine": "cardinal",
+      "scope": "Tenderer",
+      "description": "Top tenderer wins unusually few of their submitted bids across processes.",
+      "tracks": "Tenderer win rate across many processes — unusually low for active bidders.",
+      "computation": {
+        "summary": "wins / bids_submitted < threshold for tenderers with high bid volume",
+        "steps": [
+          "Aggregate bids and awards by tenderer id across the dataset.",
+          "Compute win rate for tenderers above minimum bid count.",
+          "Flag tenderers whose win rate is statistically low (cover bidding proxy)."
+        ],
+        "thresholds_note": "Buyer/tenderer scope — requires stable tenderer ids across OCIDs."
+      },
+      "interpretation": "May indicate cover bidding — submitting losing bids to create false competition.",
+      "limitations": "Multi-release history required; not a per-OCID flag. Needs bid status and award linkage.",
+      "paths": [
+        { "path": "/bids/details[]/status", "required": true },
+        { "path": "/bids/details[]/tenderers[]/id", "required": true, "note": "Stable IDs across processes" },
+        { "path": "/awards[]/status", "required": true },
+        { "path": "/awards[]/suppliers[]/id", "required": true }
+      ],
+      "docs_url": "https://cardinal.readthedocs.io/en/latest/cli/indicators/R/025.html"
+    },
+    {
+      "id": "R028",
+      "name": "Identical bid prices",
+      "engine": "cardinal",
+      "scope": "OCID",
+      "description": "Different tenderers submitted bids with the same price.",
+      "tracks": "Exact or near-identical bid amounts from distinct tenderers on one process.",
+      "computation": {
+        "summary": "∃ pair of valid bids from different tenderers with equal value/amount",
+        "steps": [
+          "List valid bids with amount and tenderer id.",
+          "Compare amounts across distinct tenderers.",
+          "Flag when two or more tenderers share the same price."
+        ]
+      },
+      "interpretation": "Possible collusion, shared pricing, or copy-paste error.",
+      "limitations": "Requires bid amounts — blocked on PhilGEPS flat CSV.",
+      "paths": [
+        { "path": "/bids/details[]/value/amount", "required": true },
+        { "path": "/bids/details[]/tenderers[]/id", "required": true },
+        { "path": "/bids/details[]/status", "required": true }
+      ],
+      "docs_url": "https://cardinal.readthedocs.io/en/latest/cli/indicators/R/028.html"
+    },
+    {
+      "id": "R030",
+      "name": "Late bid won",
+      "engine": "cardinal",
+      "scope": "OCID",
+      "description": "Winning bid received after the submission deadline.",
+      "tracks": "Whether the winning bid was submitted after tender/tenderPeriod/endDate.",
+      "computation": {
+        "summary": "winning_bid/date > tender/tenderPeriod/endDate",
+        "steps": [
+          "Identify winning tenderer from awards/suppliers.",
+          "Find matching bid detail date for that tenderer.",
+          "Compare bid submission timestamp to closing datetime."
+        ]
+      },
+      "interpretation": "Procedural irregularity — late bids should not win under standard rules.",
+      "limitations": "Requires per-bid submission timestamps; not in PhilGEPS flat CSV.",
+      "paths": [
+        { "path": "/bids/details[]/date", "required": true },
+        { "path": "/bids/details[]/status", "required": true },
+        { "path": "/tender/tenderPeriod/endDate", "required": true },
+        { "path": "/awards[]/suppliers[]/id", "required": true }
+      ],
+      "docs_url": "https://cardinal.readthedocs.io/en/latest/cli/indicators/R/030.html"
+    },
+    {
+      "id": "R035",
+      "name": "All except winning bid disqualified",
+      "engine": "cardinal",
+      "scope": "OCID",
+      "description": "Only the winner's bids are valid; all other tenderers disqualified.",
+      "tracks": "Single valid bidder after disqualifying all competitors.",
+      "computation": {
+        "summary": "count(valid bids) = 1 AND count(disqualified bids) ≥ 1 from other tenderers",
+        "steps": [
+          "Classify bids/details/status as valid vs disqualified.",
+          "Identify award winner.",
+          "Flag when only the winner's bid remains valid and others were disqualified."
+        ]
+      },
+      "interpretation": "May indicate selective disqualification to steer award to preferred bidder.",
+      "limitations": "Requires per-bid evaluation status from bid tables.",
+      "paths": [
+        { "path": "/bids/details[]/status", "required": true, "note": "valid vs disqualified" },
+        { "path": "/bids/details[]/tenderers[]/id", "required": true },
+        { "path": "/awards[]/status", "required": true },
+        { "path": "/awards[]/suppliers[]/id", "required": true }
+      ],
+      "docs_url": "https://cardinal.readthedocs.io/en/latest/cli/indicators/R/035.html"
+    },
+    {
+      "id": "R036",
+      "name": "Lowest bid disqualified",
+      "engine": "cardinal",
+      "scope": "OCID",
+      "description": "Lowest priced bid disqualified while a higher bid wins (price-only award).",
+      "tracks": "Lowest valid price disqualified; higher-priced bid awarded.",
+      "computation": {
+        "summary": "min(valid bid amounts) disqualified AND award to higher amount",
+        "steps": [
+          "Rank valid bids by value/amount.",
+          "Check status of lowest bid.",
+          "Verify award went to a higher-priced tenderer on price-only criteria."
+        ]
+      },
+      "interpretation": "Possible biased evaluation or unjustified rejection of lowest bidder.",
+      "limitations": "Requires bid amounts and status; price-only award context.",
+      "paths": [
+        { "path": "/bids/details[]/status", "required": true },
+        { "path": "/bids/details[]/value/amount", "required": true },
+        { "path": "/awards[]/status", "required": true }
+      ],
+      "docs_url": "https://cardinal.readthedocs.io/en/latest/cli/indicators/R/036.html"
+    },
+    {
+      "id": "R038",
+      "name": "Excessive disqualified bids",
+      "engine": "cardinal",
+      "scope": "Buyer",
+      "description": "Buyer, procuring entity, or tenderer disqualifies bids at unusually high rate.",
+      "tracks": "Aggregate disqualification rate per buyer or procuring entity across processes.",
+      "computation": {
+        "summary": "disqualified_bids / total_bids > threshold for buyer/id (or procuringEntity)",
+        "steps": [
+          "Aggregate bid counts and disqualifications by buyer or procuring entity.",
+          "Compute disqualification rate over a minimum sample of bids.",
+          "Flag entities with statistically high disqualification rates."
+        ],
+        "thresholds_note": "Buyer-level indicator — needs many processes per entity."
+      },
+      "interpretation": "Systematic harsh evaluation or barriers to entry for certain buyers.",
+      "limitations": "Multi-process aggregation; requires stable buyer/id and bid status.",
+      "paths": [
+        { "path": "/buyer/id", "required": true, "note": "Stable across processes" },
+        { "path": "/tender/procuringEntity/id", "required": true },
+        { "path": "/bids/details[]/status", "required": true },
+        { "path": "/bids/details[]/tenderers[]/id", "required": true }
+      ],
+      "docs_url": "https://cardinal.readthedocs.io/en/latest/cli/indicators/R/038.html"
+    },
+    {
+      "id": "R048",
+      "name": "Heterogeneous supplier",
+      "engine": "cardinal",
+      "scope": "Tenderer",
+      "description": "Supplier wins across unusually many UNSPSC product categories.",
+      "tracks": "Supplier winning contracts in an unusually diverse range of product categories.",
+      "computation": {
+        "summary": "count(distinct classification/id per supplier) > threshold across awards",
+        "steps": [
+          "Collect awards for each supplier id.",
+          "Extract items/classification/id (UNSPSC) per award.",
+          "Count distinct categories per supplier over minimum award volume.",
+          "Flag suppliers exceeding category diversity threshold."
+        ],
+        "thresholds_note": "Tenderer-scope — run after prepare with item_classification_scheme = UNSPSC."
+      },
+      "interpretation": "May indicate shell companies, conflict of interest, or unrealistic supplier capability.",
+      "limitations": "~48% UNSPSC fill on PhilGEPS CSV; best for suppliers with many awards.",
+      "paths": [
+        { "path": "/awards[]/status", "required": true },
+        { "path": "/awards[]/suppliers[]/id", "required": true },
+        { "path": "/awards[]/items[]/classification/id", "required": true },
+        { "path": "/awards[]/items[]/classification/scheme", "required": true, "note": "UNSPSC via prepare" },
+        { "path": "/tender/items[]/classification/id", "required": false, "note": "Alternative if award items sparse" }
+      ],
+      "priority": 4,
+      "docs_url": "https://cardinal.readthedocs.io/en/latest/cli/indicators/R/048.html"
+    },
+    {
+      "id": "R058",
+      "name": "Heavily discounted bid",
+      "engine": "cardinal",
+      "scope": "OCID",
+      "description": "Winning bid far below second-lowest valid bid (lemons / unrealistic pricing).",
+      "tracks": "Winning bid price suspiciously lower than the next valid bid.",
+      "computation": {
+        "summary": "(second_lowest_valid − winner) / second_lowest_valid > large_discount_threshold",
+        "steps": [
+          "Collect valid bid amounts and identify winner.",
+          "Find second-lowest valid bid from another tenderer.",
+          "Flag when relative discount exceeds threshold (unrealistic pricing / lemons problem)."
+        ],
+        "thresholds_note": "Mirror of R024 with large gap threshold — config in Cardinal settings."
+      },
+      "interpretation": "May indicate dump pricing, capability risk, or bid manipulation.",
+      "limitations": "Requires bid amounts — not feasible on PhilGEPS flat CSV.",
+      "paths": [
+        { "path": "/bids/details[]/status", "required": true },
+        { "path": "/bids/details[]/value/amount", "required": true },
+        { "path": "/bids/details[]/value/currency", "required": true },
+        { "path": "/bids/details[]/tenderers[]/id", "required": true },
+        { "path": "/awards[]/status", "required": true },
+        { "path": "/awards[]/suppliers[]/id", "required": true }
+      ],
+      "docs_url": "https://cardinal.readthedocs.io/en/latest/cli/indicators/R/058.html"
+    }
+  ]
+}

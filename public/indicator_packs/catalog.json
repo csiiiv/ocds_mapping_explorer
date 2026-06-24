@@ -1,0 +1,43 @@
+{
+  "custom_packs": [
+    {
+      "pack_id": "philippines-ra9184",
+      "name": "Philippines (RA 9184)",
+      "description": "Policy, transparency, and value indicators for RA 9184 context (CSV + normalized DB)"
+    },
+    {
+      "pack_id": "philippines-procedural",
+      "name": "Philippines (procedural integrity)",
+      "description": "Postponements, documents, bid validity, and contract consistency (normalized DB)"
+    },
+    {
+      "pack_id": "philippines-wsf",
+      "name": "Philippines WSF integrated export",
+      "description": "APP planning and integrated export indicators for mPhilGEPS WSF shape"
+    }
+  ],
+  "feasibility_overlays": [
+    {
+      "pack_id": "philgeps-feasibility",
+      "name": "PhilGEPS deployment feasibility",
+      "description": "Runtime feasibility of indicators on PhilGEPS export shapes (corpus analysis)",
+      "data_profiles": [
+        {
+          "id": "flat-csv",
+          "name": "Flat CSV export",
+          "description": "2021–2025 compiled corpus flat export (schema_3)"
+        },
+        {
+          "id": "wsf-integrated",
+          "name": "WSF integrated",
+          "description": "mPhilGEPS WSF sample — APP + PR + bid + award flat export"
+        },
+        {
+          "id": "normalized-db",
+          "name": "Full normalized DB",
+          "description": "PS-DBM v0.91 template tables (mPhilGEPS 2.0 / PhilGEPS 1.5)"
+        }
+      ]
+    }
+  ]
+}
