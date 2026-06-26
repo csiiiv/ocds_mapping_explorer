@@ -1,36 +1,39 @@
-# PhilGEPS sample pack (internal / optional)
+# PhilGEPS sample pack
 
-This folder holds a **filled mapping project** used for internal testing and corpus analysis. It is **not** bundled with the general-purpose OCDS Mapping Explorer deployment.
+Filled mPhilGEPS mapping data, Philippines indicator pack copies, and corpus analysis notes for the BetterGov PH / PhilGEPS workstream.
 
 ## Contents
 
 | Path | Purpose |
 |------|---------|
 | `project.json` | Filled mPhilGEPS field-level mapping (~274 data elements) |
-| `indicator_packs/` | Philippines jurisdiction packs + feasibility overlay |
-| `docs/` | Indicator reference and PhilGEPS corpus analysis notes |
+| `indicator_packs/` | Archival copies of PH packs (app loads from `public/indicator_packs/`) |
+| `docs/RISK_INDICATOR_MASTER_REFERENCE.md` | Master indicator reference tables |
+| `docs/RISK_INDICATOR_RECOMMENDATIONS.md` | Recommended custom indicators from corpus analysis |
 
-## Restore locally (optional)
+## Use in the app
 
-To load this sample in a dev build:
+**Bundled project (recommended):** Open **mPhilGEPS** or **PhilGEPS 1.5** from the project picker (`public/projects/`).
 
-1. Copy `project.json` → `public/projects/philgeps.json`
-2. Copy `indicator_packs/*.json` → `public/indicator_packs/`
-3. Add a manifest entry in `src/lib/project.ts` (`BUILTIN_PROJECTS`)
+**Import:** Use **Import → Project JSON** with `samples/philgeps/project.json` to merge into the active project or seed a handoff.
 
-Or import `project.json` via **Import** in the app header (works on any project, including local projects created with **+ New**).
+**Indicator packs:** Enable Philippines packs under **Risk Indicators** (saved per browser). Pack JSON is served from `public/indicator_packs/`; files here are for reference and diffing only.
 
-**Hidden dev route:** `/p/mphilgeps` loads this sample when `npm run sync-philgeps` has copied files into `public/samples/philgeps/` (runs automatically with `npm run dev` / `npm run build`). The project does not appear in the project picker.
-
-## Regenerate from workbook
+## Regenerate
 
 Place the PS-DBM OCP mapping workbook in `references/` and run:
 
 ```bash
+# Bundled app projects (picker)
+npm run build-philgeps-projects
+
+# Or write archive copy only
 python scripts/build_project.py -i references/your-workbook.xlsx \
   --project philgeps --name "mPhilGEPS" --source-system "mPhilGEPS" \
   --project-out samples/philgeps/project.json
 ```
+
+Publication config for bundled PhilGEPS projects is merged by `scripts/apply_philgeps_metadata.py` (included in `build-philgeps-projects`).
 
 ## Attribution
 

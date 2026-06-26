@@ -44,7 +44,7 @@ export const ABOUT_SECTIONS: ResourceSection[] = [
   {
     id: "cardinal",
     title: "Risk indicators (Cardinal)",
-    body: "Cardinal red-flag indicators ship as portable JSON packs. The app shows mapping readiness; analysis runs in a separate pipeline.",
+    body: "Cardinal red-flag indicators ship as portable JSON packs. Custom Philippines packs are optional add-ons (app-level preferences). The app shows mapping readiness; analysis runs in a separate pipeline.",
     links: [
       {
         label: "Cardinal documentation",

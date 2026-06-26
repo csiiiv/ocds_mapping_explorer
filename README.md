@@ -2,7 +2,7 @@
 
 Interactive browser and editor for **OCDS 1.1 field-level mapping** — aligned with the [OCP mapping template](https://www.open-contracting.org/resources/ocds-1-1-mapping-template-guidance/). Map any source system to OCDS paths, maintain a source inventory (sheets 1–2), validate mappings, and export for ETL or stakeholder handoff.
 
-Ships with **blank**, **mPhilGEPS**, and **PhilGEPS 1.5** projects under `public/projects/`. Reference workbooks, indicator packs, and optional corpus notes live in `references/` and `samples/`.
+**Private repository** — ships with **blank**, **mPhilGEPS**, and **PhilGEPS 1.5** projects under `public/projects/`, Philippines indicator packs, PhilGEPS reference workbooks in `references/`, and corpus notes in `samples/`.
 
 ## Quick start
 
@@ -16,7 +16,20 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173 — start from the **Blank project**, create a **+ New** local project, or import a saved Project JSON.
+Open http://localhost:5173 — start from the **Blank project**, open a bundled PhilGEPS project, create a **+ New** local project, or import a saved Project JSON.
+
+On first visit, the **welcome guide** introduces each view (reopen anytime from **About → Open welcome guide**).
+
+**Windows:** `.\start-dev.ps1` installs dependencies if needed and starts the dev server.
+
+### Dev tunnel (optional)
+
+To expose the dev server via Cloudflare Tunnel (e.g. `ocds.simple-systems.dev`):
+
+1. `npm run dev` (or `npm run dev -- --host` to bind all interfaces)
+2. `cloudflared tunnel --url http://127.0.0.1:5173` — see [`cloudflared.example.yml`](cloudflared.example.yml)
+
+Tunnel hostnames are allowed in [`vite.config.ts`](vite.config.ts) (`server.allowedHosts`).
 
 ### Shareable URLs
 
@@ -84,7 +97,8 @@ See [`docs/IMPLEMENTATION_SUMMARY.md`](docs/IMPLEMENTATION_SUMMARY.md) for the f
 Place an OCP field-level mapping workbook in `references/` (see [`references/README.md`](references/README.md)), then:
 
 ```bash
-npm run build-data          # ocds_reference.json + blank.json
+npm run build-data          # ocds_reference.json + public/projects/blank.json (needs xlsx in references/)
+npm run build-philgeps-projects   # regenerate mphilgeps + philgeps-1.5 from references/ workbooks
 npm run strip-template      # blank OCP xlsx from filled template
 npm run clean-placeholders  # remove () template rows from project JSON
 ```
@@ -156,6 +170,8 @@ Static output: `dist/` (serve at site root with SPA fallback if your host requir
 | [`docs/PLANNED_IMPLEMENTATIONS.md`](docs/PLANNED_IMPLEMENTATIONS.md) | Forward backlog (P0–P4) |
 | [`docs/EXPORT_GUIDE.md`](docs/EXPORT_GUIDE.md) | JSON, YAML, xlsx CLI handoff |
 | [`docs/STREAMLINE_RECOMMENDATIONS.md`](docs/STREAMLINE_RECOMMENDATIONS.md) | Mapping from scratch — workflow & scoping |
+| [`public/projects/README.md`](public/projects/README.md) | Bundled project naming and regenerate commands |
+| [`samples/README.md`](samples/README.md) | PhilGEPS corpus archive vs bundled projects |
 
 ## License & attribution
 

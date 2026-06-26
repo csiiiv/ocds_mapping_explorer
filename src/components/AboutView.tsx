@@ -101,10 +101,19 @@ export function AboutView({ doc, projectMeta, onShowWelcomeGuide }: Props) {
             <code>EXPORT_GUIDE.md</code> — JSON, YAML, and xlsx handoff workflow
           </li>
           <li>
+            <code>STREAMLINE_RECOMMENDATIONS.md</code> — mapping from scratch workflow
+          </li>
+          <li>
             <code>GENERALIZATION_PLAN.md</code> — design rationale and data model
           </li>
           <li>
             <code>PLANNED_IMPLEMENTATIONS.md</code> — forward backlog (P0–P4)
+          </li>
+          <li>
+            <code>public/projects/README.md</code> — bundled project naming and regenerate commands
+          </li>
+          <li>
+            <code>samples/philgeps/docs/</code> — PhilGEPS indicator corpus reference (markdown)
           </li>
         </ul>
       </section>

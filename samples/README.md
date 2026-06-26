@@ -1,11 +1,24 @@
-# Optional samples
+# Samples & corpus notes
 
-Filled mapping projects for **internal testing** — not bundled in the default deployment.
+PhilGEPS analysis artifacts live here alongside the bundled app projects in `public/projects/`.
 
-| Sample | Path | Notes |
-|--------|------|-------|
-| PhilGEPS | [`philgeps/`](philgeps/) | PS-DBM mPhilGEPS template v0.91, PH indicator packs, corpus docs |
+| Path | Purpose |
+|------|---------|
+| [`philgeps/`](philgeps/) | Archival `project.json`, indicator pack copies, corpus docs |
 
-Import a sample's `project.json` via the app **Import** dialog, or follow restore steps in each sample's README.
+## Bundled vs samples
 
-Sample-specific indicator reference docs (e.g. PhilGEPS corpus analysis) live under each sample's `docs/` folder — not in the root `docs/` package.
+| Location | Role |
+|----------|------|
+| `public/projects/mphilgeps.json`, `philgeps-1.5.json` | **Runtime** — loaded from the project picker |
+| `samples/philgeps/project.json` | **Archive** — same mapping exercise; useful for diffing, scripts, or re-import tests |
+| `samples/philgeps/docs/` | Indicator reference and corpus analysis (not rendered by the app) |
+| `public/indicator_packs/` | **Authoritative** indicator definitions the app loads |
+
+Regenerate bundled PhilGEPS projects from Excel:
+
+```bash
+npm run build-philgeps-projects
+```
+
+Indicator packs are **app-level** (browser preferences under **Risk Indicators**), not stored on project JSON.

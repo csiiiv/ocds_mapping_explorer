@@ -262,5 +262,6 @@ Export merges B + C into handoff artifacts; compile consumes YAML + publication 
 
 - [OCP field-level mapping template guidance](https://www.open-contracting.org/resources/ocds-1-1-mapping-template-guidance/)
 - [OCP Cardinal indicators](https://cardinal.readthedocs.io/en/latest/cli/indicators/)
-- Project indicator packs: `public/indicator_packs/`
-- Optional PhilGEPS corpus notes: `samples/philgeps/docs/RISK_INDICATOR_RECOMMENDATIONS.md` (if `samples/` present locally)
+- Indicator packs (app-level): `public/indicator_packs/` + `catalog.json`
+- PhilGEPS corpus notes: `samples/philgeps/docs/RISK_INDICATOR_RECOMMENDATIONS.md`
+- Bundled projects: `public/projects/README.md`

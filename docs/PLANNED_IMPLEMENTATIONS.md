@@ -27,6 +27,9 @@
 | Leaf-only mapping UX + container rows | ✅ |
 | Tree expand/collapse all (explorer) | ✅ |
 | Wizard section/table suggestions | ✅ |
+| Welcome guide (first visit) | ✅ |
+| Bundled PhilGEPS projects | ✅ |
+| Dev tunnel / `allowedHosts` | ✅ |
 
 The tool is **handoff-ready**. Further work is ops, pipeline integration (YAML + `publication` → compile), and UX polish — not core mapping blockers.
 
@@ -51,7 +54,7 @@ The tool is **handoff-ready**. Further work is ops, pipeline integration (YAML +
 ### P0.1 Static deploy (optional)
 
 - [ ] Build `dist/` and host on internal static bucket or private server if needed
-- [ ] Document base URL and `npm run build` in README
+- [x] Document `npm run build` and dev tunnel in README
 - [ ] Smoke-test: project picker, edit, export, import on hosted URL
 
 **Acceptance:** Shared link opens app; bundled projects load; export downloads work.
@@ -188,11 +191,11 @@ The tool is **handoff-ready**. Further work is ops, pipeline integration (YAML +
 
 **Acceptance:** Pack JSON is single source of truth; doc is generated or linted.
 
-### P3.4 Rich in-app reference (indicators & visualizations)
+### P3.4 Rich in-app reference (indicators & visualizations) — partial ✅
 
 *Goal: mappers and publishers understand **what** each item tracks and **how** it is computed without opening Cardinal or external docs in another tab.*
 
-Today the Risk Indicators detail panel shows a one-line `description`, path readiness, and an external `docs_url`. Extend pack JSON and the UI with structured reference fields shared by indicators and (later) visualizations.
+Pack JSON and the Risk Indicators detail panel include structured reference fields.
 
 **Schema additions (indicator pack JSON):**
 
@@ -206,13 +209,13 @@ Today the Risk Indicators detail panel shows a one-line `description`, path read
 | `limitations` | When incomplete mappings break or bias results |
 | `references[]` | `{ label, url }` — collapsed in UI; `docs_url` kept for Cardinal |
 
-- [ ] Extend `RiskIndicator` types and pack loader to accept optional reference fields
-- [ ] Render **What it tracks**, **How it's computed**, **Interpretation**, **Limitations** in Risk Indicators detail (above path table)
-- [ ] Enrich shipped `cardinal.json` entries incrementally (start with indicators in active use)
-- [ ] Enrich custom pack JSON (`philippines-ra9184`, etc.) with same fields
+- [x] Extend `RiskIndicator` types and pack loader to accept optional reference fields
+- [x] Render **What it tracks**, **How it's computed**, **Interpretation**, **Limitations** in Risk Indicators detail (above path table)
+- [x] Enrich shipped `cardinal.json` entries
+- [x] Enrich custom pack JSON (`philippines-ra9184`, `philippines-procedural`, `philippines-wsf`)
 - [ ] Optional: markdown-safe rendering for `computation.steps` (plain strings first)
 
-**Acceptance:** Opening R003 (or a custom PH indicator) shows computation steps and interpretation in-app; external docs link is supplementary.
+**Acceptance:** Opening R003 (or a custom PH indicator) shows computation steps and interpretation in-app; external docs link is supplementary. *(Shipped; markdown rendering optional.)*
 
 ### P3.5 Visualization packs
 
@@ -433,4 +436,5 @@ Risk **indicators** and **visualizations** are complementary but should share pa
 | [`IMPLEMENTATION_SUMMARY.md`](IMPLEMENTATION_SUMMARY.md) | Record of what shipped |
 | [`EXPORT_GUIDE.md`](EXPORT_GUIDE.md) | Export / import handoff |
 | [`STREAMLINE_RECOMMENDATIONS.md`](STREAMLINE_RECOMMENDATIONS.md) | Mapping from scratch — workflow & scoping |
-| [`samples/philgeps/docs/RISK_INDICATOR_MASTER_REFERENCE.md`](../samples/philgeps/docs/RISK_INDICATOR_MASTER_REFERENCE.md) | Optional sample — indicator reference |
+| [`samples/philgeps/docs/RISK_INDICATOR_MASTER_REFERENCE.md`](../samples/philgeps/docs/RISK_INDICATOR_MASTER_REFERENCE.md) | PhilGEPS indicator corpus reference |
+| [`../public/projects/README.md`](../public/projects/README.md) | Bundled project conventions |

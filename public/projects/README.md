@@ -21,7 +21,13 @@ Each file is a **tier B + C** project payload loaded by the app at runtime (tier
 
 ## Regenerate from Excel
 
+One command (both PhilGEPS projects + publication metadata):
+
 ```bash
+npm run build-philgeps-projects
+```
+
+Or individually:
 # mPhilGEPS
 python scripts/build_project.py \
   -i "references/2025_mPhilGEPS_OCDS - Field Level Mapping Template for OCDS 1.1 (Template Version 0.91) (1) (1).xlsx" \

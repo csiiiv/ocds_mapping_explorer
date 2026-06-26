@@ -1,7 +1,7 @@
 # OCDS Mapping Explorer — Generalization Plan
 
 **Status:** v1 complete (Phases 1–4) + post-v1 export, indicator packs, UX polish  
-**Last updated:** June 23, 2026  
+**Last updated:** June 24, 2026  
 **Implementation record:** [`IMPLEMENTATION_SUMMARY.md`](IMPLEMENTATION_SUMMARY.md)  
 **Forward backlog:** [`PLANNED_IMPLEMENTATIONS.md`](PLANNED_IMPLEMENTATIONS.md)
 
@@ -60,9 +60,6 @@ interface MappingProject {
     created_at: string;
     updated_at: string;
     imports?: ImportRecord[];
-    indicator_packs?: string[];       // e.g. ["cardinal", "philippines-ra9184"]
-    feasibility_pack?: string;        // e.g. "philgeps-feasibility"
-    data_profiles?: DataProfile[];    // deployment / export shapes for feasibility
   };
   data_sources: { columns: string[]; rows: DataSourceRow[] };
   data_elements: { columns; column_groups; rows: DataElementRow[] };
@@ -78,8 +75,10 @@ interface MappingProject {
 | Project | Path | Purpose |
 |---------|------|---------|
 | Blank | `projects/blank.json` | Default for new publishers |
+| mPhilGEPS | `projects/mphilgeps.json` | PS-DBM v0.91 filled mapping |
+| PhilGEPS 1.5 | `projects/philgeps-1.5.json` | PhilGEPS 1.5 filled mapping |
 
-Optional filled samples live under `samples/` (not deployed by default).
+Corpus analysis, indicator reference docs, and archival payloads: `samples/philgeps/`. Regenerate bundled PhilGEPS projects with `npm run build-philgeps-projects`.
 
 App: project picker; **+ New** creates browser-local projects from blank template; localStorage keyed by `project_id` (edits + inventory overlays + local project blobs).
 
@@ -187,7 +186,7 @@ Persisted in tier B localStorage overlay + `data_element_additions` on export.
 | Data load | Fixed monolithic JSON | Project picker + `projects/*.json` + `ocds_reference.json` |
 | localStorage | `mphilegeps-mapping-edits-v1` | `ocds-mapping-*-{projectId}-v1` |
 | Copy | mPhilGEPS source field | Source data element |
-| Risk indicators | Pack-based | `public/indicator_packs/` + per-project `indicator_packs`, `data_profiles`, `feasibility_pack` |
+| Risk indicators | Pack-based | `public/indicator_packs/` + **app-level** browser preferences (`indicatorPreferences`) |
 | Path detail UX | Explorer-only | **`OcdsPathDetailModal`** — inline edit from Risk Indicators, Release & publication |
 | Overview | Stage coverage only | **Dashboard hub** — summary cards for all views + reference data |
 | Explorer tree | Per-node chevrons | **Expand all / Collapse all** toolbar |
@@ -201,17 +200,22 @@ Indicators are **portable JSON packs**, not hardcoded per data source.
 ```text
 public/indicator_packs/
 ├── cardinal.json
+├── catalog.json
+├── philippines-ra9184.json
+├── philippines-procedural.json
+├── philippines-wsf.json
+└── philgeps-feasibility.json
 ```
 
-Optional jurisdiction packs and feasibility overlays can be in `public/indicator_packs/` or under `samples/`.
+Indicator pack JSON is the source of truth. Corpus reference markdown may live under `samples/philgeps/docs/` for PhilGEPS analysis notes.
 
 | Layer | What it answers | Where |
 |-------|-----------------|-------|
 | OCDS path requirements | What must be mapped? | Pack JSON (`paths[]`) |
 | Mapping readiness | Is this project's template ready? | Computed in app |
-| Runtime feasibility | Can we run on our published data? | `feasibility_pack` + `data_profiles` in project metadata |
+| Runtime feasibility | Can we run on our published data? | App-level feasibility overlay + `data_profiles` from `catalog.json` |
 
-**Blank project** uses Cardinal only with no data profiles by default. Filled samples may declare profiles and feasibility overlays.
+**Cardinal** is always on. **Custom packs** default to all catalog entries enabled until the user changes checkboxes in **Risk Indicators** (saved in `localStorage` as `ocds-indicator-preferences-v1`). Legacy `indicator_packs` / `feasibility_pack` / `data_profiles` on imported project JSON are stripped on import.
 
 **UI:** Risk Indicators → **Path details** opens `OcdsPathDetailModal`. Path matching normalizes Cardinal `[]` array notation; related mapped paths shown when exact indicator path is unmapped.
 
@@ -280,13 +284,12 @@ Overview shows per-view summary cards and stage coverage; sidebar badges show pu
 ## 11. Optional later
 
 - In-browser xlsx upload (WASM) — **not planned** (use CLI; see [`EXPORT_GUIDE.md`](EXPORT_GUIDE.md))
-- Indicator pack picker UI — optional later (edit project JSON today)
 - Custom indicator authoring in-app — optional later
 - Path detail modal in Validation view — optional later
 - Coverage-driven feasibility (import Cardinal `coverage` JSON) — optional later
 - OCDS 1.2 reference pin
 
-**Done (post-v1):** `mapping.yaml` export, OCP xlsx export (`export_ocp_workbook.py` / `ocp_export.py`), indicator packs, `OcdsPathDetailModal`.
+**Done (post-v1):** `mapping.yaml` export, OCP xlsx export (`export_ocp_workbook.py` / `ocp_export.py`), indicator packs (app-level prefs), rich in-app indicator reference fields, `OcdsPathDetailModal`, welcome guide, bundled PhilGEPS projects.
 
 ---
 
@@ -325,7 +328,7 @@ Overview shows per-view summary cards and stage coverage; sidebar badges show pu
 - [x] Placeholder row handling + `clean_project_placeholders.py`
 - [x] OCP xlsx export — `export_ocp_workbook.py` (CLI + Export modal guide)
 - [x] `mapping.yaml` export — in-app + `export_mapping_yaml.py`
-- [x] Indicator packs — `public/indicator_packs/` + per-project metadata
+- [x] Indicator packs — `public/indicator_packs/` + app-level preferences
 - [x] Path detail modal — `OcdsPathDetailModal` from Risk Indicators
 - [x] Release & publication — `PublicationView`, `publication_config`, YAML `publication:` export
 - [x] Overview dashboard hub — `OverviewDashboard.tsx`
@@ -350,16 +353,19 @@ ocds_mapping_explorer/
 │   └── EXPORT_GUIDE.md                 ← JSON / YAML / xlsx handoff
 ├── public/
 │   ├── ocds_reference.json             ← tier A (bundled)
-│   ├── indicator_packs/                ← risk indicator definitions
+│   ├── indicator_packs/                ← risk indicator definitions + catalog.json
 │   └── projects/
-│       └── blank.json
-├── samples/                            ← optional filled projects (not deployed)
-│   └── philgeps/docs/                  ← sample indicator reference docs
-├── references/                         ← place OCP xlsx here for build-data
+│       ├── blank.json
+│       ├── mphilgeps.json
+│       └── philgeps-1.5.json
+├── samples/                            ← PhilGEPS corpus notes + archival project.json
+│   └── philgeps/docs/
+├── references/                         ← OCP xlsx workbooks (incl. PhilGEPS templates)
 ├── scripts/
 │   ├── excel_to_json_mapping.py
 │   ├── strip_template.py
 │   ├── build_project.py
+│   ├── apply_philgeps_metadata.py
 │   ├── import_ocp_workbook.py
 │   ├── export_project.py
 │   ├── export_ocp_workbook.py
@@ -378,8 +384,9 @@ ocds_mapping_explorer/
     │   ├── importExport.ts
     │   ├── exportMappingYaml.ts
     │   ├── exportGuide.ts
-    │   ├── indicatorPacks.ts
-    │   ├── publicationConfig.ts
+│   ├── indicatorPacks.ts
+│   ├── indicatorPreferences.ts
+│   ├── publicationConfig.ts
     │   ├── releaseEnvelope.ts
     │   ├── indicatorMapping.ts
     │   ├── riskIndicators.ts
@@ -398,6 +405,7 @@ ocds_mapping_explorer/
         ├── DetailPanel.tsx
         ├── PublicationView.tsx
         ├── RiskIndicatorsView.tsx
+        ├── WelcomeGuideModal.tsx
         ├── ImportExportModal.tsx
         ├── ExtensionsView.tsx
         └── …
