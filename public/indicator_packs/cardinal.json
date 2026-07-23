@@ -25,7 +25,6 @@
       "interpretation": "A hit suggests rushed procurement or compressed notice that may limit fair competition.",
       "limitations": "Cancelled tenders should be excluded. Missing endDate prevents computation (~2% on PhilGEPS CSV).",
       "paths": [
-        { "path": "/ocid", "required": true },
         { "path": "/tender/tenderPeriod/startDate", "required": true },
         { "path": "/tender/tenderPeriod/endDate", "required": true },
         { "path": "/tender/procurementMethod", "required": false, "note": "Filter competitive methods" },

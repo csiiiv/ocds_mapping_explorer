@@ -228,6 +228,25 @@ function findNodeInTree(nodes: MappingNode[], id: string): MappingNode | null {
   return null;
 }
 
+export function findNodeById(
+  doc: MappingDocument,
+  stageKey: StageKey,
+  nodeId: string,
+): { stage: StageKey; node: MappingNode } | null {
+  let node = findNodeInTree(doc.stages[stageKey]?.tree ?? [], nodeId);
+  let stage = stageKey;
+  if (!node) {
+    const alt = Object.keys(doc.stages).find((sk) =>
+      findNodeInTree(doc.stages[sk as StageKey]?.tree ?? [], nodeId),
+    );
+    if (alt) {
+      node = findNodeInTree(doc.stages[alt as StageKey]?.tree ?? [], nodeId);
+      stage = alt as StageKey;
+    }
+  }
+  return node ? { stage, node } : null;
+}
+
 /** Resolve stage + node for an OCDS path (tries requested stage, then all stages). */
 export function resolvePathNode(
   doc: MappingDocument,

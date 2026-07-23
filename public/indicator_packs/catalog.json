@@ -14,6 +14,11 @@
       "pack_id": "philippines-wsf",
       "name": "Philippines WSF integrated export",
       "description": "APP planning and integrated export indicators for mPhilGEPS WSF shape"
+    },
+    {
+      "pack_id": "ocp-red-flags",
+      "name": "OCP Red Flags (methodology catalogue)",
+      "description": "OCP public red-flag indicators R001–R073 mapped to OCDS fields (broader than Cardinal engine subset)"
     }
   ],
   "feasibility_overlays": [

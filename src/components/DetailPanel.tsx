@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import type { DataElementRow, DataSourceRow, MappingNode, StageKey } from "../types";
 import { buildDataElementIndex, resolveDataElement } from "../lib/dataElements";
-import { isContainerNode } from "../lib/mappingNodes";
+import { isContainerNode, isStructuralHeaderNode } from "../lib/mappingNodes";
 import { DataElementDetailModal } from "./DataElementDetail";
 import { DataElementPickerModal } from "./DataElementPicker";
 import { DataElementWizard, type DataElementWizardResult } from "./DataElementWizard";
@@ -60,14 +60,48 @@ export function DetailPanel({
     return (
       <div className="placeholder">
         <div className="icon">←</div>
-        <div>Select a mappable field (leaf row) to see its details.</div>
+        <div>Select a tree row to see field details or structure guidance.</div>
+      </div>
+    );
+  }
+
+  if (isStructuralHeaderNode(node)) {
+    const heading =
+      node.row_type === "section"
+        ? node.section || node.title || "Section"
+        : node.title || "—";
+    return (
+      <div className="detail detail-readonly">
+        <h3>{heading}</h3>
+        {node.row_type === "section" && (
+          <p className="callout" style={{ marginBottom: 12 }}>
+            <strong>Section header (not mapped).</strong> Groups related OCDS fields below. Select a
+            child field to add a source mapping.
+          </p>
+        )}
+        {node.row_type === "subtitle" && (
+          <p className="callout" style={{ marginBottom: 12 }}>
+            <strong>Group introduction (not mapped).</strong> Describes the block of fields below —
+            map the leaf rows, not this header.
+          </p>
+        )}
+        {node.row_type === "extension_intro" && (
+          <p className="callout" style={{ marginBottom: 12 }}>
+            <strong>Extension block (not mapped).</strong> Introduces optional extension fields in
+            this stage. Map the extension leaf fields below.
+          </p>
+        )}
+        {node.description && <p className="desc">{node.description}</p>}
+        <p className="section-hint" style={{ marginTop: 16 }}>
+          Expand the tree and select a mappable leaf field to link a source data element.
+        </p>
       </div>
     );
   }
 
   if (isContainerNode(node)) {
     return (
-      <div className="detail">
+      <div className="detail detail-readonly">
         <h3>{node.path || node.title}</h3>
         <div className="detail-title">{node.title || "—"}</div>
         {node.row_type === "ref_span" && (
@@ -77,7 +111,19 @@ export function DetailPanel({
             <code>parties[]</code>.
           </p>
         )}
-        {node.row_type !== "ref_span" && (
+        {node.row_type === "extension_span" && (
+          <p className="callout" style={{ marginBottom: 12 }}>
+            <strong>Extension object (not mapped).</strong> Container for extension fields below.
+            Map each child leaf field; ETL assembles the extension object at publish time.
+          </p>
+        )}
+        {node.row_type === "required_span" && (
+          <p className="callout" style={{ marginBottom: 12 }}>
+            <strong>Required object group (not mapped).</strong> Map the required child fields
+            below.
+          </p>
+        )}
+        {node.row_type === "span" && (
           <p className="callout" style={{ marginBottom: 12 }}>
             <strong>Object structure (not mapped).</strong> Per the OCP template, grey object rows are
             containers only. Map the child fields below; ETL assembles this object at publish time.

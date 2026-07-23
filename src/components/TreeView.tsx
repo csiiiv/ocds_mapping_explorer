@@ -206,19 +206,22 @@ export function TreeView({
       const kids = node.children || [];
       const matchingKids = kids.filter((k) => subtreeMatches(k, pred));
       if (!matchingKids.length) return null;
+      const isSelected = selectedId === node.id;
       return (
         <div key={node.id}>
           <div
-            style={{
-              padding: "10px 12px 4px",
-              fontSize: "11px",
-              textTransform: "uppercase",
-              letterSpacing: "0.06em",
-              color: "var(--text-faint)",
-              fontWeight: 600,
+            className={`tree-section-header${isSelected ? " selected" : ""}`}
+            onClick={() => onSelect(stage, node)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onSelect(stage, node);
+              }
             }}
           >
-            {node.title || node.section}
+            {node.section || node.title}
           </div>
           {matchingKids.map((c) => renderNode(c, depth))}
         </div>
@@ -228,9 +231,21 @@ export function TreeView({
     if (node.row_type === "extension_intro") {
       const kids = (node.children || []).filter((k) => subtreeMatches(k, pred));
       if (!kids.length) return null;
+      const isSelected = selectedId === node.id;
       return (
         <div key={node.id}>
-          <div className="tree-extension-intro">
+          <div
+            className={`tree-extension-intro${isSelected ? " selected" : ""}`}
+            onClick={() => onSelect(stage, node)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onSelect(stage, node);
+              }
+            }}
+          >
             <strong>{node.title}</strong>
             {node.description ? <span>{node.description}</span> : null}
           </div>
@@ -240,16 +255,23 @@ export function TreeView({
     }
 
     if (node.row_type === "subtitle") {
+      const isSelected = selectedId === node.id;
       return (
         <div
           key={node.id}
-          className="tree-subtitle"
+          className={`tree-subtitle${isSelected ? " selected" : ""}`}
           style={{
-            padding: "12px 12px 6px",
-            fontSize: "12px",
-            color: "var(--text-dim)",
             borderTop: depth === 0 ? "1px solid var(--border-soft)" : undefined,
             marginTop: depth === 0 ? 4 : 0,
+          }}
+          onClick={() => onSelect(stage, node)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              onSelect(stage, node);
+            }
           }}
         >
           {node.title}
@@ -262,14 +284,13 @@ export function TreeView({
     const ind = depth * 18;
 
     if (isContainerNode(node)) {
+      const isSelected = selectedId === node.id;
       return (
         <div key={node.id}>
           <div
-            className="tree-row tree-row-container"
+            className={`tree-row tree-row-container${isSelected ? " selected" : ""}`}
             style={{ paddingLeft: 12 + ind }}
-            onClick={() => {
-              if (kids.length) toggle(node);
-            }}
+            onClick={() => onSelect(stage, node)}
           >
             <span
               className={`chevron${kids.length ? "" : " empty"}`}

@@ -34,6 +34,8 @@ interface Props {
 }
 
 type KindFilter = "all" | IndicatorKind;
+type IndicatorSort = "code" | "name" | "mapped";
+type SortDir = "asc" | "desc";
 
 function FeasBadge({ value }: { value: Feasibility | undefined }) {
   if (!value) return <span className="feas-badge feas-unknown">Unknown</span>;
@@ -79,15 +81,25 @@ export function RiskIndicatorsView({
   const [selectedId, setSelectedId] = useState("");
   const [kindFilter, setKindFilter] = useState<KindFilter>("all");
   const [profileFilter, setProfileFilter] = useState<string>("all");
+  const [sortBy, setSortBy] = useState<IndicatorSort>("code");
+  const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [query, setQuery] = useState("");
   const [detailRow, setDetailRow] = useState<DataElementRow | null>(null);
   const [pathDetail, setPathDetail] = useState<{ stage: StageKey; path: string } | null>(null);
 
   const pathIndex = useMemo(() => buildMappingPathIndex(doc), [doc]);
 
+  const indicatorSummaries = useMemo(() => {
+    const map = new Map<string, number>();
+    for (const ind of indicators) {
+      map.set(ind.id, computeIndicatorReadiness(ind, pathIndex).requiredPct);
+    }
+    return map;
+  }, [indicators, pathIndex]);
+
   const filteredIndicators = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return indicators.filter((ind) => {
+    const list = indicators.filter((ind) => {
       if (kindFilter !== "all" && ind.kind !== kindFilter) return false;
       if (profileFilter !== "all") {
         const feas = feasibilityForProfile(ind, profileFilter);
@@ -99,7 +111,25 @@ export function RiskIndicatorsView({
         .toLowerCase();
       return blob.includes(q);
     });
-  }, [indicators, kindFilter, profileFilter, query]);
+
+    const sorted = [...list];
+    sorted.sort((a, b) => {
+      let cmp = 0;
+      if (sortBy === "name") {
+        cmp = a.name.localeCompare(b.name, undefined, { sensitivity: "base" });
+        if (cmp === 0) cmp = a.id.localeCompare(b.id, undefined, { numeric: true });
+      } else if (sortBy === "mapped") {
+        const pa = indicatorSummaries.get(a.id) ?? 0;
+        const pb = indicatorSummaries.get(b.id) ?? 0;
+        cmp = pa - pb;
+        if (cmp === 0) cmp = a.id.localeCompare(b.id, undefined, { numeric: true });
+      } else {
+        cmp = a.id.localeCompare(b.id, undefined, { numeric: true });
+      }
+      return sortDir === "asc" ? cmp : -cmp;
+    });
+    return sorted;
+  }, [indicators, kindFilter, profileFilter, query, sortBy, sortDir, indicatorSummaries]);
 
   const selected = useMemo(() => {
     if (selectedId && filteredIndicators.some((i) => i.id === selectedId)) {
@@ -117,14 +147,6 @@ export function RiskIndicatorsView({
     () => (selected ? dataElementsForIndicator(doc.data_elements.rows, selected) : []),
     [selected, doc.data_elements.rows],
   );
-
-  const indicatorSummaries = useMemo(() => {
-    const map = new Map<string, number>();
-    for (const ind of indicators) {
-      map.set(ind.id, computeIndicatorReadiness(ind, pathIndex).requiredPct);
-    }
-    return map;
-  }, [indicators, pathIndex]);
 
   const highlightProfiles = showFeasibility ? profiles.slice(0, 2) : [];
 
@@ -265,6 +287,56 @@ export function RiskIndicatorsView({
               ))}
             </div>
           ) : null}
+          <div className="indicators-sort-row">
+            <span className="meta-label">Sort</span>
+            <div className="indicators-sort-controls">
+              <div className="seg seg-small">
+                {(
+                  [
+                    { id: "code", label: "By code" },
+                    { id: "name", label: "By name" },
+                    { id: "mapped", label: "By % mapped" },
+                  ] as const
+                ).map((opt) => (
+                  <button
+                    key={opt.id}
+                    type="button"
+                    className={sortBy === opt.id ? "active" : ""}
+                    onClick={() => setSortBy(opt.id)}
+                    title={
+                      opt.id === "mapped"
+                        ? "Sort by mapping readiness %"
+                        : opt.id === "name"
+                          ? "Alphabetical by indicator name"
+                          : "By indicator id (R003, PH-C01, …)"
+                    }
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+              <div className="seg seg-small indicators-sort-dir">
+                <button
+                  type="button"
+                  className={sortDir === "asc" ? "active" : ""}
+                  onClick={() => setSortDir("asc")}
+                  title="Ascending"
+                  aria-label="Sort ascending"
+                >
+                  ↑
+                </button>
+                <button
+                  type="button"
+                  className={sortDir === "desc" ? "active" : ""}
+                  onClick={() => setSortDir("desc")}
+                  title="Descending"
+                  aria-label="Sort descending"
+                >
+                  ↓
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="indicators-list">

@@ -392,7 +392,9 @@ export default function App() {
             <ExplorerView
               doc={doc}
               stage={stage}
-              setStage={(s) => goToExplorer(s, { path: null, q: query, status: statusFilter })}
+              setStage={(s) =>
+                goToExplorer(s, { path: null, nodeId: null, q: query, status: statusFilter })
+              }
               query={query}
               setQuery={setQuery}
               statusFilter={statusFilter}

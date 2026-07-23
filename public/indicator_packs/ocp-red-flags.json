@@ -1,0 +1,3081 @@
+{
+  "pack_id": "ocp-red-flags",
+  "name": "OCP Red Flags (methodology catalogue)",
+  "description": "Open Contracting Partnership public red-flag indicators mapped to OCDS fields (R001–R073). Broader than the Cardinal engine subset; overlapping ids defer to the Cardinal pack when both are enabled.",
+  "version": "1.0.0",
+  "engine": "custom",
+  "source": {
+    "indicators_csv": "NEW Red Flags to OCDS mapping #Public - Red flags indicators.csv",
+    "metadata_csv": "NEW Red Flags to OCDS mapping #Public - Metadata.csv"
+  },
+  "indicators": [
+    {
+      "id": "R001",
+      "name": "Planning documents not available",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Key planning documents are not available in the publication. These may include: procurement plans, market studies, feasibility studies among others. Check the OCDS document type codelist to see the possible documents.",
+      "tracks": "Governments should provide an adequate degree of transparency across the entire cycle of the procurement process to promote fair and equitable treatment of suppliers, and to facilitate oversight. A lack of planning documents could signal poor procurement planning or integrity risks since it does not allow to verify if the planned process responds to a real need.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Planning.",
+          "Risk category: Low transparency.",
+          "Required source concepts: Planning documents.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Governments should provide an adequate degree of transparency across the entire cycle of the procurement process to promote fair and equitable treatment of suppliers, and to facilitate oversight. A lack of planning documents could signal poor procurement planning or integrity risks since it does not allow to verify if the planned process responds to a real need.",
+      "limitations": "Unit of analysis: Contracting process, Buyer. Source: Based on OECD’s Principles for Integrity in Public Procurement",
+      "paths": [
+        {
+          "path": "/planning/documents[]/documentType",
+          "required": true
+        }
+      ],
+      "priority": 1,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R002",
+      "name": "Manipulation of procurement thresholds",
+      "engine": "custom",
+      "scope": "Buyer",
+      "description": "A buyer bundles tenders below the competitive threshold.",
+      "tracks": "Non competitive methods increase discretion which can facilitate a corrupt buyer to award a contract to favored bidders.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: Tender values and currency Tender period start date (or publication date) Name of the procuring entity or buyer. Procurement category.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Non competitive methods increase discretion which can facilitate a corrupt buyer to award a contract to favored bidders.",
+      "limitations": "Unit of analysis: Buyer. Source: Based on Compliance and strategic contract manipulation around single market regulatory thresholds – the case of Poland, Manipulation of Procurement Contracts: Evidence from the Introduction of Discretionary Thresholds, Bunching Below Thresholds to Manipulate Public Procurement",
+      "paths": [
+        {
+          "path": "/tender/value/amount",
+          "required": true
+        },
+        {
+          "path": "/tender/value/currency",
+          "required": true
+        },
+        {
+          "path": "/tender/tenderPeriod/startDate",
+          "required": true
+        },
+        {
+          "path": "/tender/procurementMethod",
+          "required": true
+        },
+        {
+          "path": "/tender/procuringEntity/name",
+          "required": true
+        },
+        {
+          "path": "/buyer/name",
+          "required": true
+        },
+        {
+          "path": "/tender/procuringEntity/id",
+          "required": true
+        },
+        {
+          "path": "/buyer/id",
+          "required": true
+        },
+        {
+          "path": "/tender/procurementCategory",
+          "required": false
+        }
+      ],
+      "priority": 2,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R003",
+      "name": "The submission period is too short",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The period to submit bids is shorter than the legal threshold. The submission period starts with contracting documents being available to potential suppliers and ends with the submission deadline for expressions of interest or bids.",
+      "tracks": "A short submission period leaves less time to prepare and submit bids. This makes it harder for non-connected companies to bid and to submit; well-connected firms can use their inside knowledge to win repeatedly. A corrupt buyer can give the predetermined bidder an unfair advantage by privately informing the predetermined bidder of the opportunity in advance, and by giving other bidders less time to prepare competitive bids.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: Tender start and end date Procurement method used.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A short submission period leaves less time to prepare and submit bids. This makes it harder for non-connected companies to bid and to submit; well-connected firms can use their inside knowledge to win repeatedly. A corrupt buyer can give the predetermined bidder an unfair advantage by privately informing the predetermined bidder of the opportunity in advance, and by giving other bidders less time to prepare competitive bids.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Shortened time span for bidding process” in Corruption in Public Procurement: Finding the Right Indicators, “Short submission period” in An Objective Corruption Risk Index Using Public Procurement Data, “Short or inadequate notice to bidders” in Guide to Combating Corruption & Fraud in Development Projects, and “Deadline for submitting bids is very short” in Fraud in Public Procurement: A collection of Red Flags and Best Practices.",
+      "paths": [
+        {
+          "path": "/tender/procurementMethod",
+          "required": true
+        },
+        {
+          "path": "/tender/tenderPeriod/startDate",
+          "required": true
+        },
+        {
+          "path": "/tender/tenderPeriod/endDate",
+          "required": true
+        }
+      ],
+      "priority": 3,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R004",
+      "name": "Failure to adequately advertise the request for bids",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Key tender documents (tender notice) are not available for bidders during the full tender period.",
+      "tracks": "A corrupt buyer can favor a predetermined bidder and exclude other potential bidders by limiting access to bidding documents.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Low transparency.",
+          "Required source concepts: Tender start date Tender documents Tender documents date published.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A corrupt buyer can favor a predetermined bidder and exclude other potential bidders by limiting access to bidding documents.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Failure to Make Bidding Documents Available” in Guide to Combating Corruption & Fraud in Development Projects",
+      "paths": [
+        {
+          "path": "/tender/tenderPeriod/startDate",
+          "required": true,
+          "note": "tender/tenderPeriod/startDate, tender/documents/documentType = tenderNotice or biddingDocuments, tender/docum"
+        },
+        {
+          "path": "/tender/documents[]/documentType",
+          "required": true
+        },
+        {
+          "path": "/tender/documents[]/datePublished",
+          "required": true
+        }
+      ],
+      "priority": 4,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R005",
+      "name": "Key tender information and documents are not available",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Key tender documents are not available. These can include: the tender notices, bidding documents, technical specifications, evaluation criteria, key dates, etc. Check the OCDS document type codelist to see the possible documents.",
+      "tracks": "Governments should provide an adequate degree of transparency for the entire cycle of the procurement process to promote fair and equitable treatment of suppliers, and to facilitate oversight. Project officials can reduce competition and exclude qualified bidders by limiting access to bidding documents or not publishing key information about the tender.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Low transparency.",
+          "Required source concepts: - Tender documents - Key dates of the tender process.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Governments should provide an adequate degree of transparency for the entire cycle of the procurement process to promote fair and equitable treatment of suppliers, and to facilitate oversight. Project officials can reduce competition and exclude qualified bidders by limiting access to bidding documents or not publishing key information about the tender.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on OECD’s Principles for Integrity in Public Procurement and “Failure to Make Bidding Documents Available” in Guide to Combating Corruption & Fraud in Development Projects.",
+      "paths": [
+        {
+          "path": "/tender/documents[]/documentType",
+          "required": true
+        },
+        {
+          "path": "/tender/documents[]/datePublished",
+          "required": true
+        },
+        {
+          "path": "/tender/tenderPeriod/startDate",
+          "required": true
+        },
+        {
+          "path": "/tender/tenderPeriod/endDate",
+          "required": true
+        }
+      ],
+      "priority": 5,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R006",
+      "name": "Unreasonable prequalification requirements",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The eligibility criteria are unreasonable. See also “Unreasonable technical specifications”.",
+      "tracks": "Having restrictive prequalification requirements can be used to limit competition and facilitate the selection of a favored bidder, often as the result of corruption.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Eligibility criteria Optional: -Procurement method -Item classification scheme and id (to compare tender with similar items).",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Having restrictive prequalification requirements can be used to limit competition and facilitate the selection of a favored bidder, often as the result of corruption.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on OECD’s Principles for Integrity in Public Procurement and “Unreasonable Prequalification Requirements” in Guide to Combating Corruption & Fraud in Development Projects.",
+      "paths": [
+        {
+          "path": "/tender/eligibilityCriteria",
+          "required": true,
+          "note": "tender/eligibilityCriteria OR tender/documents/documentType=eligibilityCriteria"
+        },
+        {
+          "path": "/tender/documents[]/documentType",
+          "required": true
+        }
+      ],
+      "priority": 6,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R007",
+      "name": "Unreasonable technical specifications",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The technical specifications are too broad or too narrow and seem to be tailored to a supplier. See also “Unreasonable prequalification requirements”.",
+      "tracks": "Project officials can deliberately draft inadequate bid specifications in order to facilitate the selection of a favored bidder.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: - Technical specifications documents -Item classifications Optional fields to narrow the analysis and compare similar tenders: -Procurement method -Procuring entity name -Tender value.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Project officials can deliberately draft inadequate bid specifications in order to facilitate the selection of a favored bidder.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on OECD’s Principles for Integrity in Public Procurement (p 53), “Vague, Ambiguous or Incomplete Specifications” in Guide to Combating Corruption & Fraud in Development Projects, “Manipulation of tender specifications” and “Rigged technical specifications” in Fraud in Public Procurement: A collection of Red Flags and Best Practices and Prediction of Public Procurement Corruption Indices using Machine Learning Methods",
+      "paths": [
+        {
+          "path": "/tender/documents[]/documentType",
+          "required": true
+        },
+        {
+          "path": "/tender/items[]/classification/id",
+          "required": true
+        },
+        {
+          "path": "/tender/procurementMethod",
+          "required": false
+        },
+        {
+          "path": "/tender/procuringEntity/name",
+          "required": false,
+          "note": "tender/procuringEntity/name OR buyer/name OR parties/id and parties/name with parties/roles=buyer, tender/v"
+        },
+        {
+          "path": "/buyer/name",
+          "required": false,
+          "note": "buyer/name OR parties/id and parties/name with parties/roles=buyer, tender/value/amount"
+        },
+        {
+          "path": "/tender/value/amount",
+          "required": false
+        }
+      ],
+      "priority": 7,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R008",
+      "name": "Unreasonable participation fees",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The participation fee prices are not within legal parameters. Participation fees are often set as a fixed maximum or a percentage of total contract value.",
+      "tracks": "A corrupt buyer can favor a predetermined bidder and exclude other potential bidders by limiting access to bidding documents by increasing their price.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: Tender participation fees.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A corrupt buyer can favor a predetermined bidder and exclude other potential bidders by limiting access to bidding documents by increasing their price.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Failure to Make Bidding Documents Available” in Guide to Combating Corruption & Fraud in Development Projects",
+      "paths": [
+        {
+          "path": "/tender/participationFees[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/tender/participationFees[]/value/currency",
+          "required": true
+        },
+        {
+          "path": "/tender/value/amount",
+          "required": true
+        }
+      ],
+      "priority": 8,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R009",
+      "name": "Buyer increases the cost of the bidding documents",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The participation fee prices rise during the tender period.",
+      "tracks": "A corrupt buyer can favor a predetermined bidder and exclude other potential bidders by limiting access to bidding documents.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: Tender participation fees Tender date.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A corrupt buyer can favor a predetermined bidder and exclude other potential bidders by limiting access to bidding documents.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Failure to Make Bidding Documents Available” in Guide to Combating Corruption & Fraud in Development Projects",
+      "paths": [
+        {
+          "path": "/tender/participationFees[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/tender/participationFees[]/value/currency",
+          "required": true
+        }
+      ],
+      "priority": 9,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R010",
+      "name": "Unjustified use of non competitive procedure",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The use of a non-competitive method is not correctly justified or does not comply with the legal requirements.",
+      "tracks": "While there are valid reasons to use non competitive procurement methods, its use must be justified and comply with legal requirements. A corrupt contracting authority can use more opaque methods to award the tender to the favored bidder.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Procurement method -Procurement method details -Procurement method rationale.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "While there are valid reasons to use non competitive procurement methods, its use must be justified and comply with legal requirements. A corrupt contracting authority can use more opaque methods to award the tender to the favored bidder.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Absence of tendering or inappropriate procedure” and “Cases not justifying the use of the negotiated procedure without prior publication of a contract notice” in Public Procurement guidance for practitioners",
+      "paths": [
+        {
+          "path": "/tender/procurementMethod",
+          "required": true
+        },
+        {
+          "path": "/tender/procurementMethodDetails",
+          "required": true
+        },
+        {
+          "path": "/tender/procurementMethodRationale",
+          "required": true
+        }
+      ],
+      "priority": 10,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R011",
+      "name": "Splitting purchases to avoid procurement thresholds",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "What should have been a single contract or purchase is split into two or more components, each below the relevant procurement threshold, to facilitate sole source or less competitive contract awards.",
+      "tracks": "Project officials can split what should be a single contract or purchase into two or more components, each below the relevant procurement threshold, to facilitate direct or less competitive contract awards. (International Anti Corruption Research Center, 2012).",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: Procurement method used (and procurement method details if available) Item classification scheme and categories Tender values and currency Tender period start date Name of the procuring entity or buyer..",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Project officials can split what should be a single contract or purchase into two or more components, each below the relevant procurement threshold, to facilitate direct or less competitive contract awards. (International Anti Corruption Research Center, 2012).",
+      "limitations": "Unit of analysis: Contracting process, Buyer. Source: Based on “Split purchases” in Guide to Combating Corruption & Fraud in Development Projects and “Artificially splitting the contract value” in Public Procurement guidance for practitioners",
+      "paths": [
+        {
+          "path": "/tender/procurementMethod",
+          "required": true
+        },
+        {
+          "path": "/tender/procurementMethodDetails",
+          "required": true
+        },
+        {
+          "path": "/tender/items[]/classification/id",
+          "required": true
+        },
+        {
+          "path": "/tender/items[]/classification/scheme",
+          "required": true
+        },
+        {
+          "path": "/tender/value/amount",
+          "required": true
+        },
+        {
+          "path": "/tender/value/currency",
+          "required": true
+        },
+        {
+          "path": "/tender/tenderPeriod/startDate",
+          "required": true
+        },
+        {
+          "path": "/tender/procuringEntity/name",
+          "required": true
+        },
+        {
+          "path": "/buyer/name",
+          "required": true
+        },
+        {
+          "path": "/tender/procuringEntity/id",
+          "required": true
+        },
+        {
+          "path": "/buyer/id",
+          "required": true
+        }
+      ],
+      "priority": 11,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R012",
+      "name": "Direct awards in contravention of the provisions of the procurement plan",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Direct award method is used in contravention of the provisions of the procurement plan.",
+      "tracks": "Direct awards, while they are justified in certain conditions, can sometimes be used to avoid competition and award contracts to specific suppliers.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Procurement method -Procurement method details -Planning documents.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Direct awards, while they are justified in certain conditions, can sometimes be used to avoid competition and award contracts to specific suppliers.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Unjustified Sole Source Awards” in Guide to Combating Corruption & Fraud in Development Projects",
+      "paths": [
+        {
+          "path": "/tender/procurementMethod",
+          "required": true,
+          "note": "tender/procurementMethod, tender/procurementMethodDetails, planning/documents/documentType=procurementPl"
+        },
+        {
+          "path": "/tender/procurementMethodDetails",
+          "required": true,
+          "note": "tender/procurementMethodDetails, planning/documents/documentType=procurementPlan OR plannedProcurementNotice"
+        },
+        {
+          "path": "/planning/documents[]/documentType",
+          "required": true
+        }
+      ],
+      "priority": 12,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R013",
+      "name": "High use of non competitive methods",
+      "engine": "custom",
+      "scope": "Buyer",
+      "description": "The proportion of a buyer’s contracting processes that use non-competitive methods is a high outlier.",
+      "tracks": "While there are valid reasons to use non competitive procurement methods where only a select list of suppliers can participate or the contracting process is awarded directly without competition, these methods are by default less competitive and transparent.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Low transparency.",
+          "Required source concepts: Procurement method Buyer or procuring entity information.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "While there are valid reasons to use non competitive procurement methods where only a select list of suppliers can participate or the contracting process is awarded directly without competition, these methods are by default less competitive and transparent.",
+      "limitations": "Unit of analysis: Buyer. Source: Based on “Procedure type” in An Objective Corruption Risk Index Using Public Procurement Data and Uncovering High-Level Corruption: Cross-National Corruption Proxies Using Government Contracting Data, “Percentage of public contracts awarded without competition” in UNODC Statistical framework to measure corruption",
+      "paths": [
+        {
+          "path": "/tender/procurementMethod",
+          "required": true
+        },
+        {
+          "path": "/tender/procuringEntity/name",
+          "required": true,
+          "note": "tender/procuringEntity/name OR buyer/name OR parties/id and parties/name with parties/roles=buyer"
+        },
+        {
+          "path": "/buyer/name",
+          "required": true,
+          "note": "buyer/name OR parties/id and parties/name with parties/roles=buyer"
+        }
+      ],
+      "priority": 13,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R014",
+      "name": "Short time between tender advertising and bid opening",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Length of time between tender advertising and bid opening falls below a threshold value.",
+      "tracks": "Project officials can deliberately fail to provide adequate notice for companies to prepare bids or proposals in order to benefit a favored bidder, often as the result of corruption.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Tender period start date -Bid opening date.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Project officials can deliberately fail to provide adequate notice for companies to prepare bids or proposals in order to benefit a favored bidder, often as the result of corruption.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Short or Inadequate Notice to Bidders” in Guide to Combating Corruption & Fraud in Development Projects and “Length of advertisement period” in Uncovering High-Level Corruption: Cross-National Corruption Proxies Using Government Contracting Data.",
+      "paths": [
+        {
+          "path": "/tender/bidOpening/date",
+          "required": true
+        },
+        {
+          "path": "/tender/tenderPeriod/startDate",
+          "required": true
+        },
+        {
+          "path": "/tender/procurementMethod",
+          "required": true
+        }
+      ],
+      "priority": 14,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R015",
+      "name": "Long time between bid opening and bid evaluation",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Time interval between bid opening and bid evaluation is greater than threshold value. See also R014 - Short time between tender advertising and bid opening, R003 - The submission period is too short.",
+      "tracks": "A long time between bid opening and evaluation could indicate that project officials want to favor a particular contractor. It is recommended that bids are evaluated immediately after the bid submission period closes.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Tender period start date -Bid opening date.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A long time between bid opening and evaluation could indicate that project officials want to favor a particular contractor. It is recommended that bids are evaluated immediately after the bid submission period closes.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Unclear or subverted processes” in Warning signs of Fraud and Corruption in Public procurement.",
+      "paths": [
+        {
+          "path": "/tender/bidOpening/date",
+          "required": true
+        },
+        {
+          "path": "/tender/awardPeriod/startDate",
+          "required": true
+        },
+        {
+          "path": "/tender/procurementMethod",
+          "required": true
+        },
+        {
+          "path": "/tender/procurementMethodDetails",
+          "required": false
+        }
+      ],
+      "priority": 15,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R016",
+      "name": "Tender value is higher or lower than average for this item category",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Tender value is threshold distance from mean for item category.",
+      "tracks": "A larger variation in the tender value (for the same item categories) across different tenders can indicate lower value for money. Price differences for the same item across multiple contracting processes can also provide information about how competitive and efficient the procuring entity is. In addition, lower than average tender values for the same item category could indicate a procuring entity is lowering the value to avoid competitive thresholds.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Tender value amount -Tender value currency -Tender item classification id and scheme Optional: -Procurement method and procurement method details.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A larger variation in the tender value (for the same item categories) across different tenders can indicate lower value for money. Price differences for the same item across multiple contracting processes can also provide information about how competitive and efficient the procuring entity is. In addition, lower than average tender values for the same item category could indicate a procuring entity is lowering the value to avoid competitive thresholds.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Unreasonably High Line Item Bids” in Guide to Combating Corruption & Fraud in Development Projects.",
+      "paths": [
+        {
+          "path": "/tender/value/amount",
+          "required": true
+        },
+        {
+          "path": "/tender/value/currency",
+          "required": true
+        },
+        {
+          "path": "/tender/items[]/classification/id",
+          "required": true
+        },
+        {
+          "path": "/tender/items[]/classification/scheme",
+          "required": true
+        },
+        {
+          "path": "/tender/procurementMethod",
+          "required": true
+        },
+        {
+          "path": "/tender/procurementMethodDetails",
+          "required": false
+        }
+      ],
+      "priority": 16,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R017",
+      "name": "Unreasonably low or high line item",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The item value is threshold distance from the mean for the item category.",
+      "tracks": "Unreasonably high line item bids can indicate the bidder is deliberately inflating their bid prices. In addition, lower than average line item bids can indicate a bidder is submitting a low bid to unfairly eliminate competitors with the intention of increasing the price through amendments or in defiance of a collusive group.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Collusion risks.",
+          "Required source concepts: -Unit values amount -Items classification schemes.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Unreasonably high line item bids can indicate the bidder is deliberately inflating their bid prices. In addition, lower than average line item bids can indicate a bidder is submitting a low bid to unfairly eliminate competitors with the intention of increasing the price through amendments or in defiance of a collusive group.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Leaking of tender information” in Fraud in Public Procurement: A collection of Red Flags and Best Practices and “Unreasonably Low Line Item Bids” and “Unreasonably High Line Item Bids” in Guide to Combating Corruption & Fraud in Development Projects.",
+      "paths": [
+        {
+          "path": "/tender/items[]/unit/value/amount",
+          "required": true
+        },
+        {
+          "path": "/tender/items[]/unit/value/currency",
+          "required": true
+        },
+        {
+          "path": "/tender/items[]/classification/id",
+          "required": true
+        },
+        {
+          "path": "/tender/items[]/classification/scheme",
+          "required": true
+        }
+      ],
+      "priority": 17,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R018",
+      "name": "Single bid received",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Only one tenderer submitted a bid.",
+      "tracks": "In a competitive procedure, a lack of competition might correspond to a suppression of competition and can represent the ideal outcome for a corrupt buyer and predetermined bidder.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Low competition.",
+          "Required source concepts: Procurement method used (and procurement method details if available) Number of bidders.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "In a competitive procedure, a lack of competition might correspond to a suppression of competition and can represent the ideal outcome for a corrupt buyer and predetermined bidder.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on \"Single bidder\" in An Objective Corruption Risk Index Using Public Procurement Data",
+      "paths": [
+        {
+          "path": "/tender/procurementMethod",
+          "required": true
+        },
+        {
+          "path": "/tender/numberOfTenderers",
+          "required": true
+        },
+        {
+          "path": "/tender/tenderers[]/id",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/tenderers[]/id",
+          "required": true
+        }
+      ],
+      "priority": 18,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R019",
+      "name": "Low number of bidders for item category",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "​​Number of bidders significantly lower than average, based on prior similar contracts (for similar items or procuring entities).",
+      "tracks": "A lower number of bids indicates a decrease in competition that could facilitate the ideal outcome for a corrupt buyer to award the contract to a predetermined bidder.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Low competition.",
+          "Required source concepts: -Procurement method used -Item classification id and scheme. -Number of bids received.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A lower number of bids indicates a decrease in competition that could facilitate the ideal outcome for a corrupt buyer to award the contract to a predetermined bidder.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Number of bidders is significantly lower than the average in other similar tenders” in Fraud in Public Procurement: A collection of Red Flags and Best Practices",
+      "paths": [
+        {
+          "path": "/tender/procurementMethod",
+          "required": true
+        },
+        {
+          "path": "/tender/items[]/classification/id",
+          "required": true
+        },
+        {
+          "path": "/tender/items[]/classification/scheme",
+          "required": true
+        },
+        {
+          "path": "/buyer/name",
+          "required": true
+        },
+        {
+          "path": "/tender/procuringEntity/id",
+          "required": true
+        },
+        {
+          "path": "/tender/tenderers[]/id",
+          "required": true
+        }
+      ],
+      "priority": 19,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R020",
+      "name": "Tender has a complaint",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The contracting process has at least one complaint.",
+      "tracks": "Losing or excluded bidders can submit complaints that may signal misconduct or corruption in the contracting process.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Complaints.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Losing or excluded bidders can submit complaints that may signal misconduct or corruption in the contracting process.",
+      "limitations": "Unit of analysis: Contracting process, Bidder. Source: Based on “Complaints from Losing and Excluded Bidders” in Fraud in Public Procurement: A collection of Red Flags and Best Practices and “Complaints” in Warning signs of Fraud and Corruption in Public procurement.",
+      "paths": [
+        {
+          "path": "/complaints/id",
+          "required": true
+        },
+        {
+          "path": "/complaints/documents[]",
+          "required": false
+        },
+        {
+          "path": "/tender/documents[]/documentType",
+          "required": false
+        }
+      ],
+      "priority": 20,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R021",
+      "name": "High use of discretionary evaluation criteria",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The proportion of contracting processes for a buyer using the non price evaluation criteria is a high outlier.",
+      "tracks": "In a poorly controlled bidding process, project officials can tamper with bids after receipt to ensure that a favored contractor is selected. Non-price evaluation criteria, for instance the Most Economically Advantageous Tender criteria (MEAT), tend to be more subjective allowing issuers to favor the well-connected company, for instance: Non-price related evaluation criteria have been found to be associated with a higher probability of a single bid received (Fazekas et. al, 2016). Research in Italy found that the association between the MEAT criterion and corruption risk is stronger the more the scoring rule assigns points to qualitative (as opposed to quantitative) parameters (Decarolis, F. and Giorgiantonio, C., 2022) ⚠️However, relying exclusively on price alone can be counterproductive to achieving other procurement outcomes and strategies (e.g. sustainability goals) and non-price evaluation criteria may be recommended in specific markets. For instance, the 2014 European Directives on public procurement prescribe the MEAT criterion as the ordinary criterion for awarding public contracts and the European Commission Single Market Scorecard Indicator 6 recommends that the use of award criteria based on price alone should be less than 80%.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Tender award criteria -Buyer id Optional: -Award criteria details -Item classifications to analyze specific sectors only..",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "In a poorly controlled bidding process, project officials can tamper with bids after receipt to ensure that a favored contractor is selected. Non-price evaluation criteria, for instance the Most Economically Advantageous Tender criteria (MEAT), tend to be more subjective allowing issuers to favor the well-connected company, for instance: Non-price related evaluation criteria have been found to be associated with a higher probability of a single bid received (Fazekas et. al, 2016). Research in Italy found that the association between the MEAT criterion and corruption risk is stronger the more the scoring rule assigns points to qualitative (as opposed to quantitative) parameters (Decarolis, F. and Giorgiantonio, C., 2022) ⚠️However, relying exclusively on price alone can be counterproductive to achieving other procurement outcomes and strategies (e.g. sustainability goals) and non-price evaluation criteria may be recommended in specific markets. For instance, the 2014 European Directives on public procurement prescribe the MEAT criterion as the ordinary criterion for awarding public contracts and the European Commission Single Market Scorecard Indicator 6 recommends that the use of award criteria based on price alone should be less than 80%.",
+      "limitations": "Unit of analysis: Contracting process, Buyer. Source: Based on “non-price evaluation criteria” in “An Objective Corruption Risk Index Using Public Procurement Data” and “awarding criteria” in Corruption red flags in public procurement: new evidence from Italian calls for tenders (2022) and (2020)",
+      "paths": [
+        {
+          "path": "/tender/awardCriteria",
+          "required": true,
+          "note": "tender/awardCriteria = ‘qualityOnly’ OR ‘ratedCriteria’, tender/procuringEntity/name OR buyer/name O"
+        },
+        {
+          "path": "/tender/procuringEntity/name",
+          "required": true,
+          "note": "tender/procuringEntity/name OR buyer/name OR parties/id and parties/name with parties/roles=buyer"
+        },
+        {
+          "path": "/buyer/name",
+          "required": true,
+          "note": "buyer/name OR parties/id and parties/name with parties/roles=buyer"
+        },
+        {
+          "path": "/tender/awardCriteriaDetails",
+          "required": false
+        },
+        {
+          "path": "/tender/lots/awardCriteria/criteria/number/number",
+          "required": false
+        },
+        {
+          "path": "/tender/lots/awardCriteria/criteria/type",
+          "required": false
+        }
+      ],
+      "priority": 21,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R022",
+      "name": "Wide disparity in bid prices",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The bid price range in the same contracting process is greater than a threshold value.",
+      "tracks": "A colluding bidder can mimic competition by coordinating a collusive agreement with their colluding partner to prearrange the bid prices beforehand and therefore there is no real competition. Extreme or unusual offer price distributions are found to signal collusion by academic literature Abrantes-Metz et al. (2006), Padhi and Mohapatra (2011).",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Collusion risks.",
+          "Required source concepts: Individual bid data and their amounts..",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A colluding bidder can mimic competition by coordinating a collusive agreement with their colluding partner to prearrange the bid prices beforehand and therefore there is no real competition. Extreme or unusual offer price distributions are found to signal collusion by academic literature Abrantes-Metz et al. (2006), Padhi and Mohapatra (2011).",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on \"Bid price range\" in Assessing the potential for detecting collusion in Swedish public procurement.",
+      "paths": [
+        {
+          "path": "/bids/details[]/id",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/value/currency",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/status",
+          "required": true
+        }
+      ],
+      "priority": 22,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R023",
+      "name": "Fixed multiple bid prices",
+      "engine": "custom",
+      "scope": "Tenderer",
+      "description": "The percentage difference between two tenderers’ bid prices is the same in different contracting processes.",
+      "tracks": "A colluding bidder can mimic competition by coordinating a collusive agreement with their colluding partner to prearrange the bid prices beforehand and therefore there is no real competition. Very similar or equal bid prices is considered a signal of potential collusive agreements between bidders. Also extreme or unusual offer price distributions are found to signal collusion by academic literature Abrantes-Metz et al. (2006), Padhi and Mohapatra (2011)",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Collusion risks.",
+          "Required source concepts: Individual bid data and their amounts..",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A colluding bidder can mimic competition by coordinating a collusive agreement with their colluding partner to prearrange the bid prices beforehand and therefore there is no real competition. Very similar or equal bid prices is considered a signal of potential collusive agreements between bidders. Also extreme or unusual offer price distributions are found to signal collusion by academic literature Abrantes-Metz et al. (2006), Padhi and Mohapatra (2011)",
+      "limitations": "Unit of analysis: Bidder. Source: Based on “Concerted bids” in A decision support system for fraud detection in public procurement",
+      "paths": [
+        {
+          "path": "/bids/details[]/id",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/value/currency",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/status",
+          "required": true
+        }
+      ],
+      "priority": 23,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R024",
+      "name": "Price close to winning bid",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The percentage difference between the winning bid and the second-lowest valid bid is a low outlier.",
+      "tracks": "A colluding bidder can mimic competition by submitting a bid that is similar in price (but different in quality, for example) from its colluding partner.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Collusion risks.",
+          "Required source concepts: Individual bid data and their amounts..",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A colluding bidder can mimic competition by submitting a bid that is similar in price (but different in quality, for example) from its colluding partner.",
+      "limitations": "Unit of analysis: Contracting process, Bidder. Source: Based on \"Difference between first and second relative offer prices\" in Toolkit for detecting collusive bidding in public procurement and \"Winning tender just below the next lowest bid\" in Fraud in Public Procurement: A collection of Red Flags and Best Practices",
+      "paths": [
+        {
+          "path": "/bids/details[]/id",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/value/currency",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/status",
+          "required": true
+        },
+        {
+          "path": "/awards[]/relatedBid",
+          "required": true
+        },
+        {
+          "path": "/awards[]/status",
+          "required": true
+        },
+        {
+          "path": "/tender/awardCriteria",
+          "required": true
+        }
+      ],
+      "priority": 24,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R025",
+      "name": "Excessive unsuccessful bids",
+      "engine": "custom",
+      "scope": "Tenderer",
+      "description": "The ratio of winning bids to submitted bids for a top tenderer is a low outlier.",
+      "tracks": "A colluding bidder can mimic competition by submitting deliberately losing bids (at inflated bid prices, for example) in contracting processes in which a colluding partner participates.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Collusion risks.",
+          "Required source concepts: Tenderer (bidder) id (or name if ids are not available) Bid status Winning bidder id (supplier) or name if ids are not available.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A colluding bidder can mimic competition by submitting deliberately losing bids (at inflated bid prices, for example) in contracting processes in which a colluding partner participates.",
+      "limitations": "Unit of analysis: Bidder. Source: Based on \"Superfluous losing bidders\" in Toolkit for detecting collusive bidding in public procurement and \"Top losers\" in A decision support system for fraud detection in public procurement",
+      "paths": [
+        {
+          "path": "/tender/tenderers[]/id",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/tenderers[]/id",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/status",
+          "required": true
+        },
+        {
+          "path": "/awards[]/suppliers[]/id",
+          "required": true
+        }
+      ],
+      "priority": 25,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R026",
+      "name": "Prevalence of consortia",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The proportion of awards to a consortia is a high outlier in a market.",
+      "tracks": "While consortia can be formed for legitimate reasons, joint bidding in a collusive setting can mitigate the burden of collusive behavior by formalizing the cooperation and facilitating rent sharing.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Collusion risks.",
+          "Required source concepts: -Awarded supplier information -Items information (to define the markets).",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "While consortia can be formed for legitimate reasons, joint bidding in a collusive setting can mitigate the burden of collusive behavior by formalizing the cooperation and facilitating rent sharing.",
+      "limitations": "Unit of analysis: Market. Source: Based on \"Prevalence of consortia\" in Toolkit for detecting collusive bidding in public procurement, and Assessing the potential for detecting collusion in Swedish public procurement, “Two or more companies submit a joint bid, although they should be able to participate individually” in Fraud in Public Procurement: A collection of Red Flags and Best Practices.",
+      "paths": [
+        {
+          "path": "/awards[]/suppliers[]/id",
+          "required": true
+        },
+        {
+          "path": "/awards[]/suppliers[]/name",
+          "required": true
+        },
+        {
+          "path": "/awards[]/status",
+          "required": true
+        },
+        {
+          "path": "/awards[]/date",
+          "required": true
+        },
+        {
+          "path": "/tender/items[]/classification/id",
+          "required": true
+        },
+        {
+          "path": "/tender/items[]/classification/scheme",
+          "required": true
+        }
+      ],
+      "priority": 26,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R027",
+      "name": "Missing bidders",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Potential bidders make agreements not to bid because of collusion arrangements.",
+      "tracks": "Withholding bids from certain tenders is a straightforward way to restrict competition; hence the absence of bids from a previously active company in a given market can indicate collusive bidding.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Collusion risks.",
+          "Required source concepts: -Number of bidders -Procurement method -Items information (to define the markets) -Tender date.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Withholding bids from certain tenders is a straightforward way to restrict competition; hence the absence of bids from a previously active company in a given market can indicate collusive bidding.",
+      "limitations": "Unit of analysis: Market. Source: Based on \"Missing bidders MB2\" in Toolkit for detecting collusive bidding in public procurement, and Assessing the potential for detecting collusion in Swedish public procurement",
+      "paths": [
+        {
+          "path": "/tender/procurementMethod",
+          "required": true
+        },
+        {
+          "path": "/tender/numberOfTenderers",
+          "required": true
+        },
+        {
+          "path": "/tender/tenderers[]/id",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/tenderers[]/id",
+          "required": true
+        },
+        {
+          "path": "/tender/items[]/classification/id",
+          "required": true
+        },
+        {
+          "path": "/tender/items[]/classification/scheme",
+          "required": true
+        },
+        {
+          "path": "/tender/tenderPeriod/startDate",
+          "required": true
+        }
+      ],
+      "priority": 27,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R028",
+      "name": "Identical bid prices",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Different tenderers submitted bids with the same price.",
+      "tracks": "A corrupt buyer can award to a pre-determined bidder by leaking competitors' prices. Also, collusive bidders can agree on the price to submit.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Collusion risks.",
+          "Required source concepts: Bid status Bid values.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A corrupt buyer can award to a pre-determined bidder by leaking competitors' prices. Also, collusive bidders can agree on the price to submit.",
+      "limitations": "Unit of analysis: Contracting process, Bidder. Source: Based on \"Bidders having the same bid price\" in Assessing the potential for detecting collusion in Swedish public procurement and \"Different companies include identical unit prices in their bid documents\" in Fraud in Public Procurement: A collection of Red Flags and Best Practices.",
+      "paths": [
+        {
+          "path": "/bids/details[]/id",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/status",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/value/currency",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/tenderers[]/id",
+          "required": true
+        }
+      ],
+      "priority": 28,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R029",
+      "name": "Bid prices deviate from Benford’s Law",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The distribution of bid prices (or tender or contract values) in a specific market deviates from Benford’s Law distribution. The indicator can also be calculated for the whole procurement dataset, however it could be less informative.",
+      "tracks": "Benford’s law states that the first digit of most naturally occurring sets of numerical data follows a particular pattern, where the number 1 appears as the leading digit about 30% of the time, the number 2 as the the leading digit about 17% of the time, and so on up to 9, which should appear as a leading digit about 4% of the time. A deviation from this pattern could be a sign of price manipulation.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: Bid values Items information (to define the markets) Alternative: Tender values or contract values.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Benford’s law states that the first digit of most naturally occurring sets of numerical data follows a particular pattern, where the number 1 appears as the leading digit about 30% of the time, the number 2 as the the leading digit about 17% of the time, and so on up to 9, which should appear as a leading digit about 4% of the time. A deviation from this pattern could be a sign of price manipulation.",
+      "limitations": "Unit of analysis: Market. Source: Based on “Benford’s Law” in Assessing the potential for detecting collusion in Swedish public procurement, ProACT Integrity indicators and Public procurement in Brazil: Evidence of frauds using the Newcomb-Benford Law",
+      "paths": [
+        {
+          "path": "/bids/details[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/tender/value/amount",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/awards[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/tender/items[]/classification/id",
+          "required": true
+        },
+        {
+          "path": "/tender/items[]/classification/scheme",
+          "required": true
+        }
+      ],
+      "priority": 29,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R030",
+      "name": "Late bid won",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The winning bid was received after the submission deadline.",
+      "tracks": "A corrupt buyer can award to a predetermined bidder by disregarding the submission deadline.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Bid submission date -Bid status -Tender period end date.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A corrupt buyer can award to a predetermined bidder by disregarding the submission deadline.",
+      "limitations": "Unit of analysis: Contracting process, Bidder. Source: Based on \"Bids after the deadline accepted\" in Corruption in Public Procurement: Finding the Right Indicators and \"Late submissions accepted\" in Fraud in Public Procurement: A collection of Red Flags and Best Practices",
+      "paths": [
+        {
+          "path": "/tender/tenderPeriod/endDate",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/id",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/date",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/status",
+          "required": true
+        },
+        {
+          "path": "/awards[]/relatedBid",
+          "required": true
+        }
+      ],
+      "priority": 30,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R031",
+      "name": "Winning bid price very close or higher than estimated price",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The ratio between the winning bid and the estimated price is a high outlier.",
+      "tracks": "Bid prices are expected to fall below to the estimated price, due to healthy competition, assuming the estimated price is not biased. “A winning bid that is too close to confidential project cost estimates or budgets can indicate the leaking of bid information or an unbalanced bidding scheme” (IACRC, 2012).",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: Bid amount Bid status Winning bidder Tender amount.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Bid prices are expected to fall below to the estimated price, due to healthy competition, assuming the estimated price is not biased. “A winning bid that is too close to confidential project cost estimates or budgets can indicate the leaking of bid information or an unbalanced bidding scheme” (IACRC, 2012).",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Relative contract value” in Toolkit for detecting collusive bidding in public procurement.",
+      "paths": [
+        {
+          "path": "/bids/details[]/id",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/status",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/value/currency",
+          "required": true
+        },
+        {
+          "path": "/tender/value/amount",
+          "required": true
+        },
+        {
+          "path": "/tender/value/currency",
+          "required": true
+        },
+        {
+          "path": "/awards[]/relatedBid",
+          "required": true
+        }
+      ],
+      "priority": 31,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R032",
+      "name": "Bidders share same beneficial owner",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Two tenderers bidding in the same contracting process share the same beneficial owner.",
+      "tracks": "While shared ownership of bidders participating in the same contracting process is often not illegal, shared ownership could be a sign of collusion or coordinated companies submitting bids to simulate competition.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Collusion risks.",
+          "Required source concepts: Bidder beneficial ownership information.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "While shared ownership of bidders participating in the same contracting process is often not illegal, shared ownership could be a sign of collusion or coordinated companies submitting bids to simulate competition.",
+      "limitations": "Unit of analysis: Contracting process, Bidder. Source: Based on “Common partners” in A decision support system for fraud detection in public procurement and “Detecting shared ownership” in Beneficial ownership data in procurement.",
+      "paths": [
+        {
+          "path": "/parties[]/id",
+          "required": true
+        },
+        {
+          "path": "/parties[]/beneficialOwners/name",
+          "required": true
+        },
+        {
+          "path": "/parties[]/beneficialOwners/id",
+          "required": true
+        }
+      ],
+      "priority": 32,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R033",
+      "name": "Bidders share same major shareholder",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Two tenderers bidding in the same contracting process share the same major shareholder.",
+      "tracks": "Sharing the same major shareholder could indicate that the companies belong to the same economic group, thus competition is impaired and this could be a sign of collusion.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Collusion risks.",
+          "Required source concepts: Bidder shareholder information.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Sharing the same major shareholder could indicate that the companies belong to the same economic group, thus competition is impaired and this could be a sign of collusion.",
+      "limitations": "Unit of analysis: Contracting process, Bidder. Source: Based on “Common economic group” in A decision support system for fraud detection in public procurement.",
+      "paths": [
+        {
+          "path": "/parties[]/id",
+          "required": true
+        },
+        {
+          "path": "/parties[]/shareholders/shareholder/id",
+          "required": true
+        },
+        {
+          "path": "/parties[]/shareholders/shareholding",
+          "required": true
+        }
+      ],
+      "priority": 33,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R034",
+      "name": "Bids submitted in same order",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Sequence of bid submissions shows patterns in different bid rounds.",
+      "tracks": "Certain bidding patterns and practices seem at odds with a competitive market and suggest the possibility of collusion. Two bidders submitting bids in the same order at different stages of the tendering process might indicate they are coordinating the submission.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Collusion risks.",
+          "Required source concepts: Bidder details Bids date Bid status.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Certain bidding patterns and practices seem at odds with a competitive market and suggest the possibility of collusion. Two bidders submitting bids in the same order at different stages of the tendering process might indicate they are coordinating the submission.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Bidding red flags” in Guide to Combating Corruption & Fraud in Development Projects",
+      "paths": [
+        {
+          "path": "/bids/details[]/id",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/date",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/tenderers[]/id",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/tenderers[]/name",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/status",
+          "required": true
+        }
+      ],
+      "priority": 34,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R035",
+      "name": "All except winning bid disqualified",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Bids are disqualified if not submitted by the single tenderer of the winning bid.",
+      "tracks": "A corrupt buyer can award the predetermined bidder by disqualifying other bidders' offers.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Information on the submitted bids including the status, id, and winning bidder. -Award status.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A corrupt buyer can award the predetermined bidder by disqualifying other bidders' offers.",
+      "limitations": "Unit of analysis: Contracting process, Bidder. Source: Based on \"Exclusion of all but one bid\" in An Objective Corruption Risk Index Using Public Procurement Data and \"Prevalence of faulty bids\" in Toolkit for detecting collusive bidding in public procurement.",
+      "paths": [
+        {
+          "path": "/bids/details[]/id",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/status",
+          "required": true
+        },
+        {
+          "path": "/awards[]/relatedBid",
+          "required": true
+        },
+        {
+          "path": "/awards[]/status",
+          "required": true
+        }
+      ],
+      "priority": 35,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R036",
+      "name": "Lowest bid disqualified",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The lowest submitted bid is disqualified, while the award criterion is price only.",
+      "tracks": "A corrupt buyer can award the predetermined bidder by disqualifying lower-priced bids.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Bid id -Bid status -Bid amounts -Award criteria.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A corrupt buyer can award the predetermined bidder by disqualifying lower-priced bids.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on \"The lowest bid is rejected almost inexplicably\" in Fraud in Public Procurement: A collection of Red Flags and Best Practices, \"Lowest bidder not selected\" in Common Red Flags of Fraud and Corruption in Procurement, and \"Award to other than lowest qualified bidder\" in Guide to Combating Corruption & Fraud in Development Projects",
+      "paths": [
+        {
+          "path": "/bids/details[]/id",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/status",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/value/currency",
+          "required": true
+        },
+        {
+          "path": "/tender/awardCriteria",
+          "required": true
+        }
+      ],
+      "priority": 36,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R037",
+      "name": "Poorly supported disqualifications",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "A seemingly qualified contractor was disqualified.",
+      "tracks": "Project officials can disqualify bidders at the prequalification or bidding stages for superficial or arbitrary reasons in order to facilitate the selection of a favored bidder.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Award criteria -Bid status -Bidders details -Evaluation reports.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Project officials can disqualify bidders at the prequalification or bidding stages for superficial or arbitrary reasons in order to facilitate the selection of a favored bidder.",
+      "limitations": "Unit of analysis: Contracting process, Bidder. Source: Based on \"Excluding qualified bidders\" in Guide to Combating Corruption & Fraud in Development Projects",
+      "paths": [
+        {
+          "path": "/tender/awardCriteria",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/id",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/value/currency",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/status",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/documents[]",
+          "required": true
+        }
+      ],
+      "priority": 37,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R038",
+      "name": "Excessive disqualified bids",
+      "engine": "custom",
+      "scope": "Tenderer",
+      "description": "The ratio of disqualified bids to submitted bids is a high outlier per buyer, procuring entity or tenderer.",
+      "tracks": "A corrupt buyer or procuring entity can award pre-determined bidders by disqualifying other bidders' bids. A colluding bidder can mimic competition by submitting deliberately unqualified bids.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Information on the bid status, id. -Bidder id -Buyer or procuring entity id or name..",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A corrupt buyer or procuring entity can award pre-determined bidders by disqualifying other bidders' bids. A colluding bidder can mimic competition by submitting deliberately unqualified bids.",
+      "limitations": "Unit of analysis: Buyer, Bidder. Source: Based on \"Excluding qualified bidders\" in Guide to Combating Corruption & Fraud in Development Projects, Behind the Scenes of ProZorro: Does Ukrainian business trust public procurement?",
+      "paths": [
+        {
+          "path": "/bids/details[]/id",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/status",
+          "required": true
+        },
+        {
+          "path": "/buyer/name",
+          "required": true,
+          "note": "buyer/name OR parties/id with parties/roles=buyer)"
+        }
+      ],
+      "priority": 38,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R039",
+      "name": "Unanswered bidder questions",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Bidder enquiries are not answered.",
+      "tracks": "If questions are left unanswered this can signal that a procuring entity is trying to exclude particular suppliers or favor a particular firm.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Low transparency.",
+          "Required source concepts: -Tender status -Tender enquiries -Enquiries answers.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "If questions are left unanswered this can signal that a procuring entity is trying to exclude particular suppliers or favor a particular firm.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Precautionary measures in tendering” in OECD’s Principles for Integrity in Public Procurement",
+      "paths": [
+        {
+          "path": "/tender/enquiries/date",
+          "required": true
+        },
+        {
+          "path": "/tender/enquiries/dateAnswered",
+          "required": true
+        },
+        {
+          "path": "/tender/enquiries/answer",
+          "required": true
+        },
+        {
+          "path": "/tender/status",
+          "required": true
+        }
+      ],
+      "priority": 39,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R040",
+      "name": "High share of buyer's contracts",
+      "engine": "custom",
+      "scope": "Tenderer",
+      "description": "The bidder's share of a buyer’s contracts is a high outlier.",
+      "tracks": "A corrupt buyer can consistently award contracts to the preferred bidder.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Low competition.",
+          "Required source concepts: -Supplier name -Award status -Procuring entity or buyer name -Award date.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A corrupt buyer can consistently award contracts to the preferred bidder.",
+      "limitations": "Unit of analysis: Buyer, Bidder. Source: Based on “Winner’s share of issuer’s contracts” in Anatomy of grand corruption: A composite corruption risk index based on objective data",
+      "paths": [
+        {
+          "path": "/awards[]/suppliers[]/id",
+          "required": true
+        },
+        {
+          "path": "/awards[]/suppliers[]/name",
+          "required": true
+        },
+        {
+          "path": "/tender/procuringEntity/name",
+          "required": true,
+          "note": "tender/procuringEntity/name OR buyer/name OR OR parties/id AND parties/roles=buyer or procuringEntity, awa"
+        },
+        {
+          "path": "/buyer/name",
+          "required": true,
+          "note": "buyer/name OR OR parties/id AND parties/roles=buyer or procuringEntity, awards/status, aw"
+        },
+        {
+          "path": "/parties[]/id",
+          "required": true
+        },
+        {
+          "path": "/awards[]/status",
+          "required": true
+        },
+        {
+          "path": "/awards[]/date",
+          "required": true
+        }
+      ],
+      "priority": 40,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R041",
+      "name": "Physical similarities in documents by different bidders",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Two tenderers bidding in the same contracting process submit documents with similar information or format.",
+      "tracks": "Similarities in the submitted bidding documents can indicate that the bidders are connected and that the same person prepared all the bids.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Collusion risks.",
+          "Required source concepts: -Bidder information -Bidder documents.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Similarities in the submitted bidding documents can indicate that the bidders are connected and that the same person prepared all the bids.",
+      "limitations": "Unit of analysis: Contracting process, Bidder. Source: Based on “Analysis of the submitted documentation” in Guidelines for detecting bid rigging in public procurement and OECD Guidelines for fighting bid rigging in public procurement, “Red flags with regard to bid documents” in Fraud in Public Procurement: A collection of Red Flags and Best Practices.",
+      "paths": [
+        {
+          "path": "/bids/documents[]/documentType",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/id",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/tenderers[]/id",
+          "required": true
+        }
+      ],
+      "priority": 41,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R042",
+      "name": "Bidder has abnormal address or phone number",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Bidder phone number or address is atypical.",
+      "tracks": "This can indicate the supplier is a fictitious company or is providing false information. In some collusive bidding cases, the winning bidder prepares and submits losing bids from non-existent companies to give the appearance of competition.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Fraud.",
+          "Required source concepts: Bidder phone number OR Bidder address.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "This can indicate the supplier is a fictitious company or is providing false information. In some collusive bidding cases, the winning bidder prepares and submits losing bids from non-existent companies to give the appearance of competition.",
+      "limitations": "Unit of analysis: Contracting process, Bidder. Source: Based in “Suspicious bidders” in Warning signs of Fraud and Corruption in Public procurement.",
+      "paths": [
+        {
+          "path": "/parties[]/address/streetAddress",
+          "required": true
+        }
+      ],
+      "priority": 42,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R043",
+      "name": "Bidder has same contact information as project official",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Bidder contact information matches buyer's contact point information.",
+      "tracks": "This can indicate the supplier is a fictitious company or is providing falseinformation. In some collusive bidding cases, the winning bidder prepares and submits losing bids from non-existent companies to give the appearance of competition.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Bidder contact details -Project official (buyer) contact details.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "This can indicate the supplier is a fictitious company or is providing falseinformation. In some collusive bidding cases, the winning bidder prepares and submits losing bids from non-existent companies to give the appearance of competition.",
+      "limitations": "Unit of analysis: Contracting process, Bidder. Source: Based on “Contractor’s address or phone number matches project official’s” in Guide to Combating Corruption & Fraud in Development Projects",
+      "paths": [
+        {
+          "path": "/parties[]/roles",
+          "required": true
+        },
+        {
+          "path": "/parties[]/id",
+          "required": true
+        },
+        {
+          "path": "/parties[]/contactPoint/telephone",
+          "required": true
+        },
+        {
+          "path": "/parties[]/contactPoint/name",
+          "required": true
+        },
+        {
+          "path": "/parties[]/contactPoint/email",
+          "required": true
+        }
+      ],
+      "priority": 43,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R044",
+      "name": "Business similarities between bidders",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Two tenderers bidding in the same contracting process share similar business contact information.",
+      "tracks": "Similarities between suppliers may indicate that the companies are connected.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Collusion risks.",
+          "Required source concepts: Bidder phone number, address, contact point or email..",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Similarities between suppliers may indicate that the companies are connected.",
+      "limitations": "Unit of analysis: Contracting process, Bidder. Source: Based on “Connections between bidders” in Corruption in Public Procurement: Finding the Right Indicators and “Similarity in Bids” in Guide to Combating Corruption & Fraud in Development Projects",
+      "paths": [
+        {
+          "path": "/parties[]/address/streetAddress",
+          "required": true
+        },
+        {
+          "path": "/parties[]/address/postalCode",
+          "required": true
+        },
+        {
+          "path": "/parties[]/contactPoint/email",
+          "required": true
+        }
+      ],
+      "priority": 44,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R045",
+      "name": "Bidder is not listed in business registries",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Bidder does not appear in the supplier registry.",
+      "tracks": "If the supplier or bidder is not traceable in official registries, this can indicate that it is a fictitious company or providing false information.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Fraud.",
+          "Required source concepts: -Bidder id and name.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "If the supplier or bidder is not traceable in official registries, this can indicate that it is a fictitious company or providing false information.",
+      "limitations": "Unit of analysis: Contracting process, Bidder. Source: Based on “Fictitious contractor” in Guide to Combating Corruption & Fraud in Development Projects and “Suspicious bidders” in Warning signs of Fraud and Corruption in Public procurement.",
+      "paths": [
+        {
+          "path": "/parties[]/id",
+          "required": true
+        }
+      ],
+      "priority": 45,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R046",
+      "name": "Bidder is debarred or on sanctions list",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Bidder appears on an official sanctions or debarments list.",
+      "tracks": "Previously sanctioned suppliers can pose a higher risk.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Tender.",
+          "Risk category: Fraud.",
+          "Required source concepts: -Bidder id and name.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Previously sanctioned suppliers can pose a higher risk.",
+      "limitations": "Unit of analysis: Contracting process, Bidder. Source: Based on “Blacklisting” in A decision support system for fraud detection in public procurement",
+      "paths": [
+        {
+          "path": "/parties[]/id",
+          "required": true
+        }
+      ],
+      "priority": 46,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R047",
+      "name": "Supplier is not traceable on the web",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Supplier is not traceable through web search",
+      "tracks": "If the supplier or bidder is not traceable online, this can indicate that it is a fictitious company or it is providing false information. “A project or government official can create a fictitious contractor, consultant, vendor or supplier that does not provide any actual goods or services in order to embezzle project funds” (IACRC).",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Fraud.",
+          "Required source concepts: -Supplier id and name -Supplier website.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "If the supplier or bidder is not traceable online, this can indicate that it is a fictitious company or it is providing false information. “A project or government official can create a fictitious contractor, consultant, vendor or supplier that does not provide any actual goods or services in order to embezzle project funds” (IACRC).",
+      "limitations": "Unit of analysis: Contracting process, Bidder. Source: Based on “Fictitious contractor” in Guide to Combating Corruption & Fraud in Development Projects",
+      "paths": [
+        {
+          "path": "/parties[]/roles",
+          "required": true
+        },
+        {
+          "path": "/parties[]/id",
+          "required": true
+        },
+        {
+          "path": "/parties[]/name",
+          "required": true
+        },
+        {
+          "path": "/awards[]/suppliers[]/name",
+          "required": true
+        },
+        {
+          "path": "/awards[]/suppliers[]/id",
+          "required": true
+        },
+        {
+          "path": "/parties[]/contactPoint/url",
+          "required": true
+        }
+      ],
+      "priority": 47,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R048",
+      "name": "Heterogeneous supplier",
+      "engine": "custom",
+      "scope": "Tenderer",
+      "description": "The variety of items supplied by a tenderer is a high outlier.",
+      "tracks": "A heterogeneous supplier is more likely to be unsuitable, increasing the risk of low value for money, low quality of delivery, and/or rent extraction.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Fraud.",
+          "Required source concepts: -Item classification id and scheme.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A heterogeneous supplier is more likely to be unsuitable, increasing the risk of low value for money, low quality of delivery, and/or rent extraction.",
+      "limitations": "Unit of analysis: Bidder. Source: Based on \"Component C1B\" in Design and measurement of a corruption risk index from a supplier perspective in the context of COVID-19 emergency.",
+      "paths": [
+        {
+          "path": "/awards[]/items[]/classification/id",
+          "required": true
+        },
+        {
+          "path": "/awards[]/items[]/classification/scheme",
+          "required": true
+        },
+        {
+          "path": "/awards[]/suppliers[]/id",
+          "required": true
+        },
+        {
+          "path": "/awards[]/suppliers[]/name",
+          "required": true
+        }
+      ],
+      "priority": 48,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R049",
+      "name": "Direct awards below threshold",
+      "engine": "custom",
+      "scope": "Tenderer",
+      "description": "Supplier receives more than 1 direct award from the same buyer in period t just below the competitive threshold.",
+      "tracks": "Multiple contract awards to the same company that are clustered just below a procurement threshold is a strong indicator of possible corruption.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Procurement method -Supplier name -Award date -Buyer or procuring entity name.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Multiple contract awards to the same company that are clustered just below a procurement threshold is a strong indicator of possible corruption.",
+      "limitations": "Unit of analysis: Bidder. Source: Based on “Multiple Awards just under procurement thresholds” in Guide to Combating Corruption & Fraud in Development Projects .",
+      "paths": [
+        {
+          "path": "/tender/procurementMethod",
+          "required": true
+        },
+        {
+          "path": "/awards[]/suppliers[]/id",
+          "required": true
+        },
+        {
+          "path": "/awards[]/suppliers[]/name",
+          "required": true
+        },
+        {
+          "path": "/awards[]/date",
+          "required": true
+        },
+        {
+          "path": "/tender/procuringEntity/name",
+          "required": true,
+          "note": "tender/procuringEntity/name OR buyer/name OR parties/id and parties/name with parties/roles=buyer"
+        },
+        {
+          "path": "/buyer/name",
+          "required": true,
+          "note": "buyer/name OR parties/id and parties/name with parties/roles=buyer"
+        }
+      ],
+      "priority": 49,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R050",
+      "name": "High market share",
+      "engine": "custom",
+      "scope": "Tenderer",
+      "description": "A supplier wins a high share of contracts in a particular market from the same buyer.",
+      "tracks": "This indicator can be considered a corruption outcome, since the ultimate goal of institutionalized corruption is to award contracts repeatedly to the same company or group of companies.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Low competition.",
+          "Required source concepts: -Supplier name -Award status -Award amount -Award date -Procuring entity or buyer name -Award date -Award items to identify markets.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "This indicator can be considered a corruption outcome, since the ultimate goal of institutionalized corruption is to award contracts repeatedly to the same company or group of companies.",
+      "limitations": "Unit of analysis: Buyer, Bidder. Source: Based on “Winner’s share of issuer’s contracts” in Anatomy of grand corruption: A composite corruption risk index based on objective data",
+      "paths": [
+        {
+          "path": "/awards[]/suppliers[]/id",
+          "required": true
+        },
+        {
+          "path": "/awards[]/suppliers[]/name",
+          "required": true
+        },
+        {
+          "path": "/tender/procuringEntity/name",
+          "required": true,
+          "note": "tender/procuringEntity/name OR buyer/name OR OR parties/id AND parties/roles=buyer or procuringEntity, awar"
+        },
+        {
+          "path": "/buyer/name",
+          "required": true,
+          "note": "buyer/name OR OR parties/id AND parties/roles=buyer or procuringEntity, awards/value/amoun"
+        },
+        {
+          "path": "/parties[]/id",
+          "required": true
+        },
+        {
+          "path": "/awards[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/awards[]/value/currency",
+          "required": true
+        },
+        {
+          "path": "/awards[]/status",
+          "required": true
+        },
+        {
+          "path": "/awards[]/date",
+          "required": true
+        },
+        {
+          "path": "/awards[]/items[]/classification/id",
+          "required": false
+        }
+      ],
+      "priority": 50,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R051",
+      "name": "High market concentration",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "A small number of companies win a high share of contracts in a particular market.",
+      "tracks": "A high market concentration can be a result of collusive bidding or low competition.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Low competition.",
+          "Required source concepts: -Supplier id or name -Item classification (to identify the markets). -Award or contract values -Award date.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A high market concentration can be a result of collusive bidding or low competition.",
+      "limitations": "Unit of analysis: Market. Source: Based on “Concentrated market structure” in Toolkit for detecting collusive bidding in public procurement and Merger Guidelines U.S. Department of Justice and the Federal Trade Commission",
+      "paths": [
+        {
+          "path": "/awards[]/suppliers[]/id",
+          "required": true
+        },
+        {
+          "path": "/awards[]/suppliers[]/name",
+          "required": true
+        },
+        {
+          "path": "/awards[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/awards[]/value/currency",
+          "required": true
+        },
+        {
+          "path": "/awards[]/date",
+          "required": true
+        },
+        {
+          "path": "/awards[]/status",
+          "required": true
+        },
+        {
+          "path": "/awards[]/items[]/classification/id",
+          "required": true
+        },
+        {
+          "path": "/awards[]/items[]/classification/scheme",
+          "required": true
+        }
+      ],
+      "priority": 51,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R052",
+      "name": "Small initial purchase from supplier followed by much larger purchases",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The supplier receives two contracts over a distinct time period, the first in a small amount, the second in a larger amount, from the same buyer.",
+      "tracks": "This red flag could indicate that project officials are trying to favor a fictitious contractor. A fictitious or fraudulent contractor could start with a small purchase to test whether it is accepted by the procuring entity and then bid for a larger contract.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Supplier name -Award status -Award amount -Award date -Procuring entity or buyer name.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "This red flag could indicate that project officials are trying to favor a fictitious contractor. A fictitious or fraudulent contractor could start with a small purchase to test whether it is accepted by the procuring entity and then bid for a larger contract.",
+      "limitations": "Unit of analysis: Contracting process, Bidder. Source: Based on “Fictitious contractor” in Guide to Combating Corruption & Fraud in Development Projects .",
+      "paths": [
+        {
+          "path": "/awards[]/suppliers[]/id",
+          "required": true
+        },
+        {
+          "path": "/awards[]/suppliers[]/name",
+          "required": true
+        },
+        {
+          "path": "/tender/procuringEntity/name",
+          "required": true
+        },
+        {
+          "path": "/buyer/name",
+          "required": true
+        },
+        {
+          "path": "/awards[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/awards[]/value/currency",
+          "required": true
+        },
+        {
+          "path": "/awards[]/status",
+          "required": true
+        },
+        {
+          "path": "/awards[]/date",
+          "required": true
+        },
+        {
+          "path": "/awards[]/items[]/classification/id",
+          "required": false
+        }
+      ],
+      "priority": 52,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R053",
+      "name": "Co-bidding pairs have same recurrent winner",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Two bidders co-bid in 2 or more tenders, but only one bidder wins.",
+      "tracks": "Coordinated bidding behavior can be a signal of collusion. For instance, a colluding bidder can mimic competition by submitting deliberately losing bids in contracting processes in which a colluding partner participates.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Collusion risks.",
+          "Required source concepts: Winning bidder Bid status Bidder details.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Coordinated bidding behavior can be a signal of collusion. For instance, a colluding bidder can mimic competition by submitting deliberately losing bids in contracting processes in which a colluding partner participates.",
+      "limitations": "Unit of analysis: Contracting process, Bidder. Source: Based on Corruption and the Network Structure of Public Contracting Markets across Government Change, “Superfluous losing bidders” in Toolkit for detecting collusive bidding in public procurement",
+      "paths": [
+        {
+          "path": "/bids/details[]/id",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/status",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/tenderers[]/id",
+          "required": true
+        },
+        {
+          "path": "/awards[]/status",
+          "required": true
+        }
+      ],
+      "priority": 53,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R054",
+      "name": "Direct award followed by change orders that exceed the competitive threshold",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "A direct award is followed by contract modifications in its value that exceed the competitive threshold.",
+      "tracks": "Once the contract is signed, amendments or change orders can be made. While there are cases where this can be legitimate, change orders can be manipulated to facilitate corruption or fraud, for instance, through an unjustified increase in the price, by including other items in the contracts, extending the timeline, etc. Evidence shows that thresholds can be manipulated to initially avoid more competitive procedures, and once the contract has been awarded change orders can be used to increase prices above threshold.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Procurement method -Contract status -Contract amounts -Contract amendments description.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Once the contract is signed, amendments or change orders can be made. While there are cases where this can be legitimate, change orders can be manipulated to facilitate corruption or fraud, for instance, through an unjustified increase in the price, by including other items in the contracts, extending the timeline, etc. Evidence shows that thresholds can be manipulated to initially avoid more competitive procedures, and once the contract has been awarded change orders can be used to increase prices above threshold.",
+      "limitations": "Unit of analysis: Contracting process, Bidder. Source: Based on Questionable Contract Amendments in Guide to Combating Corruption & Fraud in Development Projects .",
+      "paths": [
+        {
+          "path": "/tender/procurementMethod",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/status",
+          "required": true
+        },
+        {
+          "path": "/awards[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/awards[]/value/currency",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/value/currency",
+          "required": true
+        }
+      ],
+      "priority": 54,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R055",
+      "name": "Multiple direct awards above or just below competitive threshold",
+      "engine": "custom",
+      "scope": "Tenderer",
+      "description": "Supplier receives multiple direct awards from the same buyer in period t that surpasses the competitive threshold.",
+      "tracks": "Public officials can have significantly higher levels of discretion awarding contracts when estimated costs are below competitive thresholds. If the same supplier receives multiple direct awards from the same buyer below threshold this could be a sign of contract splitting.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Procurement method -Buyer identifier -Awards amount -Award status -Procedure date.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Public officials can have significantly higher levels of discretion awarding contracts when estimated costs are below competitive thresholds. If the same supplier receives multiple direct awards from the same buyer below threshold this could be a sign of contract splitting.",
+      "limitations": "Unit of analysis: Buyer, Bidder. Source: Based on “Multiple Awards just under procurement thresholds” in Guide to Combating Corruption & Fraud in Development Projects .",
+      "paths": [
+        {
+          "path": "/tender/procurementMethod",
+          "required": true
+        },
+        {
+          "path": "/awards[]/date",
+          "required": true
+        },
+        {
+          "path": "/awards[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/awards[]/value/currency",
+          "required": true
+        }
+      ],
+      "priority": 55,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R056",
+      "name": "Winning bid does not meet the award criteria",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The winning bid does not meet the award criteria.",
+      "tracks": "In a poorly controlled bidding process project officials can tamper with bids after receipt to ensure that a favored contractor is selected. (IACRC, 2012).",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Award criteria -Winning bid details -Evaluation reports.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "In a poorly controlled bidding process project officials can tamper with bids after receipt to ensure that a favored contractor is selected. (IACRC, 2012).",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on Manipulation of Bids in Guide to Combating Corruption & Fraud in Development Projects.",
+      "paths": [
+        {
+          "path": "/tender/awardCriteria",
+          "required": true,
+          "note": "tender/awardCriteria, bids/details/status, bids/details/documents = evaluationReports To identify w"
+        },
+        {
+          "path": "/bids/details[]/status",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/documents[]",
+          "required": true
+        },
+        {
+          "path": "/awards[]/relatedBid",
+          "required": true
+        }
+      ],
+      "priority": 56,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R057",
+      "name": "Bid rotation",
+      "engine": "custom",
+      "scope": "Tenderer",
+      "description": "Bidders take turns in being the winner.",
+      "tracks": "Members of a collusive bidding scheme can agree to rig the bidding process in order to allow each member of the group to win a contract at an inflated price on a rotating basis.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Collusion risks.",
+          "Required source concepts: -Bidders details -Bis status -Winning bidder -Bid values -Item classification (to define markets).",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Members of a collusive bidding scheme can agree to rig the bidding process in order to allow each member of the group to win a contract at an inflated price on a rotating basis.",
+      "limitations": "Unit of analysis: Bidder, Market. Source: Based on “Bid rotation” in Empirical Methods for Detecting Bid-rigging Cartels, Guidelines for detecting bid rigging in public procurement, Using Bid Rotation and Incumbency to Detect Collusion: A Regression Discontinuity Approach",
+      "paths": [
+        {
+          "path": "/bids/details[]/tenderers[]/id",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/tenderers[]/name",
+          "required": true
+        },
+        {
+          "path": "/awards[]/suppliers[]/id",
+          "required": true
+        },
+        {
+          "path": "/awards[]/suppliers[]/name",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/value/currency",
+          "required": true
+        },
+        {
+          "path": "/awards[]/items[]/classification/id",
+          "required": true
+        },
+        {
+          "path": "/awards[]/items[]/classification/scheme",
+          "required": true
+        }
+      ],
+      "priority": 57,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R058",
+      "name": "Heavily discounted bid",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The percentage difference between the winning bid and the second-lowest valid bid is a high outlier.",
+      "tracks": "An unethical bidder can offer defective goods (\"lemons\") if the buyer has inadequate quality criteria.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Collusion risks.",
+          "Required source concepts: -Bid id -Bid status -Bid values -Winning bidder.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "An unethical bidder can offer defective goods (\"lemons\") if the buyer has inadequate quality criteria.",
+      "limitations": "Unit of analysis: Contracting process, Bidder. Source: Based on \"The price offered by the winning bidder is significantly lower than the price offered by the rest of the bidders\" in Fraud in Public Procurement: A collection of Red Flags and Best Practices, \"Difference between lowest and second lowest bid prices\" in Assessing the potential for detecting collusion in Swedish public procurement, and The Market for \"Lemons\": Quality Uncertainty and the Market Mechanism.",
+      "paths": [
+        {
+          "path": "/bids/details[]/id",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/value/currency",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/status",
+          "required": true
+        },
+        {
+          "path": "/awards[]/relatedBid",
+          "required": true
+        }
+      ],
+      "priority": 58,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R059",
+      "name": "Large difference between the award value and final contract amount",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The difference between the award and final contract value exceeds a threshold.",
+      "tracks": "A high difference between the award value and contract value can signal inefficient contracting processes and poorer value for money. Increases in the price before the contract is signed should be reviewed carefully since it can signal the supplier is trying to generate unjustified profits. It can also be a sign of potential corruption where the contract is awarded to a favored bidder for a lower price, and then the price increases after negotiations.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Contract implementation.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Award and contract amounts and currencies -Award and contract status.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A high difference between the award value and contract value can signal inefficient contracting processes and poorer value for money. Increases in the price before the contract is signed should be reviewed carefully since it can signal the supplier is trying to generate unjustified profits. It can also be a sign of potential corruption where the contract is awarded to a favored bidder for a lower price, and then the price increases after negotiations.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Difference between contract award and final contract amount” in ‘Red Flags of Corruption’ in World Bank Projects An Analysis of Infrastructure Contracts",
+      "paths": [
+        {
+          "path": "/awards[]/id",
+          "required": true
+        },
+        {
+          "path": "/awards[]/status",
+          "required": true
+        },
+        {
+          "path": "/awards[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/awards[]/value/currency",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/awardID",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/value/currency",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/status",
+          "required": true
+        }
+      ],
+      "priority": 59,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R060",
+      "name": "Long time between award date and contract signature date",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Time interval between award date and contract signing date is above threshold value.",
+      "tracks": "Project officials might find it difficult to justify the award of a contract to a preferred bidder under the procurement rules and delay the award as they attempt to create a justification. The preferred winning bidder and project officials might also be engaged in extended negotiations over the terms of bribe demands, such as the amounts and payment schedules. Finally, project officials might deliberately delay the award beyond the bid validity period in order to support the disqualification of all bidders and the need for re-bidding (IACRC, 2012).",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Contract implementation.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: Award date Contract signature date Procurement method.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Project officials might find it difficult to justify the award of a contract to a preferred bidder under the procurement rules and delay the award as they attempt to create a justification. The preferred winning bidder and project officials might also be engaged in extended negotiations over the terms of bribe demands, such as the amounts and payment schedules. Finally, project officials might deliberately delay the award beyond the bid validity period in order to support the disqualification of all bidders and the need for re-bidding (IACRC, 2012).",
+      "limitations": "Unit of analysis: Contracting process, Bidder. Source: Based on Long Delays in Contract Negotiations or Award in Guide to Combating Corruption & Fraud in Development Projects .",
+      "paths": [
+        {
+          "path": "/awards[]/date",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/dateSigned",
+          "required": true
+        },
+        {
+          "path": "/tender/procurementMethod",
+          "required": true
+        }
+      ],
+      "priority": 60,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R061",
+      "name": "Decision period extremely short",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Time interval between bid evaluation and award date is below threshold value.",
+      "tracks": "A short decision period can reflect a premeditated assessment, to favor a particular contractor.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Tender end date (or bid evaluation start date) -Award date -Procurement method.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A short decision period can reflect a premeditated assessment, to favor a particular contractor.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Length of decision period” in Uncovering High-Level Corruption: Cross-National Corruption Proxies Using Government Contracting Data",
+      "paths": [
+        {
+          "path": "/tender/tenderPeriod/endDate",
+          "required": true
+        },
+        {
+          "path": "/awards[]/date",
+          "required": true
+        },
+        {
+          "path": "/tender/procurementMethod",
+          "required": true
+        }
+      ],
+      "priority": 61,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R062",
+      "name": "Decision period extremely long",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Time interval between bid evaluation and award date is above threshold value.",
+      "tracks": "A long decision period can reflect a premeditated assessment, to favor a particular contractor and signal extensive legal challenge to the tender. For instance, officials might be negotiating with the preferred bidder, attempting to create a justification to award the contract or disqualify other bids.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Award.",
+          "Risk category: Bid rigging.",
+          "Required source concepts: -Tender end date (or bid evaluation start date) -Award date -Procurement method.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A long decision period can reflect a premeditated assessment, to favor a particular contractor and signal extensive legal challenge to the tender. For instance, officials might be negotiating with the preferred bidder, attempting to create a justification to award the contract or disqualify other bids.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Length of decision period” in Uncovering High-Level Corruption: Cross-National Corruption Proxies Using Government Contracting Data",
+      "paths": [
+        {
+          "path": "/tender/tenderPeriod/endDate",
+          "required": true
+        },
+        {
+          "path": "/awards[]/date",
+          "required": true
+        },
+        {
+          "path": "/tender/procurementMethod",
+          "required": true
+        }
+      ],
+      "priority": 62,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R063",
+      "name": "Contract is not published",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Contract document is not published.",
+      "tracks": "A higher rate of awards without contract information may signal a lack of integrity. No contract can signal that the interaction between the bidders and buyer is not transparent, and relevant interested parties cannot monitor the process.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Contract implementation.",
+          "Risk category: Low transparency.",
+          "Required source concepts: -Contract document -Contract status.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "A higher rate of awards without contract information may signal a lack of integrity. No contract can signal that the interaction between the bidders and buyer is not transparent, and relevant interested parties cannot monitor the process.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Award contract and selection documents not all public” in Corruption in Public Procurement: Finding the Right Indicators",
+      "paths": [
+        {
+          "path": "/contracts[]/documents[]/documentType",
+          "required": true
+        }
+      ],
+      "priority": 63,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R064",
+      "name": "Contract has modifications",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Contract has amendments.",
+      "tracks": "Once the contract is signed, amendments or change orders can be made. While this may be legitimate in some cases, change orders can be manipulated to facilitate corruption or fraud.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Contract implementation.",
+          "Risk category: Fraud.",
+          "Required source concepts: -Contract amendments -Contract status.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Once the contract is signed, amendments or change orders can be made. While this may be legitimate in some cases, change orders can be manipulated to facilitate corruption or fraud.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Changes in contract terms and value” in Warning signs of Fraud and Corruption in Public procurement and “Contract modification” in “An Objective Corruption Risk Index Using Public Procurement Data”",
+      "paths": [
+        {
+          "path": "/contracts[]/status",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/amendments[]/description",
+          "required": true
+        }
+      ],
+      "priority": 64,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R065",
+      "name": "Contract amendments to reduce line items",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Contract modifications issued after contract award, reducing or deleting items.",
+      "tracks": "Once the contract is signed, amendments or change orders can be made. While this may be legitimate in some cases, change orders can be manipulated to facilitate corruption or fraud.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Contract implementation.",
+          "Risk category: Fraud.",
+          "Required source concepts: -Contract amendments -Items classification -Contract status Optional: Item quantity.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Once the contract is signed, amendments or change orders can be made. While this may be legitimate in some cases, change orders can be manipulated to facilitate corruption or fraud.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Changes in contract terms and value” in Warning signs of Fraud and Corruption in Public procurement.",
+      "paths": [
+        {
+          "path": "/contracts[]/status",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/amendments[]/description",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/amendments[]/rationale",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/items[]/id",
+          "required": false
+        },
+        {
+          "path": "/contracts[]/items[]/quantity",
+          "required": false
+        },
+        {
+          "path": "/contracts[]/items[]/classification/id",
+          "required": false
+        },
+        {
+          "path": "/contracts[]/items[]/classification/scheme",
+          "required": false
+        },
+        {
+          "path": "/awards[]/items[]/id",
+          "required": false
+        },
+        {
+          "path": "/awards[]/items[]/quantity",
+          "required": false
+        },
+        {
+          "path": "/awards[]/items[]/classification/id",
+          "required": false
+        },
+        {
+          "path": "/awards[]/items[]/classification/scheme",
+          "required": false
+        }
+      ],
+      "priority": 65,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R066",
+      "name": "Contract amendments to increase line items",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Contract modifications issued after contract award, increasing items.",
+      "tracks": "Once the contract is signed, amendments or change orders can be made. While there are cases where this can be legitimate, these can be manipulated to facilitate corruption or fraud.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Contract implementation.",
+          "Risk category: Fraud.",
+          "Required source concepts: -Contract amendments -Items classification -Contract status Optional: Item quantity and award or tender items.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Once the contract is signed, amendments or change orders can be made. While there are cases where this can be legitimate, these can be manipulated to facilitate corruption or fraud.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Changes in contract terms and value” in Warning signs of Fraud and Corruption in Public procurement.",
+      "paths": [
+        {
+          "path": "/contracts[]/status",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/amendments[]/description",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/amendments[]/rationale",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/items[]/id",
+          "required": false
+        },
+        {
+          "path": "/contracts[]/items[]/quantity",
+          "required": false
+        },
+        {
+          "path": "/contracts[]/items[]/classification/id",
+          "required": false
+        },
+        {
+          "path": "/contracts[]/items[]/classification/scheme",
+          "required": false
+        },
+        {
+          "path": "/awards[]/items[]/id",
+          "required": false
+        },
+        {
+          "path": "/awards[]/items[]/quantity",
+          "required": false
+        },
+        {
+          "path": "/awards[]/items[]/classification/id",
+          "required": false
+        },
+        {
+          "path": "/awards[]/items[]/classification/scheme",
+          "required": false
+        }
+      ],
+      "priority": 66,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R067",
+      "name": "Delivery failure",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Supplier fail to deliver any goods, work or service on time.",
+      "tracks": "Evidence shows that failure to deliver goods and services, or delivering low quality goods is a strong signal of corruption in the contracting process.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Contract implementation.",
+          "Risk category: Fraud.",
+          "Required source concepts: -Contract implementation details -Contract milestones due date and delivery date.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Evidence shows that failure to deliver goods and services, or delivering low quality goods is a strong signal of corruption in the contracting process.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Failure to Meet Contract Specifications” in Guide to Combating Corruption & Fraud in Development Projects",
+      "paths": [
+        {
+          "path": "/contracts[]/implementation/milestones[]/type",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/status",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/implementation/milestones[]/dueDate",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/implementation/milestones[]/dateMet",
+          "required": true
+        }
+      ],
+      "priority": 67,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R068",
+      "name": "Contract transactions exceed contract amount",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Total payments to a contractor exceed the initial contract amount.",
+      "tracks": "Increases in the initial contract value and/or prices of items could signal potential corruption. Cost overruns could also be a result of inefficiencies in the process or bad planning.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Contract implementation.",
+          "Risk category: Fraud.",
+          "Required source concepts: Contract value, Contract implementation transactions amount.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Increases in the initial contract value and/or prices of items could signal potential corruption. Cost overruns could also be a result of inefficiencies in the process or bad planning.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Inflated invoices” in Guide to Combating Corruption & Fraud in Development Projects",
+      "paths": [
+        {
+          "path": "/contracts[]/value/amount",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/value/currency",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/implementation/finalValue/amount",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/implementation/finalValue/currency",
+          "required": true
+        }
+      ],
+      "priority": 68,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R069",
+      "name": "Contract amendments to increase price",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Contract modifications issued after contract award, increasing the price.",
+      "tracks": "Once the contract is signed, amendments or change orders can be made. While this can be legitimate in some cases, change orders can be manipulated to facilitate corruption or fraud.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Contract implementation.",
+          "Risk category: Fraud.",
+          "Required source concepts: -Contract amendments -Contract status Optional: contract and award amounts.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Once the contract is signed, amendments or change orders can be made. While this can be legitimate in some cases, change orders can be manipulated to facilitate corruption or fraud.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Changes in contract terms and value” in Warning signs of Fraud and Corruption in Public procurement and “Questionable Contract Amendments” in Guide to Combating Corruption & Fraud in Development Projects .",
+      "paths": [
+        {
+          "path": "/contracts[]/status",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/amendments[]/description",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/amendments[]/rationale",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/value/amount",
+          "required": false
+        },
+        {
+          "path": "/awards[]/value/amount",
+          "required": false
+        }
+      ],
+      "priority": 69,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R070",
+      "name": "Losing bidders are hired as subcontractors",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "Losing bidders are hired as subcontractors",
+      "tracks": "While subcontracting may be legitimate, it can be used as a form of rent sharing in a collusive scheme.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Contract implementation.",
+          "Risk category: Collusion risks.",
+          "Required source concepts: -Bidders information -Subcontractors information.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "While subcontracting may be legitimate, it can be used as a form of rent sharing in a collusive scheme.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Prevalence of subcontracting” in Toolkit for detecting collusive bidding in public procurement and “Bidding patterns” in Warning signs of Fraud and Corruption in Public procurement.",
+      "paths": [
+        {
+          "path": "/tender/tenderers[]/id",
+          "required": true
+        },
+        {
+          "path": "/parties[]/roles",
+          "required": true
+        },
+        {
+          "path": "/bids/details[]/tenderers[]/id",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/relatedProcesses",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/relatedProcesses/relationship",
+          "required": true
+        },
+        {
+          "path": "/awards[]/suppliers[]/id",
+          "required": true
+        }
+      ],
+      "priority": 70,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R071",
+      "name": "A contractor subcontracts all or most of the work received",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "A subcontractor or subcontractors receive more than 50% of contract payment",
+      "tracks": "While subcontracting may be legitimate, it can be used as a form of rent sharing in a collusive scheme.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Contract implementation.",
+          "Risk category: Collusion risks.",
+          "Required source concepts: -Subcontracting details.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "While subcontracting may be legitimate, it can be used as a form of rent sharing in a collusive scheme.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Prevalence of subcontracting” in Toolkit for detecting collusive bidding in public procurement",
+      "paths": [
+        {
+          "path": "/awards[]/hasSubcontracting",
+          "required": true
+        },
+        {
+          "path": "/awards[]/subcontracting/minimumPercentage",
+          "required": true
+        },
+        {
+          "path": "/awards[]/subcontracting/value/amount",
+          "required": true
+        }
+      ],
+      "priority": 71,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R072",
+      "name": "High prevalence of subcontracts",
+      "engine": "custom",
+      "scope": "Buyer",
+      "description": "The ratio of contracting processes with subcontracts to total contracting processes is a high outlier per buyer or market",
+      "tracks": "While subcontracting can be legitimate, it may be used as a form of rent sharing in a collusive scheme.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Contract implementation.",
+          "Risk category: Collusion risks.",
+          "Required source concepts: -Subcontracting details -Buyer information -Items information.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "While subcontracting can be legitimate, it may be used as a form of rent sharing in a collusive scheme.",
+      "limitations": "Unit of analysis: Buyer, Market. Source: Based on “Prevalence of subcontracting” in Toolkit for detecting collusive bidding in public procurement",
+      "paths": [
+        {
+          "path": "/awards[]/hasSubcontracting",
+          "required": true
+        },
+        {
+          "path": "/tender/procuringEntity/name",
+          "required": true,
+          "note": "tender/procuringEntity/name OR buyer/name OR parties/id and parties/name with parties/roles=buyer To calcu"
+        },
+        {
+          "path": "/buyer/name",
+          "required": true,
+          "note": "buyer/name OR parties/id and parties/name with parties/roles=buyer To calculate by market"
+        }
+      ],
+      "priority": 72,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    },
+    {
+      "id": "R073",
+      "name": "Discrepancies between work completed and contract specifications",
+      "engine": "custom",
+      "scope": "OCID",
+      "description": "The work completed or goods or services delivered do not fulfill the initial tender or contract specifications.",
+      "tracks": "Low quality or undelivered goods, works or services can be a strong indicator of fraud and corruption.",
+      "computation": {
+        "summary": "See Red flags Guide Annex for full methodology",
+        "steps": [
+          "Procurement stage focus: Contract implementation.",
+          "Risk category: Fraud.",
+          "Required source concepts: -Contract specifications. -Documents and reports about the delivery.",
+          "See OCP Red Flags Guide Annex for full methodology."
+        ]
+      },
+      "interpretation": "Low quality or undelivered goods, works or services can be a strong indicator of fraud and corruption.",
+      "limitations": "Unit of analysis: Contracting process. Source: Based on “Failure to Meet Contract Specifications” in Guide to Combating Corruption & Fraud in Development Projects .",
+      "paths": [
+        {
+          "path": "/contracts[]/status",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/documents[]/documentType",
+          "required": true
+        },
+        {
+          "path": "/contracts[]/implementation/documents[]/documentType",
+          "required": true
+        }
+      ],
+      "priority": 73,
+      "docs_url": "https://www.open-contracting.org/resources/"
+    }
+  ]
+}

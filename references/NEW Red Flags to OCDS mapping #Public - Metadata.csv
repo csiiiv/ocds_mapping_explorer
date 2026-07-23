@@ -1,0 +1,25 @@
+Variable,Description
+R_id,Internal OCP identifier for the red flags indicators
+Red flag,Name of the red flag
+Definition,A definition of the indicator
+Stage,"Stage of the process where the red flag can be detected: planning, tender, award or contract implementation."
+Type of red flag,"We classify the red flags according to different categories based on the type of corruption risk or the most relevant topic. In the real world, one indicator may be associated with multiple forms of corruption and bad practices. For simplicity, our methodology assigns each indicator to one category only: 
+
+Low transparency: indicators that show low transparency of the procurement process, which can increase the risk of corruption and opacity. 
+
+Collusion risks: Collusive tendering occurs when businesses that would otherwise be expected to compete, secretly conspire to raise prices or lower the quality of goods or services for purchasers who wish to acquire products or services through a bidding process. (OECD)
+
+Bid rigging: The indicators in this category relate to schemes performed by corrupt officials, colluding firms or officials and firms acting together, to limit competition, avoid controls, rig the process or favor a supplier and exclude legitimate bidders. 
+
+Fraud: Indicators that could signal a deliberate deception intended to influence any stage of the process (e.g. providing false information).
+
+Low competition: This category has indicators that signal low competition, which could be a result of other risks in the process. For instance, a single bid could be the ideal corrupt outcome.
+
+
+Note: In practical implementations, you could re-classify the indicators in other categories that make more sense for your context."
+Why is this a red flag?,An explanation of why the indicator can be considered a procurement red flag
+Required data fields,The data fields needed to calculate the indicator 
+OCDS fields,The corresponding data field names in OCDS.
+Methodology,A description of the methodology and calculation method of the indicators
+Unit of analysis,"This indicates if the red flag can be calculated by contracting process, bidder, or buyer or procuring entity"
+Source,Academic evidence on the use of the indicator

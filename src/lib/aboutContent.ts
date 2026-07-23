@@ -43,9 +43,15 @@ export const ABOUT_SECTIONS: ResourceSection[] = [
   },
   {
     id: "cardinal",
-    title: "Risk indicators (Cardinal)",
-    body: "Cardinal red-flag indicators ship as portable JSON packs. Custom Philippines packs are optional add-ons (app-level preferences). The app shows mapping readiness; analysis runs in a separate pipeline.",
+    title: "Risk indicators (Cardinal & OCP red flags)",
+    body: "Cardinal red-flag indicators ship as portable JSON packs. The OCP Red Flags guide and optional Philippines packs add further methodology-aligned checks. The app shows mapping readiness; analysis runs in a separate pipeline.",
     links: [
+      {
+        label: "Red flags in public procurement (OCP 2024)",
+        href: "https://www.open-contracting.org/wp-content/uploads/2024/12/OCP2024-RedFlagProcurement-1.pdf",
+        description:
+          "OCP guide to detecting procurement risks with data — indicator definitions, formulas, and OCDS field mappings (PDF).",
+      },
       {
         label: "Cardinal documentation",
         href: "https://cardinal.readthedocs.io/en/latest/cli/indicators/",

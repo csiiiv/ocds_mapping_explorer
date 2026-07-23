@@ -51,6 +51,7 @@ export interface AppRouteState {
   view: ViewKey;
   stage: StageKey;
   path: string | null;
+  nodeId: string | null;
   q: string;
   status: StatusFilter;
 }
@@ -60,6 +61,7 @@ export interface AppRouteOptions {
   view: ViewKey;
   stage?: StageKey;
   path?: string | null;
+  nodeId?: string | null;
   q?: string;
   status?: StatusFilter;
 }
@@ -79,6 +81,7 @@ export function parseAppRoute(pathname: string, search: string): AppRouteState {
   const statusRaw = params.get("status") ?? "all";
   const status = isStatusFilter(statusRaw) ? statusRaw : "all";
   const path = params.get("path");
+  const nodeId = params.get("node");
 
   const segments = pathname.replace(/\/+$/, "").split("/").filter(Boolean);
   // segments: ["p", projectId, viewSegment, stage?]
@@ -97,6 +100,7 @@ export function parseAppRoute(pathname: string, search: string): AppRouteState {
     view,
     stage,
     path: path || null,
+    nodeId: nodeId || null,
     q,
     status,
   };
@@ -108,6 +112,7 @@ export function buildAppUrl({
   view,
   stage = "tender",
   path = null,
+  nodeId = null,
   q = "",
   status = "all",
 }: AppRouteOptions): string {
@@ -121,6 +126,7 @@ export function buildAppUrl({
 
   const params = new URLSearchParams();
   if (path) params.set("path", path);
+  if (nodeId) params.set("node", nodeId);
   if (q) params.set("q", q);
   if (status !== "all") params.set("status", status);
 

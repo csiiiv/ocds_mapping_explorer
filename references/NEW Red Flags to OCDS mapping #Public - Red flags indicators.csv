@@ -1,0 +1,438 @@
+R_id,Red flag,Definition,Stage,Type of red flag,Why is this a red flag?,Required data fields,OCDS fields,Methodology,Unit of analysis,Source
+R001,Planning documents not available,"Key planning documents are not available in the publication. These may include: procurement plans, market studies, feasibility studies among others. Check the OCDS document type codelist to see the possible documents.
+",Planning,Low transparency,"Governments should provide an adequate degree of transparency across the entire cycle of the procurement process to promote fair and equitable treatment of suppliers, and to facilitate oversight. A lack of planning documents could signal poor procurement planning or integrity risks since it does not allow to verify if the planned process responds to a real need. ",Planning documents,"planning/documents/documentType =
+plannedProcurementNotice, 'procurementPlan, marketStudies, feasibilityStudy, projectPlan",See Red flags Guide Annex for full methodology,"Contracting process, Buyer",Based on OECD’s Principles for Integrity in Public Procurement
+R002,Manipulation of procurement thresholds,A buyer bundles tenders below the competitive threshold.,Tender,Bid rigging,Non competitive methods increase discretion which can facilitate a corrupt buyer to award a contract to favored bidders.,"Tender values and currency
+Tender period start date (or publication date)
+Name of the procuring entity or buyer. 
+Procurement category","tender/value/amount, tender/value/currency, tender/tenderPeriod/startDate, tender/procurementMethod,
+tender/procuringEntity/name OR buyer/name OR tender/procuringEntity/id OR buyer/id, 
+Optional:
+tender/procurementCategory",See Red flags Guide Annex for full methodology,Buyer,"Based on Compliance and strategic contract manipulation around single market regulatory thresholds – the case of Poland, Manipulation of Procurement Contracts: Evidence from the Introduction of Discretionary Thresholds, Bunching Below Thresholds to Manipulate Public Procurement"
+R003,The submission period is too short,The period to submit bids is shorter than the legal threshold. The submission period starts with contracting documents being available to potential suppliers and ends with the submission deadline for expressions of interest or bids.,Tender,Bid rigging,"A short submission period leaves less time to prepare and submit bids. This makes it harder for non-connected companies to bid and to submit; well-connected firms can use their inside knowledge to win repeatedly. A corrupt buyer can give the predetermined bidder an unfair advantage by privately informing the predetermined bidder of the opportunity in advance, and by giving other bidders less time to prepare competitive bids.","Tender start and end date
+Procurement method used","tender/procurementMethod 
+tender/procurementMethodDetails for more detail on the specific methods
+tender/tenderPeriod/startDate, tender/tenderPeriod/endDate",See Red flags Guide Annex for full methodology,Contracting process,"Based on “Shortened time span for bidding process” in Corruption in Public Procurement: Finding the Right Indicators, “Short submission period” in An Objective Corruption Risk Index Using Public Procurement Data, “Short or inadequate notice to bidders” in Guide to Combating Corruption & Fraud in Development Projects, and “Deadline for submitting bids is very short” in Fraud in Public Procurement: A collection of Red Flags and Best Practices."
+R004,Failure to adequately advertise the request for bids,Key tender documents (tender notice) are not available for bidders during the full tender period.,Tender,Low transparency,A corrupt buyer can favor a predetermined bidder and exclude other potential bidders by limiting access to bidding documents.,"Tender start date
+Tender documents
+Tender documents date published","tender/tenderPeriod/startDate, tender/documents/documentType = tenderNotice or biddingDocuments, tender/documents/datePublished",See Red flags Guide Annex for full methodology,Contracting process,Based on “Failure to Make Bidding Documents Available” in Guide to Combating Corruption & Fraud in Development Projects
+R005,Key tender information and documents are not available,"Key tender documents are not available. These can include: the tender notices, bidding documents, technical specifications, evaluation criteria, key dates, etc. Check the OCDS document type codelist to see the possible documents.",Tender,Low transparency,"Governments should provide an adequate degree of transparency for the entire cycle of the procurement process to promote fair and equitable treatment of suppliers, and to facilitate oversight. Project officials can reduce competition and exclude qualified bidders by limiting access to bidding documents or not publishing key information about the tender.","- Tender documents
+- Key dates of the tender process","tender/documents/documentType=(tenderNotice, biddingDocuments, technicalSpecifications, evaluationCriteria), tender/documents/datePublished, tender/tenderPeriod/startDate; tender/tenderPeriod/endDate",See Red flags Guide Annex for full methodology,Contracting process,Based on OECD’s Principles for Integrity in Public Procurement and “Failure to Make Bidding Documents Available” in Guide to Combating Corruption & Fraud in Development Projects.
+R006,Unreasonable prequalification requirements,The eligibility criteria are unreasonable. See also “Unreasonable technical specifications”.,Tender,Bid rigging,"Having restrictive prequalification requirements can be used to limit competition and facilitate the selection of a favored bidder, often as the result of corruption.","-Eligibility criteria 
+
+Optional:
+-Procurement method
+-Item classification scheme and id (to compare tender with similar items)","tender/eligibilityCriteria OR 
+tender/documents/documentType=eligibilityCriteria",See Red flags Guide Annex for full methodology,Contracting process,Based on OECD’s Principles for Integrity in Public Procurement and “Unreasonable Prequalification Requirements” in Guide to Combating Corruption & Fraud in Development Projects.
+R007,Unreasonable technical specifications,The technical specifications are too broad or too narrow and seem to be tailored to a supplier. See also “Unreasonable prequalification requirements”.,Tender,Bid rigging,Project officials can deliberately draft inadequate bid specifications in order to facilitate the selection of a favored bidder.,"- Technical specifications documents
+-Item classifications
+Optional fields to narrow the analysis and compare similar tenders:
+-Procurement method
+
+-Procuring entity name
+-Tender value","tender/documents/documentType=technicalSpecifications
+tender/items/classification/id
+Optional: tender/procurementMethod,
+tender/procuringEntity/name OR buyer/name OR parties/id and parties/name with parties/roles=buyer,
+tender/value/amount",See Red flags Guide Annex for full methodology,Contracting process,"Based on OECD’s Principles for Integrity in Public Procurement (p 53), “Vague, Ambiguous or Incomplete Specifications” in Guide to Combating Corruption & Fraud in Development Projects, “Manipulation of tender specifications” and “Rigged technical specifications” in Fraud in Public Procurement: A collection of Red Flags and Best Practices and Prediction of Public Procurement Corruption Indices using Machine Learning Methods"
+R008,Unreasonable participation fees,The participation fee prices are not within legal parameters. Participation fees are often set as a fixed maximum or a percentage of total contract value.,Tender,Bid rigging,A corrupt buyer can favor a predetermined bidder and exclude other potential bidders by limiting access to bidding documents by increasing their price.,Tender participation fees,"tender/participationFees/value/amount, tender/participationFees/value/currency,
+tender/value/amount
+
+See Participation fees extension",See Red flags Guide Annex for full methodology,Contracting process,Based on “Failure to Make Bidding Documents Available” in Guide to Combating Corruption & Fraud in Development Projects
+R009,Buyer increases the cost of the bidding documents,The participation fee prices rise during the tender period. ,Tender,Bid rigging,A corrupt buyer can favor a predetermined bidder and exclude other potential bidders by limiting access to bidding documents.,"Tender participation fees
+
+Tender date","tender/participationFees/value/amount, tender/participationFees/value/currency, date
+
+See Participation fees extension",See Red flags Guide Annex for full methodology,Contracting process,Based on “Failure to Make Bidding Documents Available” in Guide to Combating Corruption & Fraud in Development Projects
+R010,Unjustified use of non competitive procedure,The use of a non-competitive method is not correctly justified or does not comply with the legal requirements.,Tender,Bid rigging,"While there are valid reasons to use non competitive procurement methods, its use must be justified and comply with legal requirements. A corrupt contracting authority can use more opaque methods to award the tender to the favored bidder.","-Procurement method
+-Procurement method details
+-Procurement method rationale","tender/procurementMethod, tender/procurementMethodDetails, tender/procurementMethodRationale",See Red flags Guide Annex for full methodology,Contracting process,Based on “Absence of tendering or inappropriate procedure” and “Cases not justifying the use of the negotiated procedure without prior publication of a contract notice” in Public Procurement guidance for practitioners
+R011,Splitting purchases to avoid procurement thresholds,"What should have been a single contract or purchase is split into two or more components, each below the relevant procurement threshold, to facilitate sole source or less competitive contract awards.",Tender,Bid rigging,"Project officials can split what should be a single contract or purchase into two or more components, each below the relevant procurement threshold, to facilitate direct or less competitive contract awards. (International Anti Corruption Research Center, 2012).","Procurement method used (and procurement method details if available)
+
+Item classification scheme and categories
+
+Tender values and currency
+
+Tender period start date
+
+Name of the procuring entity or buyer.","tender/procurementMethod`,
+tender/procurementMethodDetails`,
+tender/items/classification/id,
+tender/items/classification/scheme, tender/value/amount,
+tender/value/currency, tender/tenderPeriod/startDate, tender/procuringEntity/name OR buyer/name OR tender/procuringEntity/id OR buyer/id",See Red flags Guide Annex for full methodology,"Contracting process, Buyer",Based on “Split purchases” in Guide to Combating Corruption & Fraud in Development Projects and “Artificially splitting the contract value” in Public Procurement guidance for practitioners
+R012,Direct awards in contravention of the provisions of the procurement plan,Direct award method is used in contravention of the provisions of the procurement plan.,Tender,Bid rigging,"Direct awards, while they are justified in certain conditions, can sometimes  be used to avoid competition and award contracts to specific suppliers. 
+","-Procurement method 
+-Procurement method details
+-Planning documents","tender/procurementMethod, tender/procurementMethodDetails, planning/documents/documentType=procurementPlan OR plannedProcurementNotice",See Red flags Guide Annex for full methodology,Contracting process,Based on “Unjustified Sole Source Awards” in Guide to Combating Corruption & Fraud in Development Projects
+R013,High use of non competitive methods,The proportion of a buyer’s contracting processes that use non-competitive methods is a high outlier. ,Tender,Low transparency,"While there are valid reasons to use non competitive procurement methods where only a select list of suppliers can participate or the contracting process is awarded directly without competition, these methods are by default less competitive and transparent.","Procurement method
+
+Buyer or procuring entity information","tender/procurementMethod, 
+tender/procuringEntity/name OR buyer/name OR parties/id and parties/name with parties/roles=buyer",See Red flags Guide Annex for full methodology,Buyer,"Based on “Procedure type” in An Objective Corruption Risk Index Using Public Procurement Data and Uncovering High-Level Corruption: Cross-National Corruption Proxies Using Government Contracting Data, “Percentage of public contracts awarded without competition” in UNODC Statistical framework to measure corruption"
+R014,Short time between tender advertising and bid opening,Length of time between tender advertising and bid opening falls below a threshold value.,Tender,Bid rigging,"Project officials can deliberately fail to provide adequate notice for companies to prepare bids or proposals in order to benefit a favored bidder, often as the result of corruption.","-Tender period start date
+-Bid opening date","tender/bidOpening/date, tender/tenderPeriod/startDate, tender/procurementMethod
+
+Check Bid opening extension",See Red flags Guide Annex for full methodology,Contracting process,Based on “Short or Inadequate Notice to Bidders” in Guide to Combating Corruption & Fraud in Development Projects and “Length of advertisement period” in Uncovering High-Level Corruption: Cross-National Corruption Proxies Using Government Contracting Data.
+R015,Long time between bid opening and bid evaluation,"Time interval between bid opening and bid evaluation is greater than threshold value.  See also R014 - Short time between tender advertising and bid opening, R003 - The submission period is too short.",Tender,Bid rigging,A long time between bid opening and evaluation could indicate that project officials want to favor a particular contractor. It is recommended that bids are evaluated immediately after the bid submission period closes.,"-Tender period start date
+-Bid opening date","tender/bidOpening/date,
+tender/awardPeriod/startDate, tender/procurementMethod 
+
+Optional: tender/procurementMethodDetails
+
+Check Bid opening extension",See Red flags Guide Annex for full methodology,Contracting process,Based on “Unclear or subverted processes” in Warning signs of Fraud and Corruption in Public procurement.
+R016,Tender value is higher or lower than average for this item category,Tender value is threshold distance from mean for item category.,Tender,Bid rigging,"A larger variation in the tender value (for the same item categories) across different tenders can indicate lower value for money. Price differences for the same item across multiple contracting processes can also provide information about how competitive and efficient the procuring entity is. In addition, lower than average tender values for the same item category could indicate a procuring entity is lowering the value to avoid competitive thresholds. ","-Tender value amount
+-Tender value currency
+-Tender item classification id and scheme
+
+Optional: 
+-Procurement method and procurement method details","tender/value/amount, tender/value/currency, tender/items/classification/id, tender/items/classification/scheme,
+tender/procurementMethod
+Optional:
+tender/procurementMethodDetails
+
+Note: If items are not available at the tender level, award items or contract items could be used instead.",See Red flags Guide Annex for full methodology,Contracting process,Based on “Unreasonably High Line Item Bids” in Guide to Combating Corruption & Fraud in Development Projects.
+R017,Unreasonably low or high line item,The item value is threshold distance from the mean for the item category.,Tender,Collusion risks,"Unreasonably high line item bids can indicate the bidder is deliberately inflating their bid prices. In addition, lower than average line item bids can indicate a bidder is submitting a low bid to unfairly eliminate competitors with the intention of increasing the price through amendments or in defiance of a collusive group. 
+","-Unit values amount
+-Items classification schemes","tender/items/unit/value/amount, tender/items/unit/value/currency, tender/items/classification/id, tender/items/classification/scheme
+
+Also the bids/details/value/amount, bids/details/value/currency fields could be used.
+
+Note: If items are not available at the tender level, award items or contract items could be used instead.",See Red flags Guide Annex for full methodology,Contracting process,Based on “Leaking of tender information” in Fraud in Public Procurement: A collection of Red Flags and Best Practices and “Unreasonably Low Line Item Bids” and “Unreasonably High Line Item Bids” in Guide to Combating Corruption & Fraud in Development Projects.
+R018,Single bid received,Only one tenderer submitted a bid.,Tender,Low competition,"In a competitive procedure, a lack of competition might correspond to a suppression of competition and can represent the ideal outcome for a corrupt buyer and predetermined bidder.","Procurement method used (and procurement method details if available)
+
+Number of bidders","tender/procurementMethod,
+tender/numberOfTenderers, OR tender/tenderers/id
+OR bids/details/tenderers/id",See Red flags Guide Annex for full methodology,Contracting process,"Based on ""Single bidder"" in An Objective Corruption Risk Index Using Public Procurement Data"
+R019,Low number of bidders for item category,"​​Number of bidders significantly lower than average, based on prior similar contracts (for similar items or procuring entities).",Tender,Low competition,A lower number of bids indicates a decrease in competition that could facilitate the ideal outcome for a corrupt buyer to award the contract to a predetermined bidder.,"-Procurement method used
+-Item classification id and scheme.
+-Number of bids received","tender/procurementMethod, tender/items/classification/id, tender/items/classification/scheme ,(tender/procuringEntity/name OR buyer/name OR tender/procuringEntity/id OR buyer/id), (tender/numberOfTenderers OR tender/tenderers/id OR bids/details/tenderers/id)",See Red flags Guide Annex for full methodology,Contracting process,Based on “Number of bidders is significantly lower than the average in other similar tenders” in Fraud in Public Procurement: A collection of Red Flags and Best Practices
+R020,Tender has a complaint,The contracting process has at least one complaint.,Tender,Bid rigging,Losing or excluded bidders can submit complaints that may signal misconduct or corruption in the contracting process. ,-Complaints,"complaints/id
+
+Optional: 
+complaints/documents OR tender/documents/documentType = complaints to explore the details of the complaint. 
+
+See: complaints extension",See Red flags Guide Annex for full methodology,"Contracting process, Bidder",Based on “Complaints from Losing and Excluded Bidders” in Fraud in Public Procurement: A collection of Red Flags and Best Practices and “Complaints” in Warning signs of Fraud and Corruption in Public procurement.
+R021,High use of discretionary evaluation criteria,The proportion of contracting processes for a buyer using the non price evaluation criteria is a high outlier.,Tender,Bid rigging,"In a poorly controlled bidding process, project officials can tamper with bids after receipt to ensure that a favored contractor is selected. Non-price evaluation criteria, for instance the Most Economically Advantageous Tender criteria (MEAT), tend to be more subjective allowing issuers to favor the well-connected company, for instance:
+
+Non-price related evaluation criteria have been found to be associated with a higher probability of a single bid received (Fazekas et. al, 2016).
+Research in Italy found that the association between the MEAT criterion and corruption risk is stronger the more the scoring rule assigns points to qualitative (as opposed to quantitative) parameters (Decarolis, F. and Giorgiantonio, C., 2022)
+
+⚠️However, relying exclusively on price alone can be counterproductive to achieving other procurement outcomes and strategies (e.g. sustainability goals) and non-price evaluation criteria may be recommended in specific markets. For instance, the 2014 European Directives on public procurement prescribe the MEAT criterion as the ordinary criterion for awarding public contracts and the European Commission Single Market Scorecard Indicator 6 recommends that the use of award criteria based on price alone should be less than 80%.","-Tender award criteria
+-Buyer id
+Optional:
+-Award criteria details
+-Item classifications to analyze specific sectors only.","To calculate for the buyer:
+tender/awardCriteria = ‘qualityOnly’ OR ‘ratedCriteria’,
+tender/procuringEntity/name OR buyer/name OR parties/id and parties/name with parties/roles=buyer
+Optional: 
+tender/awardCriteriaDetails, to analyze the details of the award criteria. tender/items/classification/id to analyze by specific sectors. 
+
+To calculate for the contracting process: 
+tender/lots/awardCriteria/criteria/number/number 
+tender/lots/awardCriteria/criteria/type
+ 
+See award criteria breakdown extension",See Red flags Guide Annex for full methodology,"Contracting process, Buyer",Based on “non-price evaluation criteria” in “An Objective Corruption Risk Index Using Public Procurement Data” and “awarding criteria” in Corruption red flags in public procurement: new evidence from Italian calls for tenders (2022) and (2020)
+R022,Wide disparity in bid prices,The bid price range in the same contracting process is greater than a threshold value.,Tender,Collusion risks,"A colluding bidder can mimic competition by coordinating a collusive agreement with their colluding partner to prearrange the bid prices beforehand and therefore there is no real competition. Extreme or unusual offer price distributions are found to signal collusion by academic literature Abrantes-Metz et al. (2006), Padhi and Mohapatra (2011).",Individual bid data and their amounts.,"bids/details/id, bids/details/value/amount, bids/details/value/currency, bids/details/status",See Red flags Guide Annex for full methodology,Contracting process,"Based on ""Bid price range"" in Assessing the potential for detecting collusion in Swedish public procurement."
+R023,Fixed multiple bid prices,The percentage difference between two tenderers’ bid prices is the same in different contracting processes.,Tender,Collusion risks,"A colluding bidder can mimic competition by coordinating a collusive agreement with their colluding partner to prearrange the bid prices beforehand and therefore there is no real competition. 
+Very similar or equal bid prices is considered a signal of potential collusive agreements between bidders.  Also extreme or unusual offer price distributions are found to signal collusion by academic literature Abrantes-Metz et al. (2006), Padhi and Mohapatra (2011)
+",Individual bid data and their amounts.,"bids/details/id, bids/details/value/amount, bids/details/value/currency,
+bids/details/status",See Red flags Guide Annex for full methodology,Bidder,Based on “Concerted bids” in A decision support system for fraud detection in public procurement
+R024,Price close to winning bid,The percentage difference between the winning bid and the second-lowest valid bid is a low outlier.,Award,Collusion risks,"A colluding bidder can mimic competition by submitting a bid that is similar in price (but different in quality, for example) from its colluding partner.",Individual bid data and their amounts.,"bids/details/id, bids/details/value/amount, bids/details/value/currency,
+bids/details/status
+To identify winning bid:
+bids/details/tenderers/id and awards/suppliers/id
+OR awards/relatedBid
+
+Optional, for greater accuracy: 
+award/status, tender/awardCriteria",See Red flags Guide Annex for full methodology,"Contracting process, Bidder","Based on ""Difference between first and second relative offer prices"" in Toolkit for detecting collusive bidding in public procurement and ""Winning tender just below the next lowest bid"" in Fraud in Public Procurement: A collection of Red Flags and Best Practices"
+R025,Excessive unsuccessful bids,The ratio of winning bids to submitted bids for a top tenderer is a low outlier.,Award,Collusion risks,"A colluding bidder can mimic competition by submitting deliberately losing bids (at inflated bid prices, for example) in contracting processes in which a colluding partner participates.","Tenderer (bidder) id (or name if ids are not available)
+
+Bid status
+
+Winning bidder id (supplier) or name if ids are not available","tender/tenderers/id OR bids/details/tenderers/id OR parties/id where parties/roles = tenderer
+ bids/details/status
+awards/suppliers/id OR parties/id where parties/roles = supplier",See Red flags Guide Annex for full methodology,Bidder,"Based on ""Superfluous losing bidders"" in Toolkit for detecting collusive bidding in public procurement and ""Top losers"" in A decision support system for fraud detection in public procurement"
+R026,Prevalence of consortia,The proportion of awards to a consortia is a high outlier in a market.,Award,Collusion risks,"While consortia can be formed for legitimate reasons, joint bidding in a collusive setting can mitigate the burden of collusive behavior by formalizing the cooperation and facilitating rent sharing. ","-Awarded supplier information
+
+-Items information (to define the markets)","awards/suppliers/id, awards/suppliers/name,
+awards/status,awards/date,
+tender/items/classification/id,
+tender/items/classification/scheme
+
+*award or contract items can be used instead",See Red flags Guide Annex for full methodology,Market,"Based on ""Prevalence of consortia"" in Toolkit for detecting collusive bidding in public procurement, and Assessing the potential for detecting collusion in Swedish public procurement, “Two or more companies submit a joint bid, although they should be able to participate individually” in Fraud in Public Procurement: A collection of Red Flags and Best Practices."
+R027,Missing bidders,Potential bidders make agreements not to bid because of collusion arrangements.,Tender,Collusion risks,Withholding bids from certain tenders is a straightforward way to restrict competition; hence the absence of bids from a previously active company in a given market can indicate collusive bidding. ,"-Number of bidders
+-Procurement method
+-Items information (to define the markets)
+-Tender date","tender/procurementMethod,
+tender/numberOfTenderers, OR tender/tenderers/id
+OR bids/details/tenderers/id, 
+tender/items/classification/id,
+tender/items/classification/scheme,
+tender/tenderPeriod/startDate
+
+*award or contract items can be used instead. Other variables to get the date could be used also.",See Red flags Guide Annex for full methodology,Market,"Based on ""Missing bidders MB2"" in Toolkit for detecting collusive bidding in public procurement, and Assessing the potential for detecting collusion in Swedish public procurement"
+R028,Identical bid prices,Different tenderers submitted bids with the same price.,Tender,Collusion risks,"A corrupt buyer can award to a pre-determined bidder by leaking competitors' prices. Also, collusive bidders can agree on the price to submit.","Bid status
+
+Bid values","bids/details/id, 
+bids/details/status, 
+bids/details/value/amount, bids/details/value/currency,
+bids/details/tenderers/id",See Red flags Guide Annex for full methodology,"Contracting process, Bidder","Based on ""Bidders having the same bid price"" in Assessing the potential for detecting collusion in Swedish public procurement and ""Different companies include identical unit prices in their bid documents"" in Fraud in Public Procurement: A collection of Red Flags and Best Practices."
+R029,Bid prices deviate from Benford’s Law,"The distribution of bid prices (or tender or contract values) in a specific market deviates from Benford’s Law distribution. The indicator can also be calculated for the whole procurement dataset, however it could be less informative.",Tender,Bid rigging,"Benford’s law states that the first digit of most naturally occurring sets of numerical data follows a particular pattern, where the number 1 appears as the leading digit about 30% of the time, the number 2 as the the leading digit about 17% of the time, and so on up to 9, which should appear as a leading digit about 4% of the time. A deviation from this pattern could be a sign of price manipulation. ","Bid values 
+
+Items information (to define the markets)
+
+
+Alternative: 
+Tender values or contract values","bids/details/value/amount OR 
+tender/value/amount OR contracts/value/amount OR awards/value/amount, 
+tender/items/classification/id,
+tender/items/classification/scheme",See Red flags Guide Annex for full methodology,Market,"Based on “Benford’s Law” in Assessing the potential for detecting collusion in Swedish public procurement, ProACT Integrity indicators and Public procurement in Brazil: Evidence of frauds using the Newcomb-Benford Law"
+R030,Late bid won,The winning bid was received after the submission deadline.,Award,Bid rigging,A corrupt buyer can award to a predetermined bidder by disregarding the submission deadline.,"-Bid submission date
+-Bid status
+-Tender period end date","tender/tenderPeriod/endDate,
+bids/details/id
+bids/details/date,
+bids/details/status,
+To identify winning bid:
+bids/details/tenderers/id and awards/suppliers/id
+OR awards/relatedBid",See Red flags Guide Annex for full methodology,"Contracting process, Bidder","Based on ""Bids after the deadline accepted"" in Corruption in Public Procurement: Finding the Right Indicators and ""Late submissions accepted"" in Fraud in Public Procurement: A collection of Red Flags and Best Practices"
+R031,Winning bid price very close or higher than estimated price,The ratio between the winning bid and the estimated price is a high outlier.,Award,Bid rigging,"Bid prices are expected to fall below to the estimated price, due to healthy competition, assuming the estimated price is not biased. “A winning bid that is too close to confidential project cost estimates or budgets can indicate the leaking of bid information or an unbalanced bidding scheme” (IACRC, 2012).
+","Bid amount
+
+Bid status
+
+Winning bidder
+
+Tender amount","bids/details/id
+bids/details/status, 
+bids/details/value/amount, bids/details/value/currency
+tender/value/amount,
+tender/value/currency
+To identify winning bid:
+bids/details/tenderers/id and awards/suppliers/id
+OR awards/relatedBid",See Red flags Guide Annex for full methodology,Contracting process,Based on “Relative contract value” in Toolkit for detecting collusive bidding in public procurement.
+R032,Bidders share same beneficial owner,Two tenderers bidding in the same contracting process share the same beneficial owner.,Tender,Collusion risks,"While shared ownership of bidders participating in the same contracting process is often not illegal, shared ownership could be a sign of collusion or coordinated companies submitting bids to simulate competition.",Bidder beneficial ownership information,"parties/roles` IN 'supplier' OR 'tenderer',
+parties/id, 
+parties/beneficialOwners/name, 
+parties/beneficialOwners/id
+
+See Beneficial ownership extension",See Red flags Guide Annex for full methodology,"Contracting process, Bidder",Based on “Common partners” in A decision support system for fraud detection in public procurement and “Detecting shared ownership” in Beneficial ownership data in procurement.
+R033,Bidders share same major shareholder,Two tenderers bidding in the same contracting process share the same major shareholder.,Tender,Collusion risks,"Sharing the same major shareholder could indicate that the companies belong to the same economic group, thus competition is impaired and this could be a sign of collusion.",Bidder shareholder information,"parties/roles IN 'tenderer',
+parties/id, 
+parties/shareholders/shareholder/id,
+parties/shareholders/shareholding",See Red flags Guide Annex for full methodology,"Contracting process, Bidder",Based on “Common economic group” in A decision support system for fraud detection in public procurement.
+R034,Bids submitted in same order,"Sequence of bid submissions shows patterns in different bid rounds.
+",Tender,Collusion risks,Certain bidding patterns and practices seem at odds with a competitive market and suggest the possibility of collusion. Two bidders submitting bids in the same order at different stages of the tendering process might indicate they are coordinating the submission. ,"Bidder details
+
+Bids date
+
+Bid status","bids/details/id, 
+bids/details/date, bids/details/tenderers/id, bids/details/tenderers/name, bids/details/status",See Red flags Guide Annex for full methodology,Contracting process,Based on “Bidding red flags” in Guide to Combating Corruption & Fraud in Development Projects
+R035,All except winning bid disqualified,Bids are disqualified if not submitted by the single tenderer of the winning bid.,Award,Bid rigging,A corrupt buyer can award the predetermined bidder by disqualifying other bidders' offers.,"-Information on the submitted bids including the status, id, and winning bidder. 
+-Award status","bids/details/id
+bids/details/status, 
+To identify winning bid:
+bids/details/tenderers/id and awards/suppliers/id
+OR awards/relatedBid
+awards/status",See Red flags Guide Annex for full methodology,"Contracting process, Bidder","Based on ""Exclusion of all but one bid"" in An Objective Corruption Risk Index Using Public Procurement Data and ""Prevalence of faulty bids"" in Toolkit for detecting collusive bidding in public procurement."
+R036,Lowest bid disqualified,"The lowest submitted bid is disqualified, while the award criterion is price only.",Tender,Bid rigging,A corrupt buyer can award the predetermined bidder by disqualifying lower-priced bids.,"-Bid id
+-Bid status
+-Bid amounts
+-Award criteria","bids/details/id
+bids/details/status, bids/details/value/amount, bids/details/value/currency, tender/awardCriteria",See Red flags Guide Annex for full methodology,Contracting process,"Based on ""The lowest bid is rejected almost inexplicably"" in Fraud in Public Procurement: A collection of Red Flags and Best Practices, ""Lowest bidder not selected"" in Common Red Flags of Fraud and Corruption in Procurement, and ""Award to other than lowest qualified bidder"" in Guide to Combating Corruption & Fraud in Development Projects"
+R037,Poorly supported disqualifications,A seemingly qualified contractor was disqualified.,Tender,Bid rigging,Project officials can disqualify bidders at the prequalification or bidding stages for superficial or arbitrary reasons in order to facilitate the selection of a favored bidder.,"-Award criteria 
+-Bid status
+-Bidders details
+-Evaluation reports","tender/awardCriteria,
+bids/details/id, bids/details/value/amount, bids/details/value/currency, bids/details/status, bids/details/documents = evaluationReports",See Red flags Guide Annex for full methodology,"Contracting process, Bidder","Based on ""Excluding qualified bidders"" in Guide to Combating Corruption & Fraud in Development Projects"
+R038,Excessive disqualified bids,"The ratio of disqualified bids to submitted bids is a high outlier per buyer, procuring entity or tenderer.",Tender,Bid rigging,A corrupt buyer or procuring entity can award pre-determined bidders by disqualifying other bidders' bids. A colluding bidder can mimic competition by submitting deliberately unqualified bids.,"-Information on the bid status, id.
+-Bidder id
+-Buyer or procuring entity id or name.","bids/details/id
+bids/details/status, (bids/details/tenderers/id OR parties/id with parties/roles=tenderer), (tender/procuringEntity/id OR buyer/name OR parties/id with parties/roles=buyer)",See Red flags Guide Annex for full methodology,"Buyer, Bidder","Based on ""Excluding qualified bidders"" in Guide to Combating Corruption & Fraud in Development Projects, Behind the Scenes of ProZorro: Does Ukrainian business trust public procurement?"
+R039,Unanswered bidder questions,Bidder enquiries are not answered.,Tender,Low transparency,If questions are left unanswered this can signal that a procuring entity is trying to exclude particular suppliers or favor a particular firm.,"-Tender status
+-Tender enquiries
+-Enquiries answers","tender/enquiries/date, tender/enquiries/dateAnswered, tender/enquiries/answer,
+tender/status
+
+See Enquiries extension",See Red flags Guide Annex for full methodology,Contracting process,Based on “Precautionary measures in tendering” in OECD’s Principles for Integrity in Public Procurement
+R040,High share of buyer's contracts,The bidder's share of a buyer’s contracts is a high outlier.,Award,Low competition,A corrupt buyer can consistently award contracts to the preferred bidder.,"-Supplier name
+-Award status
+-Procuring entity or buyer name
+-Award date","awards/suppliers/id, awards/suppliers/name, tender/procuringEntity/name OR buyer/name OR OR parties/id AND parties/roles=buyer or procuringEntity,
+ awards/status, awards/date",See Red flags Guide Annex for full methodology,"Buyer, Bidder",Based on “Winner’s share of issuer’s contracts” in Anatomy of grand corruption: A composite corruption risk index based on objective data
+R041,Physical similarities in documents by different bidders,Two tenderers bidding in the same contracting process submit documents with similar information or format.,Tender,Collusion risks,Similarities in the submitted bidding documents can indicate that the bidders are connected and that the same person prepared all the bids.,"-Bidder information
+-Bidder documents","bids/documents/documentType='biddingDocuments', bids/details/id,
+bids/details/tenderers/id",See Red flags Guide Annex for full methodology,"Contracting process, Bidder","Based on “Analysis of the submitted documentation” in Guidelines for detecting bid rigging in public procurement and OECD Guidelines for fighting bid rigging in public procurement, “Red flags with regard to bid documents” in Fraud in Public Procurement: A collection of Red Flags and Best Practices."
+R042,Bidder has abnormal address or phone number,Bidder phone number or address is atypical.,Tender,Fraud,"This can indicate the supplier is a fictitious company or is providing false information. In some collusive bidding cases, the winning bidder prepares and submits losing bids from non-existent companies to give the appearance of competition.","Bidder phone number OR 
+
+Bidder address","parties/roles` IN 'supplier' OR 'tenderer',
+parties/id (parties/contactPoint/telephone OR parties/address/streetAddress OR parties/address/postalCode)",See Red flags Guide Annex for full methodology,"Contracting process, Bidder",Based in “Suspicious bidders” in Warning signs of Fraud and Corruption in Public procurement.
+R043,Bidder has same contact information as project official,Bidder contact information matches buyer's contact point information.,Tender,Bid rigging,"This can indicate the supplier is a fictitious company or is providing falseinformation. In some collusive bidding cases, the winning bidder prepares and submits losing bids from non-existent companies to give the appearance of competition.","-Bidder contact details
+-Project official (buyer)
+contact details","parties/roles, parties/id, parties/contactPoint/telephone,
+parties/contactPoint/name, 
+parties/contactPoint/email",See Red flags Guide Annex for full methodology,"Contracting process, Bidder",Based on “Contractor’s address or phone number matches project official’s” in Guide to Combating Corruption & Fraud in Development Projects
+R044,Business similarities between bidders,Two tenderers bidding in the same contracting process share similar business contact information.,Tender,Collusion risks,Similarities between suppliers may indicate that the companies are connected.,"Bidder phone number, address, contact point or email.","parties/roles` IN 'supplier' OR 'tenderer',
+parties/id (parties/contactPoint/telephone OR parties/address/streetAddress OR parties/address/postalCode OR parties/contactPoint/email",See Red flags Guide Annex for full methodology,"Contracting process, Bidder",Based on “Connections between bidders” in Corruption in Public Procurement: Finding the Right Indicators and “Similarity in Bids” in Guide to Combating Corruption & Fraud in Development Projects
+R045,Bidder is not listed in business registries,Bidder does not appear in the supplier registry.,Tender,Fraud,"If the supplier or bidder is not traceable in official registries, this can indicate that it is a fictitious company or providing false information. ",-Bidder id and name,"parties/roles` IN 'supplier' OR 'tenderer',
+parties/id",See Red flags Guide Annex for full methodology,"Contracting process, Bidder",Based on “Fictitious contractor” in Guide to Combating Corruption & Fraud in Development Projects and “Suspicious bidders” in Warning signs of Fraud and Corruption in Public procurement.
+R046,Bidder is debarred or on sanctions list,Bidder appears on an official sanctions or debarments list.,Tender,Fraud,Previously sanctioned suppliers can pose a higher risk.,-Bidder id and name,"parties/roles` IN 'supplier' OR 'tenderer',
+parties/id",See Red flags Guide Annex for full methodology,"Contracting process, Bidder",Based on “Blacklisting” in A decision support system for fraud detection in public procurement
+R047,Supplier is not traceable on the web,Supplier is not traceable through web search,Award,Fraud,"If the supplier or bidder is not traceable online, this can indicate that it is a fictitious company or it is providing false information. “A project or government official can create a fictitious contractor, consultant, vendor or supplier that does not provide any actual goods or services in order to embezzle project funds” (IACRC).","-Supplier id and name
+-Supplier website","parties/roles= 'supplier', parties/id, parties/name  OR awards/suppliers/name, awards/suppliers/id, parties/contactPoint/url",See Red flags Guide Annex for full methodology,"Contracting process, Bidder",Based on “Fictitious contractor” in Guide to Combating Corruption & Fraud in Development Projects
+R048,Heterogeneous supplier,The variety of items supplied by a tenderer is a high outlier.,Award,Fraud,"A heterogeneous supplier is more likely to be unsuitable, increasing the risk of low value for money, low quality of delivery, and/or rent extraction.",-Item classification id and scheme,"awards/items/classification/id, awards/items/classification/scheme,awards/suppliers/id, awards/suppliers/name",See Red flags Guide Annex for full methodology,Bidder,"Based on ""Component C1B"" in Design and measurement of a corruption risk index from a supplier perspective in the context of COVID-19 emergency."
+R049,Direct awards below threshold,Supplier receives more than 1 direct award from the same buyer in period t just below the competitive threshold.,Award,Bid rigging,Multiple contract awards to the same company that are clustered just below a procurement threshold is a strong indicator of possible corruption.,"-Procurement method
+-Supplier name
+-Award date
+-Buyer or procuring entity name","tender/procurementMethod,
+awards/suppliers/id,
+awards/suppliers/name,
+awards/date, tender/procuringEntity/name OR buyer/name OR parties/id and parties/name with parties/roles=buyer",See Red flags Guide Annex for full methodology,Bidder,Based on “Multiple Awards just under procurement thresholds” in Guide to Combating Corruption & Fraud in Development Projects .
+R050,High market share,A supplier wins a high share of contracts in a particular market from the same buyer.,Award,Low competition,"This indicator can be considered a corruption outcome, since the ultimate goal of institutionalized corruption is to award contracts repeatedly to the same company or group of companies.","-Supplier name
+-Award status
+-Award amount
+-Award date
+-Procuring entity or buyer name
+-Award date
+-Award items to identify markets","awards/suppliers/id, awards/suppliers/name, tender/procuringEntity/name OR buyer/name OR OR parties/id AND parties/roles=buyer or procuringEntity,
+awards/value/amount, awards/value/currency, awards/status, awards/date
+
+Optional: awards/items/classification/id, awards/items/classification/scheme or tender or contract items, to compare awards in the same item category.",See Red flags Guide Annex for full methodology,"Buyer, Bidder",Based on “Winner’s share of issuer’s contracts” in Anatomy of grand corruption: A composite corruption risk index based on objective data
+R051,High market concentration,A small number of companies win a high share of contracts in a particular market.,Award,Low competition,A high market concentration can be a result of collusive bidding or low competition.,"-Supplier id or name
+-Item classification (to identify the markets).
+-Award or contract values
+-Award date","awards/suppliers/id, awards/suppliers/name, awards/value/amount, awards/value/currency,
+awards/date, awards/status, awards/items/classification/id, awards/items/classification/scheme
+
+*Contract of tender items could be used instead, and contract values can be used instead of award values if available.",See Red flags Guide Annex for full methodology,Market,Based on “Concentrated market structure” in Toolkit for detecting collusive bidding in public procurement and Merger Guidelines U.S. Department of Justice and the Federal Trade Commission
+R052,Small initial purchase from supplier followed by much larger purchases,"The supplier receives two contracts over a distinct time period, the first in a small amount, the second in a larger amount, from the same buyer.",Award,Bid rigging,This red flag could indicate that project officials are trying to favor a fictitious contractor. A fictitious or fraudulent contractor could start with a small purchase to test whether it is accepted by the procuring entity and then bid for a larger contract.,"-Supplier name
+-Award status
+-Award amount
+-Award date
+-Procuring entity or buyer name","awards/suppliers/id, awards/suppliers/name, tender/procuringEntity/name OR buyer/name, awards/value/amount, awards/value/currency, awards/status, awards/date
+
+Optional: awards/items/classification/id, awards/items/classification/scheme or tender or contract items, to compare awards in the same item category.",See Red flags Guide Annex for full methodology,"Contracting process, Bidder",Based on “Fictitious contractor” in Guide to Combating Corruption & Fraud in Development Projects .
+R053,Co-bidding pairs have same recurrent winner,"Two bidders co-bid in 2 or more tenders, but only one bidder wins.",Award,Collusion risks,"Coordinated bidding behavior can be a signal of collusion. For instance, a colluding bidder can mimic competition by submitting deliberately losing bids in contracting processes in which a colluding partner participates.","Winning bidder
+
+Bid status
+
+Bidder details","bids/details/id,bids/details/status, bids/details/tenderers/id AND awards/suppliers/id OR (awards/relatedBid), awards/status
+OR parties/id where parties/roles = supplier",See Red flags Guide Annex for full methodology,"Contracting process, Bidder","Based on Corruption and the Network Structure of Public Contracting Markets across Government Change, “Superfluous losing bidders” in Toolkit for detecting collusive bidding in public procurement"
+R054,Direct award followed by change orders that exceed the competitive threshold,A direct award is followed by contract modifications in its value that exceed the competitive threshold.,Award,Bid rigging,"Once the contract is signed, amendments or change orders can be made. While there are cases where this can be legitimate, change orders can be manipulated to facilitate corruption or fraud, for instance, through an unjustified increase in the price, by including other items in the contracts, extending the timeline, etc. Evidence shows that thresholds can be manipulated to initially avoid more competitive procedures, and once the contract has been awarded change orders can be used to increase prices above threshold.","-Procurement method
+-Contract status
+-Contract amounts
+-Contract amendments description","tender/procurementMethod, tender/procurementDetails (to verify the competitive thresholds),
+contracts/status,
+awards/value/amount,
+awards/value/currency,
+contracts/value/amount, contracts/value/currency, contracts/amendments/description (see for changes in total value)",See Red flags Guide Annex for full methodology,"Contracting process, Bidder",Based on Questionable Contract Amendments in Guide to Combating Corruption & Fraud in Development Projects .
+R055,Multiple direct awards above or just below competitive threshold,Supplier receives multiple direct awards from the same buyer in period t that surpasses the competitive threshold.,Award,Bid rigging,Public officials can have significantly higher levels of discretion awarding contracts when estimated costs are below competitive thresholds. If the same supplier receives multiple direct awards from the same buyer below threshold this could be a sign of contract splitting.,"-Procurement method
+-Buyer identifier
+-Awards amount
+-Award status
+-Procedure date","tender/procurementMethod, 
+awards/suppliers/id (or awards/suppliers/name), buyer/name (or tender/procuringEntity/name), 
+awards/date,
+awards/value/amount, awards/value/currency",See Red flags Guide Annex for full methodology,"Buyer, Bidder",Based on “Multiple Awards just under procurement thresholds” in Guide to Combating Corruption & Fraud in Development Projects .
+R056,Winning bid does not meet the award criteria,The winning bid does not meet the award criteria.,Award,Bid rigging,"In a poorly controlled bidding process project officials can tamper with bids after receipt to ensure that a favored contractor is selected. (IACRC, 2012).","-Award criteria
+-Winning bid details
+-Evaluation reports","tender/awardCriteria, bids/details/status, bids/details/documents = evaluationReports
+
+To identify winning bid:
+bids/details/tenderers/id and awards/suppliers/id
+OR awards/relatedBid",See Red flags Guide Annex for full methodology,Contracting process,Based on Manipulation of Bids in Guide to Combating Corruption & Fraud in Development Projects.
+R057,Bid rotation,Bidders take turns in being the winner.,Award,Collusion risks,Members of a collusive bidding scheme can agree to rig the bidding process in order to allow each member of the group to win a contract at an inflated price on a rotating basis.,"-Bidders details
+-Bis status
+-Winning bidder
+-Bid values
+-Item classification (to define markets)","bids/details/tenderers/id, bids/details/tenderers/name, 
+awards/suppliers/id,
+awards/suppliers/name, bids/details/value/amount, bids/details/value/currency, 
+awards/items/classification/id AND
+awards/items/classification/scheme
+
+Tender or contract items could be used instead",See Red flags Guide Annex for full methodology,"Bidder, Market","Based on “Bid rotation” in Empirical Methods for Detecting Bid-rigging Cartels, Guidelines for detecting bid rigging in public procurement, Using Bid Rotation and Incumbency to Detect Collusion: A Regression Discontinuity Approach"
+R058,Heavily discounted bid,The percentage difference between the winning bid and the second-lowest valid bid is a high outlier.,Award,Collusion risks,"An unethical bidder can offer defective goods (""lemons"") if the buyer has inadequate quality criteria.","-Bid id
+-Bid status
+-Bid values
+-Winning bidder","bids/details/id, 
+bids/details/value/amount, bids/details/value/currency, bids/details/status, 
+To identify winning bid:
+bids/details/tenderers/id and awards/suppliers/id
+OR awards/relatedBid",See Red flags Guide Annex for full methodology,"Contracting process, Bidder","Based on ""The price offered by the winning bidder is significantly lower than the price offered by the rest of the bidders"" in Fraud in Public Procurement: A collection of Red Flags and Best Practices, ""Difference between lowest and second lowest bid prices"" in Assessing the potential for detecting collusion in Swedish public procurement, and The Market for ""Lemons"": Quality Uncertainty and the Market Mechanism."
+R059,Large difference between the award value and final contract amount,The difference between the award and final contract value exceeds a threshold.,Contract implementation,Bid rigging,"A high difference between the award value and contract value can signal inefficient contracting processes and poorer value for money. Increases in the price before the contract is signed should be reviewed carefully since it can signal the supplier is trying to generate unjustified profits. It can also be a sign of potential corruption where the contract is awarded to a favored bidder for a lower price, and then the price increases after negotiations.","-Award and contract amounts and currencies
+-Award and contract status","awards/id, awards/status, awards/value/amount, awards/value/currency, contracts/awardID, contracts/value/amount, contracts/value/currency, contracts/status
+
+Note: the winning bid price could be used instead of the award value, if it's not available.",See Red flags Guide Annex for full methodology,Contracting process,Based on “Difference between contract award and final contract amount” in ‘Red Flags of Corruption’ in World Bank Projects An Analysis of Infrastructure Contracts
+R060,Long time between award date and contract signature date,Time interval between award date and contract signing date is above threshold value.,Contract implementation,Bid rigging,"Project officials might find it difficult to justify the award of a contract to a preferred bidder under the procurement rules and delay the award as they attempt to create a justification. The preferred winning bidder and project officials might also be engaged in extended negotiations over the terms of bribe demands, such as the amounts and payment schedules. Finally, project officials might deliberately delay the award beyond the bid validity period in order to support the disqualification of all bidders and the need for re-bidding (IACRC, 2012).","Award date
+
+Contract signature date
+
+Procurement method","awards/date, contracts/dateSigned, tender/procurementMethod",See Red flags Guide Annex for full methodology,"Contracting process, Bidder",Based on Long Delays in Contract Negotiations or Award in Guide to Combating Corruption & Fraud in Development Projects .
+R061,Decision period extremely short,Time interval between bid evaluation and award date is below threshold value.,Award,Bid rigging,"A short decision period can reflect a premeditated assessment, to favor a particular contractor.","-Tender end date (or bid evaluation start date)
+-Award date
+-Procurement method","tender/tenderPeriod/endDate, awards/date, tender/procurementMethod",See Red flags Guide Annex for full methodology,Contracting process,Based on “Length of decision period” in Uncovering High-Level Corruption: Cross-National Corruption Proxies Using Government Contracting Data
+R062,Decision period extremely long,Time interval between bid evaluation and award date is above threshold value. ,Award,Bid rigging,"A long decision period can reflect a premeditated assessment, to favor a particular contractor and signal extensive legal challenge to the tender.  For instance, officials might be negotiating with the preferred bidder, attempting to create a justification to award the contract or disqualify other bids. ","-Tender end date (or bid evaluation start date)
+-Award date
+-Procurement method","tender/tenderPeriod/endDate, awards/date, tender/procurementMethod",See Red flags Guide Annex for full methodology,Contracting process,Based on “Length of decision period” in Uncovering High-Level Corruption: Cross-National Corruption Proxies Using Government Contracting Data
+R063,Contract is not published,Contract document is not published.,Contract implementation,Low transparency,"A higher rate of awards without contract information may signal a lack of integrity. No contract can signal that the interaction between the bidders and buyer is not transparent, and relevant interested parties cannot monitor the process.","-Contract document
+-Contract status",contracts/documents/documentType = contractSigned,See Red flags Guide Annex for full methodology,Contracting process,Based on “Award contract and selection documents not all public” in Corruption in Public Procurement: Finding the Right Indicators
+R064,Contract has modifications,Contract has amendments.,Contract implementation,Fraud,"Once the contract is signed, amendments or change orders can be made. While this may be legitimate in some cases, change orders can be manipulated to facilitate corruption or fraud.","-Contract amendments
+-Contract status","contracts/status, contracts/amendments/description",See Red flags Guide Annex for full methodology,Contracting process,Based on “Changes in contract terms and value” in Warning signs of Fraud and Corruption in Public procurement and “Contract modification” in “An Objective Corruption Risk Index Using Public Procurement Data”
+R065,Contract amendments to reduce line items,"Contract modifications issued after contract award, reducing or deleting items.",Contract implementation,Fraud,"Once the contract is signed, amendments or change orders can be made. While this may be legitimate in some cases, change orders can be manipulated to facilitate corruption or fraud. ","-Contract amendments
+-Items classification
+-Contract status
+
+Optional: Item quantity","contracts/status, contracts/amendments/description, contracts/amendments/rationale
+
+Optional: 
+contracts/items/id, contracts/items/quantity,
+contracts/items/classification/id, contracts/items/classification/scheme,
+awards/items/id,awards/items/quantity,
+awards/items/classification/id, awards/items/classification/scheme",See Red flags Guide Annex for full methodology,Contracting process,Based on “Changes in contract terms and value” in Warning signs of Fraud and Corruption in Public procurement.
+R066,Contract amendments to increase line items,"Contract modifications issued after contract award, increasing items.",Contract implementation,Fraud,"Once the contract is signed, amendments or change orders can be made. While there are cases where this can be legitimate, these can be manipulated to facilitate corruption or fraud.","-Contract amendments
+-Items classification
+-Contract status
+
+Optional: Item quantity and award or tender items","contracts/status, contracts/amendments/description, contracts/amendments/rationale
+
+Optional: 
+contracts/items/id, contracts/items/quantity,
+contracts/items/classification/id, contracts/items/classification/scheme,
+awards/items/id,awards/items/quantity,
+awards/items/classification/id, awards/items/classification/scheme",See Red flags Guide Annex for full methodology,Contracting process,Based on “Changes in contract terms and value” in Warning signs of Fraud and Corruption in Public procurement.
+R067,Delivery failure,"Supplier fail to deliver any goods, work or service on time.",Contract implementation,Fraud,"Evidence shows that failure to deliver goods and services, or delivering low quality goods is a strong signal of corruption in the contracting process.","-Contract implementation details
+-Contract milestones due date and delivery date","contracts/implementation/milestones/type = delivery, contracts/status,
+contracts/implementation/milestones/dueDate
+contracts/implementation/milestones/dateMet",See Red flags Guide Annex for full methodology,Contracting process,Based on “Failure to Meet Contract Specifications” in Guide to Combating Corruption & Fraud in Development Projects
+R068,Contract transactions exceed contract amount,Total payments to a contractor exceed the initial contract amount.,Contract implementation,Fraud,Increases in the initial contract value and/or prices of items could signal potential corruption. Cost overruns could also be a result of inefficiencies in the process or bad planning.,"Contract value,
+Contract implementation transactions amount","contracts/value/amount, contracts/value/currency,
+(contracts/implementation/transactions/value/amount,
+contracts/implementation/transactions/value/currency) OR
+contracts/implementation/finalValue/amount,
+contracts/implementation/finalValue/currency
+
+See Contract completion",See Red flags Guide Annex for full methodology,Contracting process,Based on “Inflated invoices” in Guide to Combating Corruption & Fraud in Development Projects
+R069,Contract amendments to increase price,"Contract modifications issued after contract award, increasing the price.",Contract implementation,Fraud,"Once the contract is signed, amendments or change orders can be made. While this can be legitimate in some cases, change orders can be manipulated to facilitate corruption or fraud. ","-Contract amendments
+-Contract status
+
+Optional: contract and award amounts","contracts/status, contracts/amendments/description, contracts/amendments/rationale
+
+Optional: 
+contracts/value/amount, 
+awards/value/amount",See Red flags Guide Annex for full methodology,Contracting process,Based on “Changes in contract terms and value” in Warning signs of Fraud and Corruption in Public procurement and “Questionable Contract Amendments” in Guide to Combating Corruption & Fraud in Development Projects .
+R070,Losing bidders are hired as subcontractors,Losing bidders are hired as subcontractors,Contract implementation,Collusion risks,"While subcontracting may be legitimate, it can be used as a form of rent sharing in a collusive scheme.","-Bidders information 
+-Subcontractors information","tender/tenderers/id OR parties/roles = tenderer AND parties/id OR bids/details/tenderers/id AND bids/details/tenderers/name, 
+contracts/relatedProcesses
+contracts/relatedProcesses/relationship = ‘subContract’
+awards/suppliers/id
+
+See Related process",See Red flags Guide Annex for full methodology,Contracting process,Based on “Prevalence of subcontracting” in Toolkit for detecting collusive bidding in public procurement and “Bidding patterns” in Warning signs of Fraud and Corruption in Public procurement.
+R071,A contractor subcontracts all or most of the work received,A subcontractor or subcontractors receive more than 50% of contract payment,Contract implementation,Collusion risks,"While subcontracting may be legitimate, it can be used as a form of rent sharing in a collusive scheme.",-Subcontracting details,"awards/hasSubcontracting = true, awards/subcontracting/minimumPercentage OR awards/subcontracting/value/amount AND awards/value/amount",See Red flags Guide Annex for full methodology,Contracting process,Based on “Prevalence of subcontracting” in Toolkit for detecting collusive bidding in public procurement
+R072,High prevalence of subcontracts,The ratio of contracting processes with subcontracts to total contracting processes is a high outlier per buyer or market,Contract implementation,Collusion risks,"While subcontracting can be legitimate, it may be used as a form of rent sharing in a collusive scheme.","-Subcontracting details
+-Buyer information
+-Items information","awards/hasSubcontracting = true, tender/procuringEntity/name OR buyer/name OR parties/id and parties/name with parties/roles=buyer
+
+To calculate by market: 
+tender/items/classification/id (award or contract items could be used instead)",See Red flags Guide Annex for full methodology,"Buyer, Market",Based on “Prevalence of subcontracting” in Toolkit for detecting collusive bidding in public procurement
+R073,Discrepancies between work completed and contract specifications,The work completed or goods or services delivered do not fulfill the initial tender or contract specifications.,Contract implementation,Fraud,"Low quality or undelivered goods, works or services can be a strong indicator of fraud and corruption.","-Contract specifications.
+-Documents and reports about the delivery","contracts/status, contracts/documents/documentType=contractSigned, contracts/implementation/documents/documentType=’completionCertificate’ OR ‘physicalProgressReport’, ‘finalAudit’",See Red flags Guide Annex for full methodology,Contracting process,Based on “Failure to Meet Contract Specifications” in Guide to Combating Corruption & Fraud in Development Projects .
