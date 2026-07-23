@@ -113,6 +113,9 @@ export function AboutView({ doc, projectMeta, onShowWelcomeGuide }: Props) {
             <code>public/projects/README.md</code> — bundled project naming and regenerate commands
           </li>
           <li>
+            <code>references/OCP_RED_FLAGS_TO_OCDS.md</code> — OCP red-flag catalogue (R001–R073)
+          </li>
+          <li>
             <code>samples/philgeps/docs/</code> — PhilGEPS indicator corpus reference (markdown)
           </li>
         </ul>
@@ -128,8 +131,13 @@ export function AboutView({ doc, projectMeta, onShowWelcomeGuide }: Props) {
           </p>
           <p>
             <strong>Cardinal risk indicators</strong> are documented by the Open Contracting
-            community; indicator pack JSON in this app is a convenience layer for mapping readiness,
-            not a substitute for running Cardinal on compiled releases.
+            community; the OCP{" "}
+            <ExternalLink href="https://www.open-contracting.org/wp-content/uploads/2024/12/OCP2024-RedFlagProcurement-1.pdf">
+              Red flags in public procurement
+            </ExternalLink>{" "}
+            guide (2024) informs the broader red-flag catalogue. Indicator pack JSON in this app is a
+            convenience layer for mapping readiness, not a substitute for running Cardinal or
+            compile-time analysis on published releases.
           </p>
           <p>
             When publishing a fork or sharing exports, retain provenance for any third-party mapping

@@ -2,7 +2,7 @@
 
 Interactive browser and editor for **OCDS 1.1 field-level mapping** — aligned with the [OCP mapping template](https://www.open-contracting.org/resources/ocds-1-1-mapping-template-guidance/). Map any source system to OCDS paths, maintain a source inventory (sheets 1–2), validate mappings, and export for ETL or stakeholder handoff.
 
-**Private repository** — ships with **blank**, **mPhilGEPS**, and **PhilGEPS 1.5** projects under `public/projects/`, Philippines indicator packs, PhilGEPS reference workbooks in `references/`, and corpus notes in `samples/`.
+**Private repository** — ships with **blank**, **mPhilGEPS**, and **PhilGEPS 1.5** projects under `public/projects/`, Cardinal + Philippines + OCP red-flag indicator packs, PhilGEPS reference workbooks in `references/`, and corpus notes in `samples/`.
 
 ## Quick start
 
@@ -54,8 +54,8 @@ See [`docs/IMPLEMENTATION_SUMMARY.md`](docs/IMPLEMENTATION_SUMMARY.md) for the f
 |------|----------|
 | `public/ocds_reference.json` | Tier A — OCDS 1.1.5 structure + schema (shared) |
 | `public/projects/` | Tier B + C per project (`blank`, `mphilgeps`, `philgeps-1.5`, …) |
-| `public/indicator_packs/` | Cardinal + Philippines custom indicator packs |
-| `references/` | OCP mapping template workbooks (source for `build-data`) |
+| `public/indicator_packs/` | Cardinal, OCP red flags (R001–R073), Philippines custom packs |
+| `references/` | OCP mapping workbooks + red-flag CSVs / [`OCP_RED_FLAGS_TO_OCDS.md`](references/OCP_RED_FLAGS_TO_OCDS.md) |
 | `samples/` | PhilGEPS analysis notes, docs, optional sample payloads |
 | `src/` | React mapping explorer |
 | `scripts/` | Excel ↔ JSON pipeline, export to xlsx / YAML |
@@ -66,9 +66,9 @@ See [`docs/IMPLEMENTATION_SUMMARY.md`](docs/IMPLEMENTATION_SUMMARY.md) for the f
 | View | Description |
 |------|-------------|
 | **Overview** | Project hub — summary cards for every dashboard and reference view, stage coverage bars |
-| **Mapping Explorer** | Hierarchical field tree, search, status filter, **Expand all / Collapse all**, leaf-only mapping |
+| **Mapping Explorer** | Hierarchical field tree, search, status filter, **Expand all / Collapse all**, selectable structure rows (read-only detail), leaf-only mapping |
 | **Release & publication** | Release envelope readiness, publication config form, header preview |
-| **Risk Indicators** | Pack-based indicators, mapping readiness, **Path details** modal |
+| **Risk Indicators** | Pack-based indicators, sort (code / name / % mapped ↑↓), mapping readiness, **Path details** modal |
 | **Validation** | Mapping quality checks, auto-link from `mapping_details` |
 | **Data Sources** | Systems from sheet `1. Data Sources` — add, edit, delete (clears linked mappings) |
 | **Data Elements** | Source-field inventory, wizard with section/table suggestions, source-first **Map** |
@@ -84,7 +84,8 @@ See [`docs/IMPLEMENTATION_SUMMARY.md`](docs/IMPLEMENTATION_SUMMARY.md) for the f
 
 ## Editing & export
 
-- **Mapping** applies to **leaf fields only** (required, optional, extension, and additional fields). Object spans and reference groups are structural — navigate through them, map the child fields.
+- **Mapping** applies to **leaf fields only** (required, optional, extension, and additional fields).
+- **Structure rows** (object spans, party refs, section / subtitle / extension intros) are **clickable** — the detail panel shows title and description with a “not mapped” callout; use the chevron to expand/collapse.
 - Select a leaf field → **Edit field** to change `mapping`, `example`, or `notes`.
 - Edits persist in **localStorage** per project across reloads.
 - Deleting a **data source** or **data element** clears any OCDS mappings that referenced it (confirm dialog shows impact).
@@ -99,6 +100,7 @@ Place an OCP field-level mapping workbook in `references/` (see [`references/REA
 ```bash
 npm run build-data          # ocds_reference.json + public/projects/blank.json (needs xlsx in references/)
 npm run build-philgeps-projects   # regenerate mphilgeps + philgeps-1.5 from references/ workbooks
+npm run build-ocp-red-flags # references/OCP_RED_FLAGS_TO_OCDS.md + public/indicator_packs/ocp-red-flags.json
 npm run strip-template      # blank OCP xlsx from filled template
 npm run clean-placeholders  # remove () template rows from project JSON
 ```
@@ -120,9 +122,13 @@ In the app, use **Import** / **Export** in the header for browser-friendly forma
 
 ## Risk indicators
 
-**Cardinal** (OCP red flags) is always active. **Custom packs** in `public/indicator_packs/` are optional add-ons — extra risk checks computed from mapped OCDS paths, independent of which mapping project is open. Enable them under **Risk Indicators** (saved in browser localStorage).
+**Cardinal** is always active. **Custom packs** in `public/indicator_packs/` are optional add-ons — extra risk checks computed from mapped OCDS paths, independent of which mapping project is open. Enable them under **Risk Indicators** (saved in browser localStorage). Catalog packs include Philippines jurisdiction packs and the **OCP Red Flags** methodology catalogue (`ocp-red-flags`, R001–R073).
 
-Pack definitions live in `public/indicator_packs/*.json`; available custom packs are listed in `catalog.json`. Add a new pack by placing JSON there and registering it in the catalog.
+Sort the indicator list by **code**, **name**, or **% mapped**, with ↑ / ↓ for ascending or descending.
+
+Pack definitions live in `public/indicator_packs/*.json`; available custom packs are listed in `catalog.json`. Add a new pack by placing JSON there and registering it in the catalog. Regenerate the OCP catalogue from CSVs with `npm run build-ocp-red-flags` (see [`references/OCP_RED_FLAGS_TO_OCDS.md`](references/OCP_RED_FLAGS_TO_OCDS.md)).
+
+`/ocid` is treated as a compile/publication concern — Cardinal path requirements do not list it as a mappable required field.
 
 ```json
 // public/indicator_packs/my-pack.json — custom indicator example
@@ -172,6 +178,7 @@ Static output: `dist/` (serve at site root with SPA fallback if your host requir
 | [`docs/STREAMLINE_RECOMMENDATIONS.md`](docs/STREAMLINE_RECOMMENDATIONS.md) | Mapping from scratch — workflow & scoping |
 | [`public/projects/README.md`](public/projects/README.md) | Bundled project naming and regenerate commands |
 | [`samples/README.md`](samples/README.md) | PhilGEPS corpus archive vs bundled projects |
+| [`references/OCP_RED_FLAGS_TO_OCDS.md`](references/OCP_RED_FLAGS_TO_OCDS.md) | OCP red-flag catalogue (R001–R073) markdown reference |
 
 ## License & attribution
 

@@ -13,7 +13,8 @@ PhilGEPS analysis artifacts live here alongside the bundled app projects in `pub
 | `public/projects/mphilgeps.json`, `philgeps-1.5.json` | **Runtime** — loaded from the project picker |
 | `samples/philgeps/project.json` | **Archive** — same mapping exercise; useful for diffing, scripts, or re-import tests |
 | `samples/philgeps/docs/` | Indicator reference and corpus analysis (not rendered by the app) |
-| `public/indicator_packs/` | **Authoritative** indicator definitions the app loads |
+| `public/indicator_packs/` | **Authoritative** indicator definitions the app loads (Cardinal, OCP red flags, PH packs) |
+| `references/OCP_RED_FLAGS_TO_OCDS.md` | OCP methodology catalogue markdown (from public CSVs) |
 
 Regenerate bundled PhilGEPS projects from Excel:
 

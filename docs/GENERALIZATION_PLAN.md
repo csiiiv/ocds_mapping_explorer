@@ -1,7 +1,7 @@
 # OCDS Mapping Explorer — Generalization Plan
 
 **Status:** v1 complete (Phases 1–4) + post-v1 export, indicator packs, UX polish  
-**Last updated:** June 24, 2026  
+**Last updated:** July 23, 2026  
 **Implementation record:** [`IMPLEMENTATION_SUMMARY.md`](IMPLEMENTATION_SUMMARY.md)  
 **Forward backlog:** [`PLANNED_IMPLEMENTATIONS.md`](PLANNED_IMPLEMENTATIONS.md)
 
@@ -39,7 +39,7 @@ A filled OCP workbook = A + B + C in one xlsx. This tool = **A pinned**, **B + C
 - Ship `public/ocds_reference.json` pinned to **OCDS 1.1.5**.
 - Explorer tree, Schema tab, and Extensions tab read from **A**, not from user uploads.
 - Stage sheets from the OCP Excel template define the tree structure (not live JSON Schema extraction). The template is schema-aligned but not exhaustive vs the full core schema catalogue.
-- **Leaf-only mapping:** coverage stats and editable mappings count mappable leaf rows (`field`, `required_field`, `extension_field`, `additional_field`). Container rows (`span`, `ref_span`, `extension_span`, `required_span`) and `extension_intro` headers are navigational structure.
+- **Leaf-only mapping:** coverage stats and editable mappings count mappable leaf rows (`field`, `required_field`, `extension_field`, `additional_field`). Container rows (`span`, `ref_span`, `extension_span`, `required_span`) and structural headers (`section`, `subtitle`, `extension_intro`) are **selectable for read-only detail** (title, description, guidance) but not mapped.
 - On workbook import: validate template family / version; **do not** replace bundled schema with user file unless version mismatch (warn).
 - Stage sheets from user file contribute **only yellow-cell values** (tier C), merged into `mapping_edits`.
 
@@ -189,7 +189,7 @@ Persisted in tier B localStorage overlay + `data_element_additions` on export.
 | Risk indicators | Pack-based | `public/indicator_packs/` + **app-level** browser preferences (`indicatorPreferences`) |
 | Path detail UX | Explorer-only | **`OcdsPathDetailModal`** — inline edit from Risk Indicators, Release & publication |
 | Overview | Stage coverage only | **Dashboard hub** — summary cards for all views + reference data |
-| Explorer tree | Per-node chevrons | **Expand all / Collapse all** toolbar |
+| Explorer tree | Per-node chevrons | **Expand all / Collapse all** toolbar; structure rows selectable (read-only detail) |
 
 ---
 
@@ -201,23 +201,24 @@ Indicators are **portable JSON packs**, not hardcoded per data source.
 public/indicator_packs/
 ├── cardinal.json
 ├── catalog.json
+├── ocp-red-flags.json
 ├── philippines-ra9184.json
 ├── philippines-procedural.json
 ├── philippines-wsf.json
 └── philgeps-feasibility.json
 ```
 
-Indicator pack JSON is the source of truth. Corpus reference markdown may live under `samples/philgeps/docs/` for PhilGEPS analysis notes.
+Indicator pack JSON is the source of truth. OCP methodology markdown: `references/OCP_RED_FLAGS_TO_OCDS.md` (from public CSVs). PhilGEPS corpus notes: `samples/philgeps/docs/`.
 
 | Layer | What it answers | Where |
 |-------|-----------------|-------|
-| OCDS path requirements | What must be mapped? | Pack JSON (`paths[]`) |
+| OCDS path requirements | What must be mapped? | Pack JSON (`paths[]`); `/ocid` is compile-time, not a Cardinal required path |
 | Mapping readiness | Is this project's template ready? | Computed in app |
 | Runtime feasibility | Can we run on our published data? | App-level feasibility overlay + `data_profiles` from `catalog.json` |
 
-**Cardinal** is always on. **Custom packs** default to all catalog entries enabled until the user changes checkboxes in **Risk Indicators** (saved in `localStorage` as `ocds-indicator-preferences-v1`). Legacy `indicator_packs` / `feasibility_pack` / `data_profiles` on imported project JSON are stripped on import.
+**Cardinal** is always on. **Custom packs** default to all catalog entries enabled until the user changes checkboxes in **Risk Indicators** (saved in `localStorage` as `ocds-indicator-preferences-v1`). Overlapping ids (e.g. `R003`) keep Cardinal when both packs are enabled. Legacy `indicator_packs` / `feasibility_pack` / `data_profiles` on imported project JSON are stripped on import.
 
-**UI:** Risk Indicators → **Path details** opens `OcdsPathDetailModal`. Path matching normalizes Cardinal `[]` array notation; related mapped paths shown when exact indicator path is unmapped.
+**UI:** Risk Indicators → sort by code / name / % mapped (↑↓); **Path details** opens `OcdsPathDetailModal`. Path matching normalizes Cardinal `[]` array notation; related mapped paths shown when exact indicator path is unmapped.
 
 **Optional later:** pack picker in project settings; custom indicator authoring; same path modal in Validation view; coverage-driven feasibility from Cardinal output.
 
@@ -289,7 +290,7 @@ Overview shows per-view summary cards and stage coverage; sidebar badges show pu
 - Coverage-driven feasibility (import Cardinal `coverage` JSON) — optional later
 - OCDS 1.2 reference pin
 
-**Done (post-v1):** `mapping.yaml` export, OCP xlsx export (`export_ocp_workbook.py` / `ocp_export.py`), indicator packs (app-level prefs), rich in-app indicator reference fields, `OcdsPathDetailModal`, welcome guide, bundled PhilGEPS projects.
+**Done (post-v1):** `mapping.yaml` export, OCP xlsx export (`export_ocp_workbook.py` / `ocp_export.py`), indicator packs (app-level prefs + OCP red-flags catalogue), rich in-app indicator reference fields, indicator list sort, selectable structure rows, `OcdsPathDetailModal`, welcome guide, bundled PhilGEPS projects.
 
 ---
 
@@ -361,11 +362,13 @@ ocds_mapping_explorer/
 ├── samples/                            ← PhilGEPS corpus notes + archival project.json
 │   └── philgeps/docs/
 ├── references/                         ← OCP xlsx workbooks (incl. PhilGEPS templates)
+│   └── OCP_RED_FLAGS_TO_OCDS.md        ← OCP red-flag catalogue markdown
 ├── scripts/
 │   ├── excel_to_json_mapping.py
 │   ├── strip_template.py
 │   ├── build_project.py
 │   ├── apply_philgeps_metadata.py
+│   ├── build_ocp_red_flags_pack.py
 │   ├── import_ocp_workbook.py
 │   ├── export_project.py
 │   ├── export_ocp_workbook.py

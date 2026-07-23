@@ -18,7 +18,7 @@ const DASHBOARD_ITEMS: GuideItem[] = [
   {
     icon: "⌘",
     title: "Mapping Explorer",
-    body: "Browse the OCDS field tree by procurement stage. Map leaf fields to your source data elements, search, filter by status, and expand or collapse the tree.",
+    body: "Browse the OCDS field tree by procurement stage. Click structure rows for titles and descriptions (not mappable). Map leaf fields to your source data elements, search, filter by status, and expand or collapse the tree.",
     view: "explorer",
   },
   {
@@ -30,7 +30,7 @@ const DASHBOARD_ITEMS: GuideItem[] = [
   {
     icon: "⚑",
     title: "Risk Indicators",
-    body: "Cardinal red flags plus optional Philippines custom packs. See what each indicator tracks, how it is computed, and which OCDS paths still need mapping.",
+    body: "Cardinal red flags plus optional OCP and Philippines packs. Sort by code, name, or % mapped. See what each indicator tracks and which OCDS paths still need mapping.",
     view: "indicators",
   },
   {

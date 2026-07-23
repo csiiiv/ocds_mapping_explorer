@@ -1,7 +1,7 @@
 # OCDS Mapping Explorer — Implementation Summary
 
 **Status:** v1 complete (Phases 1–4) + post-v1 export, indicator packs, release & publication, UX polish  
-**Last updated:** June 24, 2026  
+**Last updated:** July 23, 2026  
 **Package:** `ocds_mapping_explorer/` — standalone OCDS 1.1 field-level mapping tool
 
 This document records what was built during generalization into a **general OCDS 1.1 field-level mapping tool**, aligned with the [OCP mapping template](https://www.open-contracting.org/resources/ocds-1-1-mapping-template-guidance/).
@@ -19,7 +19,7 @@ A browser-based **mapping studio** for:
 - Linking OCDS fields to source labels (`for_mapping`)
 - Validating mapping quality before handoff
 - Exporting portable **Project JSON**, **mapping.yaml**, CSV, and OCP **xlsx** (CLI) for stakeholders or downstream ETL
-- Reviewing **risk indicators** (Cardinal + optional jurisdiction packs) against mapping readiness and data-profile feasibility
+- Reviewing **risk indicators** (Cardinal + OCP red-flag catalogue + optional Philippines packs) against mapping readiness and data-profile feasibility
 - Configuring **release envelope** mappings and **publication** settings (OCID prefix, publisher, compile rules) for downstream pipelines
 
 **Bundled projects:**
@@ -107,11 +107,13 @@ Corpus analysis, indicator reference docs, and optional payloads: `samples/philg
 
 ### Post-v1 — Indicator packs & path detail modal
 
-- **Indicator packs** — definitions in `public/indicator_packs/*.json` (Cardinal + Philippines custom packs)
+- **Indicator packs** — definitions in `public/indicator_packs/*.json` (Cardinal + OCP red flags R001–R073 + Philippines custom packs)
 - **App-level preferences** — custom packs and feasibility overlay in browser `localStorage` (`indicatorPreferences`); not stored on project JSON
-- **Risk Indicators view** — in-app reference (`tracks`, `computation`, …); mapping readiness computed live
+- **Risk Indicators view** — in-app reference (`tracks`, `computation`, …); mapping readiness computed live; **sort** by code / name / % mapped with ↑↓ direction
 - **Welcome guide** — first-visit modal + header **Guide** button
 - **`OcdsPathDetailModal`** — path details from Risk Indicators (and Release & publication) reuse `DetailPanel` without leaving the view
+- **OCP red-flags catalogue** — CSV sources in `references/`; markdown + pack via `npm run build-ocp-red-flags`; About links the [OCP 2024 Red Flags PDF](https://www.open-contracting.org/wp-content/uploads/2024/12/OCP2024-RedFlagProcurement-1.pdf)
+- **Cardinal path hygiene** — `/ocid` is not a required mappable path (generated at compile / publication time)
 
 ### Post-v1 — Release & publication
 
@@ -127,7 +129,8 @@ Corpus analysis, indicator reference docs, and optional payloads: `samples/philg
 
 - **`OverviewDashboard`** — project hub with clickable summary cards for all Dashboard views (explorer, publication, indicators, validation) and Reference data (sources, elements, schema, extensions); stage coverage bars below
 - **Mapping Explorer tree** — **Expand all** / **Collapse all** toolbar (disabled while search or status filter is active; resets on stage change)
-- **Leaf-only mapping** — mappings apply to leaf row types only (`field`, `required_field`, `extension_field`, `additional_field`); container rows (`span`, `ref_span`, …) are navigational structure with read-only detail guidance
+- **Leaf-only mapping** — mappings apply to leaf row types only (`field`, `required_field`, `extension_field`, `additional_field`)
+- **Selectable structure rows** — containers (`span`, `ref_span`, …) and headers (`section`, `subtitle`, `extension_intro`) open a **read-only** detail panel (title, description, “not mapped” guidance); pathless headers use `?node=` in the URL
 - **Coverage stats** — leaf fields only (aligned with mappable rows in UI and `excel_to_json_mapping.py`)
 - **`extension_intro` rows** — extension block headers from OCP template (e.g. “Lots: A tender process…”) parsed as non-path intros, not fake OCDS paths
 
@@ -151,8 +154,8 @@ Corpus analysis, indicator reference docs, and optional payloads: `samples/philg
 | View | Key capabilities |
 |------|------------------|
 | **Overview** | Dashboard hub cards (all views + reference data stats), stage coverage bars, navigation into any view |
-| **Mapping Explorer** | OCDS tree by stage, search, status filter, expand/collapse all, leaf-only inline edit, data-element picker |
-| **Risk Indicators** | Pack-based indicators, path readiness %, data-profile feasibility, related-path hints, **Path details** modal (inline edit) |
+| **Mapping Explorer** | OCDS tree by stage, search, status filter, expand/collapse all, selectable structure (read-only detail), leaf-only inline edit, data-element picker |
+| **Risk Indicators** | Pack-based indicators, sort (code / name / % mapped ↑↓), path readiness %, data-profile feasibility, related-path hints, **Path details** modal (inline edit) |
 | **Release & publication** | Release envelope mapping table + publication config form + header preview |
 | **Validation** | Errors / warnings / info, category filters, auto-link action, jump to field in explorer |
 | **Data Sources** | Table + add / edit / delete (cascades to elements, clears mappings) |
@@ -173,7 +176,7 @@ Both write to the same `mapping_edits` store.
 
 **Auto-link:** Validation → **Apply auto-links** fills empty OCDS fields from element `mapping_details` hints.
 
-**Leaf-only mapping:** Only leaf row types accept `for_mapping` values. Container rows (object spans, party refs) group the tree; map the child fields beneath them. One inventory row can be referenced from multiple OCDS paths via the same `for_mapping` label.
+**Leaf-only mapping:** Only leaf row types accept `for_mapping` values. Container and header rows are selectable for structure guidance in the detail panel; map the child leaf fields beneath them. One inventory row can be referenced from multiple OCDS paths via the same `for_mapping` label.
 
 ---
 
@@ -235,6 +238,7 @@ Indicator definitions are **data**, not app code. The app loads packs at runtime
 public/indicator_packs/
 ├── cardinal.json
 ├── catalog.json
+├── ocp-red-flags.json         # OCP methodology catalogue R001–R073
 ├── philippines-ra9184.json
 ├── philippines-procedural.json
 ├── philippines-wsf.json
@@ -243,16 +247,17 @@ public/indicator_packs/
 
 | Concern | Source | Generic? |
 |---------|--------|----------|
-| OCDS paths required | Indicator pack JSON | Yes (Cardinal pack is universal) |
+| OCDS paths required | Indicator pack JSON | Yes (Cardinal + OCP catalogue; `/ocid` excluded as compile-time) |
 | Mapping readiness % | Computed from current project | Yes |
 | Runtime feasibility | App-level overlay + profiles from `catalog.json` | Per deployment shape |
 | Custom pack selection | `indicatorPreferences.ts` → `ocds-indicator-preferences-v1` | Per browser |
+| List sort | Code / name / % mapped + ↑↓ | Risk Indicators UI |
 
-Default behavior: all catalog custom packs are **enabled** until the user changes checkboxes in **Risk Indicators**.
+Default behavior: all catalog custom packs are **enabled** until the user changes checkboxes in **Risk Indicators**. Duplicate indicator ids across packs keep the **first** loaded definition (Cardinal before custom packs).
 
 From **Risk Indicators → Path details**, the shared `OcdsPathDetailModal` wraps `DetailPanel` so users can edit mappings inline. Detail panel shows `tracks`, `computation`, `interpretation`, and `limitations` when present in pack JSON.
 
-Corpus analysis notes: `samples/philgeps/docs/` (reference only; pack JSON in `public/indicator_packs/` is authoritative).
+Corpus analysis notes: `samples/philgeps/docs/` (reference only). OCP methodology markdown: [`references/OCP_RED_FLAGS_TO_OCDS.md`](../references/OCP_RED_FLAGS_TO_OCDS.md).
 
 ---
 
@@ -290,6 +295,7 @@ npm install
 
 npm run build-data          # ocds_reference.json + projects/blank.json (needs xlsx in references/)
 npm run build-philgeps-projects   # mphilgeps + philgeps-1.5 + publication metadata merge
+npm run build-ocp-red-flags # OCP_RED_FLAGS_TO_OCDS.md + ocp-red-flags.json
 npm run clean-placeholders  # strip () template rows from project JSON
 npm run strip-template      # blank OCP xlsx (needs openpyxl + source xlsx)
 npm run dev                 # local dev server
@@ -344,10 +350,10 @@ src/
     ├── OcdsPathPickerModal.tsx  # Source-first
     ├── OcdsPathDetailModal.tsx  # Reusable path detail (Risk Indicators, etc.)
     ├── DetailPanel.tsx          # Path detail body (mapping edit, linked element)
-    ├── TreeView.tsx             # Explorer tree + expand/collapse all
+    ├── TreeView.tsx             # Explorer tree + expand/collapse + selectable structure
     ├── ValidationView.tsx
     ├── ExtensionsView.tsx       # Proposals + schema
-    ├── RiskIndicatorsView.tsx
+    ├── RiskIndicatorsView.tsx   # Packs, readiness, sort ↑↓
     ├── WelcomeGuideModal.tsx
     ├── ImportExportModal.tsx
     └── …
@@ -362,6 +368,7 @@ scripts/
 ├── ocp_export.py
 ├── ocp_project_io.py
 ├── apply_philgeps_metadata.py
+├── build_ocp_red_flags_pack.py  # OCP CSV → markdown + ocp-red-flags.json
 ├── strip_template.py
 └── clean_project_placeholders.py
 ```
@@ -379,6 +386,7 @@ scripts/
 | [`STREAMLINE_RECOMMENDATIONS.md`](STREAMLINE_RECOMMENDATIONS.md) | Mapping-from-scratch workflow |
 | [`../samples/README.md`](../samples/README.md) | PhilGEPS corpus samples and docs |
 | [`../public/projects/README.md`](../public/projects/README.md) | Bundled project conventions |
+| [`../references/OCP_RED_FLAGS_TO_OCDS.md`](../references/OCP_RED_FLAGS_TO_OCDS.md) | OCP red-flag catalogue (R001–R073) |
 
 ---
 
@@ -391,6 +399,9 @@ scripts/
 | `mapping.yaml` ETL export | ✅ In-app download + `export_mapping_yaml.py` |
 | Indicator packs | ✅ `public/indicator_packs/` + app-level preferences |
 | Indicator pack picker UI | ✅ Risk Indicators sidebar (Overview settings optional — P1.2) |
+| OCP red-flags catalogue pack | ✅ `ocp-red-flags` + `references/OCP_RED_FLAGS_TO_OCDS.md` |
+| Indicator list sort | ✅ Code / name / % mapped with ↑↓ |
+| Selectable structure rows | ✅ Read-only detail for containers + headers |
 | Rich in-app indicator reference | ✅ `tracks`, `computation`, `interpretation`, `limitations` in pack JSON + UI |
 | Welcome guide | ✅ First-visit modal + About link |
 | Bundled PhilGEPS projects | ✅ `mphilgeps`, `philgeps-1.5` in `public/projects/` |

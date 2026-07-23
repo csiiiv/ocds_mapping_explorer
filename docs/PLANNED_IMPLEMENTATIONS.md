@@ -2,8 +2,8 @@
 
 **Purpose:** Forward-looking backlog for `ocds_mapping_explorer/` — what to build next, in what order, and what is explicitly out of scope.
 
-**Last updated:** June 24, 2026  
-**Current baseline:** v1 complete (Phases 1–4) + post-v1 export, indicator packs (app-level), path detail modal, release & publication, overview hub, explorer UX. See [`IMPLEMENTATION_SUMMARY.md`](IMPLEMENTATION_SUMMARY.md).
+**Last updated:** July 23, 2026  
+**Current baseline:** v1 complete (Phases 1–4) + post-v1 export, indicator packs (app-level + OCP red flags), selectable structure rows, indicator sort, path detail modal, release & publication, overview hub, explorer UX. See [`IMPLEMENTATION_SUMMARY.md`](IMPLEMENTATION_SUMMARY.md).
 
 **How to use this doc:** Pick a **priority band**; each item has enough scope to become a PR or sprint. Cross off items here when shipped and note them in `IMPLEMENTATION_SUMMARY.md`.
 
@@ -25,10 +25,13 @@
 | Local project create/delete (browser) | ✅ |
 | Inventory delete with mapping cleanup | ✅ |
 | Leaf-only mapping UX + container rows | ✅ |
+| Selectable structure rows (read-only detail) | ✅ |
 | Tree expand/collapse all (explorer) | ✅ |
 | Wizard section/table suggestions | ✅ |
 | Welcome guide (first visit) | ✅ |
 | Bundled PhilGEPS projects | ✅ |
+| OCP red-flags catalogue pack (R001–R073) | ✅ |
+| Risk Indicators list sort (code / name / % ↑↓) | ✅ |
 | Dev tunnel / `allowedHosts` | ✅ |
 
 The tool is **handoff-ready**. Further work is ops, pipeline integration (YAML + `publication` → compile), and UX polish — not core mapping blockers.
@@ -184,12 +187,13 @@ The tool is **handoff-ready**. Further work is ops, pipeline integration (YAML +
 
 **Acceptance:** After compile + coverage run, app shows updated feasibility for that profile.
 
-### P3.3 Align reference docs with packs
+### P3.3 Align reference docs with packs — partial ✅
 
-- [ ] Generate or validate `RISK_INDICATOR_MASTER_REFERENCE.md` tables from pack JSON (script or CI check)
-- [ ] Reduce drift between docs and `public/indicator_packs/`
+- [x] OCP public red-flag CSVs → [`references/OCP_RED_FLAGS_TO_OCDS.md`](../references/OCP_RED_FLAGS_TO_OCDS.md) + `ocp-red-flags.json` (`npm run build-ocp-red-flags`)
+- [ ] Generate or validate PhilGEPS `RISK_INDICATOR_MASTER_REFERENCE.md` tables from pack JSON (script or CI check)
+- [ ] Reduce drift between PhilGEPS corpus docs and `public/indicator_packs/` Philippines packs
 
-**Acceptance:** Pack JSON is single source of truth; doc is generated or linted.
+**Acceptance:** Pack JSON is single source of truth; doc is generated or linted. *(OCP catalogue regeneration shipped.)*
 
 ### P3.4 Rich in-app reference (indicators & visualizations) — partial ✅
 
@@ -437,4 +441,5 @@ Risk **indicators** and **visualizations** are complementary but should share pa
 | [`EXPORT_GUIDE.md`](EXPORT_GUIDE.md) | Export / import handoff |
 | [`STREAMLINE_RECOMMENDATIONS.md`](STREAMLINE_RECOMMENDATIONS.md) | Mapping from scratch — workflow & scoping |
 | [`samples/philgeps/docs/RISK_INDICATOR_MASTER_REFERENCE.md`](../samples/philgeps/docs/RISK_INDICATOR_MASTER_REFERENCE.md) | PhilGEPS indicator corpus reference |
+| [`../references/OCP_RED_FLAGS_TO_OCDS.md`](../references/OCP_RED_FLAGS_TO_OCDS.md) | OCP red-flag catalogue (R001–R073) |
 | [`../public/projects/README.md`](../public/projects/README.md) | Bundled project conventions |

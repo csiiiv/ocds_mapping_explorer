@@ -177,6 +177,11 @@ State tier in project `description` or team runbook. Unmapped fields outside tie
 
 - Map **one representative** path per array block (`awards[]`, `items[]`, `bids/details[]`).
 - Document in field **notes**: “repeat per row at compile” — do not map every array index in the template.
+- Click structure rows (e.g. `tender/items`) in the explorer for title/description; map the **child leaves** only.
+
+### Release identity (`ocid`)
+
+- Prefer **Release & publication** / compile rules for `ocid` — do not treat it as a normal inventory mapping target for risk-indicator readiness.
 
 ### Extensions
 
@@ -262,6 +267,8 @@ Export merges B + C into handoff artifacts; compile consumes YAML + publication 
 
 - [OCP field-level mapping template guidance](https://www.open-contracting.org/resources/ocds-1-1-mapping-template-guidance/)
 - [OCP Cardinal indicators](https://cardinal.readthedocs.io/en/latest/cli/indicators/)
-- Indicator packs (app-level): `public/indicator_packs/` + `catalog.json`
+- [Red flags in public procurement (OCP 2024 PDF)](https://www.open-contracting.org/wp-content/uploads/2024/12/OCP2024-RedFlagProcurement-1.pdf)
+- Indicator packs (app-level): `public/indicator_packs/` + `catalog.json` (includes `ocp-red-flags`)
+- OCP red-flag catalogue: [`references/OCP_RED_FLAGS_TO_OCDS.md`](../references/OCP_RED_FLAGS_TO_OCDS.md)
 - PhilGEPS corpus notes: `samples/philgeps/docs/RISK_INDICATOR_RECOMMENDATIONS.md`
 - Bundled projects: `public/projects/README.md`
