@@ -10,7 +10,6 @@ import {
   type DataSourceRow,
   type MappingDocument,
   type MappingNode,
-  type OcdsSchemaRow,
   type StageKey,
 } from "./types";
 import { TreeView } from "./components/TreeView";
@@ -38,6 +37,7 @@ import {
 } from "./lib/inventoryDelete";
 import { PublicationView } from "./components/PublicationView";
 import { AboutView } from "./components/AboutView";
+import { SchemaView } from "./components/SchemaView";
 import { LoadingPlaceholder } from "./components/LoadingPlaceholder";
 import { CreateProjectModal } from "./components/CreateProjectModal";
 import { WelcomeGuideModal } from "./components/WelcomeGuideModal";
@@ -61,7 +61,7 @@ const NAV: NavItem[] = [
   { key: "data_sources", label: "Data Sources", icon: "≣", group: "Reference data" },
   { key: "data_elements", label: "Data Elements", icon: "≣", group: "Reference data" },
   { key: "schema", label: "OCDS Schema 1.1.5", icon: "≣", group: "Reference data" },
-  { key: "extensions", label: "OCDS Extensions", icon: "≣", group: "Reference data" },
+  { key: "extensions", label: "Extension proposals", icon: "≣", group: "Reference data" },
 ];
 
 export default function App() {
@@ -435,7 +435,14 @@ export default function App() {
               onOpenMappingField={openMappingField}
             />
           )}
-          {view === "schema" && <SchemaView rows={doc.ocds_schema} kind="schema" />}
+          {view === "schema" && (
+            <SchemaView
+              coreRows={doc.ocds_schema}
+              extensionRows={doc.ocds_extensions}
+              query={query}
+              onQueryChange={(q) => goToView("schema", { q }, true)}
+            />
+          )}
           {view === "extensions" && (
             <ExtensionsView
               doc={doc}
@@ -975,39 +982,6 @@ function fallbackColumnGroups(columns: DataElementColumn[]): DataElementColumnGr
     if (g) g.keys.push(col.key);
   }
   return groups.filter((g) => g.keys.length > 0);
-}
-
-function SchemaView({ rows, kind }: { rows: OcdsSchemaRow[]; kind: "schema" | "extensions" }) {
-  const cols =
-    kind === "extensions"
-      ? [
-          { key: "extension", label: "Extension", wrap: true },
-          { key: "path", label: "Path", mono: true },
-          { key: "title", label: "Title" },
-          { key: "type", label: "Type" },
-          { key: "range", label: "Range" },
-          { key: "values", label: "Values", wrap: true },
-          { key: "deprecated", label: "Deprecated?" },
-        ]
-      : [
-          { key: "section", label: "Section", wrap: true },
-          { key: "path", label: "Path", mono: true },
-          { key: "title", label: "Title" },
-          { key: "type", label: "Type" },
-          { key: "range", label: "Range" },
-          { key: "values", label: "Values", wrap: true },
-          { key: "deprecated", label: "Deprecated?" },
-        ];
-  return (
-    <>
-      <h2>{kind === "extensions" ? "OCDS Extension Schemas 1.1.5" : "OCDS Schema 1.1.5"}</h2>
-      <p className="lead">
-        Reference catalogue of {rows.length} fields from the{" "}
-        {kind === "extensions" ? "extensions" : "core"} schema. Useful when adding new mappings.
-      </p>
-      <DataTable rows={rows as unknown as Record<string, unknown>[]} columns={cols} />
-    </>
-  );
 }
 
 /* ----------------------------- Keyboard ----------------------------- */

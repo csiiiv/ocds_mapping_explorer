@@ -2046,3 +2046,102 @@ table.data td.wrap {
   color: #34d399;
 }
 
+/* ---------- OCDS Schema reference view ---------- */
+.badge.type-chip {
+  background: rgba(100, 116, 139, 0.18);
+  color: var(--text-dim);
+  font-family: var(--mono, monospace);
+  text-transform: none;
+  letter-spacing: 0;
+}
+.badge.deprecated {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+}
+.schema-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  height: 100%;
+  overflow: auto;
+}
+.schema-detail .detail-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.schema-detail .detail-path {
+  font-size: 12px;
+  color: var(--text-faint);
+  word-break: break-all;
+}
+.schema-detail h3 {
+  margin: 0;
+  font-size: 18px;
+}
+.schema-detail .detail-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+.schema-detail .detail-section h4 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  margin: 0 0 6px;
+}
+.schema-detail .detail-description {
+  margin: 0;
+  line-height: 1.55;
+  color: var(--text);
+}
+.schema-detail .detail-meta {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 16px;
+  row-gap: 6px;
+  margin: 0;
+  font-size: 13px;
+}
+.schema-detail .detail-meta dt {
+  color: var(--text-faint);
+}
+.schema-detail .detail-meta dd {
+  margin: 0;
+  word-break: break-word;
+}
+.schema-detail .detail-meta a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.schema-detail .detail-meta a:hover {
+  text-decoration: underline;
+}
+.schema-detail .detail-footer {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+/* Schema table mode */
+.schema-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.schema-table th.sortable:hover {
+  color: var(--accent);
+}
+.schema-table tbody tr.schema-row {
+  cursor: pointer;
+}
+.schema-table tbody tr.schema-row:hover {
+  background: var(--bg-elev);
+}
+

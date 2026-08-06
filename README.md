@@ -33,16 +33,16 @@ Tunnel hostnames are allowed in [`vite.config.ts`](vite.config.ts) (`server.allo
 
 ### Shareable URLs
 
-Routes reflect the active project, view, and (in the explorer) the selected field:
+Routes reflect the active project, view, and (in the explorer) the selected field. Routes use hash routing so refresh / direct links work on static hosts (GitHub Pages):
 
 | Example URL | Opens |
 |-------------|--------|
-| `/p/blank/overview` | Blank project — overview |
-| `/p/blank/explorer/tender` | Mapping Explorer — tender stage |
-| `/p/blank/explorer/tender?path=tender/id` | Explorer with `tender/id` selected |
-| `/p/blank/explorer/tender?q=title&status=unmapped` | Explorer with search + filter |
-| `/p/blank/validation` | Validation view |
-| `/p/blank/data-elements?q=Buyer` | Data Elements filtered by search |
+| `/#/p/blank/overview` | Blank project — overview |
+| `/#/p/blank/explorer/tender` | Mapping Explorer — tender stage |
+| `/#/p/blank/explorer/tender?path=tender/id` | Explorer with `tender/id` selected |
+| `/#/p/blank/explorer/tender?q=title&status=unmapped` | Explorer with search + filter |
+| `/#/p/blank/validation` | Validation view |
+| `/#/p/blank/data-elements?q=Buyer` | Data Elements filtered by search |
 
 Browser **back** / **forward** and pasted links restore the same view. Project picker changes update the URL.
 
