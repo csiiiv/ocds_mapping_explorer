@@ -2,6 +2,8 @@
 
 Interactive browser and editor for **OCDS 1.1 field-level mapping** — aligned with the [OCP mapping template](https://www.open-contracting.org/resources/ocds-1-1-mapping-template-guidance/). Map any source system to OCDS paths, maintain a source inventory (sheets 1–2), validate mappings, and export for ETL or stakeholder handoff.
 
+**Live site:** [Open OCDS Mapping Explorer](https://csiiiv.github.io/ocds_mapping_explorer/)
+
 **Private repository** — ships with **blank**, **mPhilGEPS**, and **PhilGEPS 1.5** projects under `public/projects/`, Cardinal + Philippines + OCP red-flag indicator packs, PhilGEPS reference workbooks in `references/`, and corpus notes in `samples/`.
 
 ## Quick start
